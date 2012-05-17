@@ -24,7 +24,7 @@
 
 You can use libarary in following three ways  :
 
-  a)	 Share Button – This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
+ * *Share Button* – This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
 
 
   When user clicks on the provider, in your handling code you should :
@@ -32,23 +32,38 @@ You can use libarary in following three ways  :
    *	Call enable() method to enable providers
    *	Receive the response in ResponseListener. 
    *	Call update() to share the status.
-   
-  b)	Bar – This option lets you integrate a bar of providers in your app as shown below :
+  
+  To see the functionality, download *SocialShare example* from Downloads page.
+  
+ * *Bar* – This option lets you integrate a bar of providers in your app as shown below :
 
   When user clicks on the provider, in your handling code you should :
-  *	Create instance of SocialShareBar.
-  *	Call enable() method to enable providers
-  *	Receive the response in ResponseListener. 
-  * 	Call update() to share the status.
+   *	Create instance of SocialShareBar.
+   *	Call enable() method to enable providers
+   *	Receive the response in ResponseListener. 
+   * 	Call update() to share the status.
 
-  c)	 Custom :  This option lets you implement providers in your way. You can show them either in   
-ListView , GridView , Context Menu , Dialog or any way you want. This option lets you share messages , show user profiles , get user contacts as shown below :
+ To see the functionality, download *SocialBar example* from Downloads page.
 
- When user clicks on the provider , in your handling code you should :
+ * *Custom* -  This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. This option lets you *share messages , show user profiles , get user contacts* as shown below :
 
- *	Create instance of SocialAuthAdapter.
- *	Call enable() method to enable providers
- *	Receive the response in ResponseListener. 
- *	Call update() to share the status.
- *	Call showprofile() to view user profile details
- *	Call getContacts() to show user contacts.
+  When user clicks on the provider , in your handling code you should :
+   *     Create instance of SocialAuthAdapter.
+   *	Call enable() method to enable providers
+   *	Receive the response in ResponseListener. 
+   *	Call update() to share the status.
+   *	Call showprofile() to view user profile details
+   *	Call getContacts() to show user contacts.
+
+ To see the functionality, download *SocialCore example* from Downloads page.
+
+==Share Messages==
+You can use either of three ways mentioned above to share messages. SocialShareButton and SocialShareBar classes are designed to give user leverage to share messages automatically. Here is the code :
+
+==View user Profile==
+You can view user profile by using SocialAuthAdapter class. Here is the code.
+
+==Get Contacts==
+You can get contacts by using SocialAuthAdapter class. Here is the code.
+
+ 
