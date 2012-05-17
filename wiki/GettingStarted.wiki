@@ -1,46 +1,54 @@
 =Getting Started= 
 
 ==Step 1 : Prerequisites==
-1.	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
-  * Twitter - [http://twitter.com/apps]
-  * Facebook - [http://www.facebook.com/developers/apps.php]
-  * MySpace - (show screenshot) - [http://developer.myspace.com/Apps.mvc]
-  * Linkedin - (show screenshot) - [https://www.linkedin.com/secure/developer]
-2.	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
-3.	Replace the callback urls and cancel urls in callback.properties file with your callbacks urls and cancel urls. To know more about callback urls and cancel urls refer this document.
-4.	Add both the properties file in assets folder of your application.
-Step 2 : Adding library
-5.	Add socialauth-android.jar and socialauth.jar in libs folder of you app. If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
-6.	Now order your jar to top as show below and export.
-7.	Add images from zip folder to drawables.
-Step 3 : Implementation
+  *	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
+   * Twitter - [http://twitter.com/apps]
+   * Facebook - [http://www.facebook.com/developers/apps.php]
+   * MySpace - (show screenshot) - [http://developer.myspace.com/Apps.mvc]
+   * Linkedin - (show screenshot) - [https://www.linkedin.com/secure/developer]
+
+  * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
+
+  *	Replace the callback urls and cancel urls in callback.properties file with your callbacks urls and cancel urls. To know more about callback urls and cancel urls refer this document.
+
+  *	Add both the properties file in assets folder of your application.
+
+==Step 2 : Adding library==
+  * Add socialauth-android.jar and socialauth.jar in libs folder of you app. If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
+
+  *	Now order your jar to top as show below and export.
+
+  *	Add images from zip folder to drawables.
+
+==Step 3 : Implementation==
+
 You can use libarary in following three ways  :
-a)	Share Button – This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
 
-When user clicks on the provider, in your handling code you should :
-1.	Create instance of SocialShareButton.
-2.	Call enable() method to enable providers
-3.	Receive the response in ResponseListener. 
-4.	Call update() to share the status.
+  a)	 Share Button – This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
+
+
+  When user clicks on the provider, in your handling code you should :
+   *	Create instance of SocialShareButton.
+   *	Call enable() method to enable providers
+   *	Receive the response in ResponseListener. 
+   *	Call update() to share the status.
    
-b)	Bar – This option lets you integrate a bar of providers in your app as shown below :
+  b)	Bar – This option lets you integrate a bar of providers in your app as shown below :
 
-When user clicks on the provider, in your handling code you should :
-1.	Create instance of SocialShareBar.
-2.	Call enable() method to enable providers
-3.	Receive the response in ResponseListener. 
-4.	Call update() to share the status.
+  When user clicks on the provider, in your handling code you should :
+  *	Create instance of SocialShareBar.
+  *	Call enable() method to enable providers
+  *	Receive the response in ResponseListener. 
+  * 	Call update() to share the status.
 
-c)	 Custom :  This option lets you implement providers in your way. You can show them either in   
-ListView , GridView , Context Menu , Dialog or any way you want. This option lets you share messages , show user profiles , get user contacts as shown below
+  c)	 Custom :  This option lets you implement providers in your way. You can show them either in   
+ListView , GridView , Context Menu , Dialog or any way you want. This option lets you share messages , show user profiles , get user contacts as shown below :
 
+ When user clicks on the provider , in your handling code you should :
 
-
-When user clicks on the provider , in your handling code you should :
-
-1.	Create instance of SocialAuthAdapter.
-2.	Call enable() method to enable providers
-3.	Receive the response in ResponseListener. 
-4.	Call update() to share the status.
-5.	Call showprofile() to view user profile details
-6.	Call getContacts() to show user contacts.
+ *	Create instance of SocialAuthAdapter.
+ *	Call enable() method to enable providers
+ *	Receive the response in ResponseListener. 
+ *	Call update() to share the status.
+ *	Call showprofile() to view user profile details
+ *	Call getContacts() to show user contacts.
