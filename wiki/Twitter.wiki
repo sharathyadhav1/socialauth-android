@@ -1,0 +1,15 @@
+=Twitter=
+_step by step guide for obtaining consumer key,consumer secret and callback url._
+
+==Steps==
+
+1. Go to URL - [http://twitter.com/apps]
+
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
