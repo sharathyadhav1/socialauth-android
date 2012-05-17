@@ -1,0 +1,9 @@
+=Whats new in Version 1.0 ?=
+
+  *  Provider support for Facebook, Twitter, Linkedin, MySpace
+  *  Easy to add share button in your app via SocialAuthShareButton constructor.On clicking button you will get list of providers in dialog.
+  * On clicking any provider, you can share messages automatically.
+  * Easy to add bar in your app via SocialAuthBar constructor. The bar will  contain will all providers.On clicking any provider , you can share message automatically.
+  * Easy to implement SocialAuth with your own UI via SocialAuthAdapter class. Get user profile , contact details and share message via this feature.
+  * Easy to add keys and secrets through properties file.
+  * Easy to add callbacks and cancel urls through properties file.
