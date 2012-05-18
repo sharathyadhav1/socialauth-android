@@ -26,6 +26,7 @@ You can use libarary in following three ways  :
 
  * *Share Button* – This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
 
+https://socialauth-android.googlecode.com/svn/wiki/images/socialshare.png
 
   When user clicks on the provider, in your handling code you should :
    *	Create instance of SocialShareButton.
@@ -37,6 +38,8 @@ You can use libarary in following three ways  :
   
  * *Bar* – This option lets you integrate a bar of providers in your app as shown below :
 
+https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
+
   When user clicks on the provider, in your handling code you should :
    *	Create instance of SocialShareBar.
    *	Call enable() method to enable providers
@@ -45,10 +48,19 @@ You can use libarary in following three ways  :
 
  To see the functionality, download *SocialBar example* from Downloads page.
 
- * *Custom* -  This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. This option lets you *share messages , show user profiles , get user contacts* as shown below :
+ * *Custom* -  This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. This option lets you : 
+
+*Share messages*  
+https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
+
+*Show user profiles*
+https://socialauth-android.googlecode.com/svn/wiki/images/socialauthprofile.png
+
+*Get user contacts*
+https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
 
   When user clicks on the provider , in your handling code you should :
-   *     Create instance of SocialAuthAdapter.
+   *    Create instance of SocialAuthAdapter.
    *	Call enable() method to enable providers
    *	Receive the response in ResponseListener. 
    *	Call update() to share the status.
