@@ -1,15 +1,23 @@
 =Linkedin=
 step by step guide for obtaining consumer key, consumer secret, callback and cancel urls.
 
-==Step1==
-Go to url : [https://www.linkedin.com/] and create your account.
+==Steps==
 
-http://code.google.com/images/code_sm.png
+*1. Go to url : [https://www.linkedin.com/] and create your account.*
+
+https://socialauth-android.googlecode.com/svn/wiki/images/linkedinlogin.png
+
+*2. Go to url : [http://developer.linkedin.com/] and press Sign In.*
+
+https://socialauth-android.googlecode.com/svn/wiki/images/linkedindeveloper.png
+
+*3. Fill app Info as shown.* 
+
+https://socialauth-android.googlecode.com/svn/wiki/images/linkedinappinfo.png
+
+*4. fill CallBack Url. Please note this URL will be used as your app callback url. the Integration url will be used as your cancel url.*
 
 
-= Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+
+https://socialauth-android.googlecode.com/svn/wiki/images/linkedinoauth.png
