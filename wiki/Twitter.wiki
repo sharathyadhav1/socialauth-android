@@ -1,5 +1,5 @@
+#summary Step by Step Guide to Get Twitter consumer key and secrets.
 =Twitter=
-_step by step guide for obtaining consumer key,consumer secret and callback url._
 
 ==Steps==
 
