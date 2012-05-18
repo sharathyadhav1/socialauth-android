@@ -1,13 +1,19 @@
-#summary One-sentence summary of this page.
+#summary Step by Step Guide to Get Facebook consumer key and secrets.
 
-= Introduction =
+=Facebook=
 
-Add your content here.
+==Steps==
+
+*1. Go to URL - [http://www.facebook.com/developers] and fill username and password. Create account if you don't have one.*
+
+https://socialauth-android.googlecode.com/svn/wiki/images/facebook3.png
 
 
-= Details =
+*2. c.	After creation of account , this page will open - [https://developers.facebook.com/apps]*
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+
+https://socialauth-android.googlecode.com/svn/wiki/images/facebook.png
+
+
+*3. Create new App and Fill all details as shown below.*
+
