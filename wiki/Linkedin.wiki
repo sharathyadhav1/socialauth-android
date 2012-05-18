@@ -1,5 +1,5 @@
+#summary Step by Step Guide to Get Linkedin consumer key and secrets.
 =Linkedin=
-_step by step guide for obtaining consumer key, consumer secret, callback and cancel urls._
 
 ==Steps==
 
