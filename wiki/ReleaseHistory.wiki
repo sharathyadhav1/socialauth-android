@@ -1,3 +1,4 @@
+#summary Release History
 =Whats new in Version 1.0 ?=
 
   *  Provider support for Facebook, Twitter, Linkedin, Myspace
