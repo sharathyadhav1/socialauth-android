@@ -1,3 +1,5 @@
+#summary Start your app by following this guide.
+
 =Getting Started= 
 
 ==Step 1 : Prerequisites==
