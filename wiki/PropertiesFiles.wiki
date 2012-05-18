@@ -1,3 +1,5 @@
+#summary Properties files .
+
 =oauth_consumer.properties=
 Please place this file in your assets folder of your app after configuring the keys and secrets.
 
