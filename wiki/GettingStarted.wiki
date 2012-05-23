@@ -32,9 +32,9 @@
 
 You can use libarary in following three ways  :
 
- 1. !SocialAuthAdapter
- 2. !SocialAuthShareButton
- 3. !SocialAuthBar
+ # !SocialAuthAdapter
+ # !SocialAuthShareButton
+ # !SocialAuthBar
 
   
 
