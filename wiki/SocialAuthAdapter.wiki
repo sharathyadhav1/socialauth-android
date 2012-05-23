@@ -4,13 +4,43 @@
 
 This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. This option lets you : 
 
-*Share messages*  
+==Share Messages==
+You can use either of three ways mentioned above to share messages. SocialAuthShareButton and SocialAuthShareBar classes are designed to give user leverage to share messages automatically. Here is the code :
+
+{{{
+
+// To share message
+
+SocialAuthShareButton adapter = new SocialAuthShareButton(this,share,new ResponseListener());
+adapter.update("SocialAuth Android"); // In ResponseListener
+
+}}}
+ 
 https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
 
-*Show user profiles*
+==View user Profile==
+You can view user profile by using SocialAuthAdapter class. Here is the code.
+{{{
+
+// To show user profile
+
+SocialAuthAdapter.showProfile();
+
+}}}
+
 https://socialauth-android.googlecode.com/svn/wiki/images/socialauthprofile.png
 
-*Get user contacts*
+==Get Contacts==
+You can get contacts by using SocialAuthAdapter class. Here is the code.
+
+{{{
+
+// Get Contacts
+
+SocialAuthAdapter.getContacts();
+ 
+}}}
+
 https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
 
   When user clicks on the provider , in your handling code you should :
@@ -23,35 +53,5 @@ https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
 
  To see the functionality, download *SocialAuthAdapter example* from Downloads page.
 
-==Share Messages==
-You can use either of three ways mentioned above to share messages. SocialAuthShareButton and SocialAuthShareBar classes are designed to give user leverage to share messages automatically. Here is the code :
 
-{{{
 
-// To share message
-
-SocialAuthShareButton adapter = new SocialAuthShareButton(this,share,new ResponseListener());
-adapter.update("SocialAuth Android"); // In ResponseListener
-
-}}}
-
-==View user Profile==
-You can view user profile by using SocialAuthAdapter class. Here is the code.
-{{{
-
-// To show user profile
-
-SocialAuthAdapter.showProfile();
-
-}}}
-
-==Get Contacts==
-You can get contacts by using SocialAuthAdapter class. Here is the code.
-
-{{{
-
-// Get Contacts
-
-SocialAuthAdapter.getContacts();
- 
-}}}
