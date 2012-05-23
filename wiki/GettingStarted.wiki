@@ -6,8 +6,8 @@
   *	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
    * Twitter - [http://twitter.com/apps]
    * Facebook - [http://www.facebook.com/developers/apps.php]
-   * MySpace - (show screenshot) - [http://developer.myspace.com/Apps.mvc]
-   * Linkedin - (show screenshot) - [https://www.linkedin.com/secure/developer]
+   * MySpace - [http://developer.myspace.com/Apps.mvc]
+   * Linkedin -[https://www.linkedin.com/secure/developer]
 
   * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
@@ -32,9 +32,9 @@
 
 You can use libarary in following three ways  :
 
- 1. SocialAuthAdapter
- 2. SocialAuthShareButton
- 3. SocialAuthBar
+ 1. !SocialAuthAdapter
+ 2. !SocialAuthShareButton
+ 3. !SocialAuthBar
 
   
 
