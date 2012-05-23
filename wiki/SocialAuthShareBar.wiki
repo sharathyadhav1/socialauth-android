@@ -1,6 +1,6 @@
 #summary Sharing messages to multiple providers on single click.
 
-=SocialAuthShareBar=
+=!SocialAuthShareBar=
 
 This option lets you integrate a bar of providers in your app as shown below :
 
