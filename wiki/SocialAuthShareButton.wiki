@@ -6,9 +6,9 @@ This option lets you integrate share button in your app. You will get list of pr
 https://socialauth-android.googlecode.com/svn/wiki/images/socialshare.png
 
   When user clicks on the provider, in your handling code you should :
-   *	Create instance of SocialAuthShareButton.
+   *	Create instance of !SocialAuthShareButton.
    *	Call enable() method to enable providers
-   *	Receive the response in ResponseListener, A Dialoglistener to listen responses. 
+   *	Receive the response in !ResponseListener, A Dialoglistener to listen responses. 
    *	Call update() to share the status.
 
 {{{	
@@ -62,4 +62,4 @@ private final class ResponseListener implements DialogListener
 
 }}}
   
-  To see the full functionality, download *SocialSampleShareButton example* from Downloads page.
+  To see the full functionality, download *!SocialSampleShareButton example* from Downloads page.
