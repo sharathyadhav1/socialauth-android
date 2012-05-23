@@ -1,6 +1,6 @@
 #summary This class lets you create your own UI, Share your messages, Get Profile Details , Get User Contacts.
 
-= SocialAuthAdapter =
+=SocialAuthAdapter=
 
 This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. This option lets you : 
 
@@ -52,6 +52,4 @@ https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
    *	Call getContacts() to show user contacts.
 
  To see the functionality, download *SocialAuthAdapter example* from Downloads page.
-
-
 
