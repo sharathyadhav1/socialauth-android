@@ -41,4 +41,27 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
     }
 }}}
 
+
+==Share Message==
+{{{
+
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+     	    
+   // share your message	
+   status = adapter.update("SocialAuth Android");
+   }
+
+   public void onError(DialogError error) {
+     Log.d("Query" , "Error");
+   }
+
+   public void onCancel() {
+     Log.d("Query" , "Cancelled");
+   }
+
+}
+
+}}}
  To see the functionality, download *!SocialSampleShareBar example* from Downloads page.
