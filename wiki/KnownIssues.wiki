@@ -1,6 +1,5 @@
 #summary This page list known issues with providers and library.
-
+==Known Issues==
   * All the providers disallow same message to be post again to avoid spamming.
-  * Facebook shows different language sometimes. This is a bug filed to FaceBook.
-Here is the link :
+  * Facebook shows different language sometimes. This is a bug filed to FaceBook.Here is the link :
 [https://developers.facebook.com/bugs/407246299295529?browse=search_4fa410ea79db26337556383]
