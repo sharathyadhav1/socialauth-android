@@ -1,6 +1,6 @@
 #summary This page list known issues with providers and library.
 ==Known Issues==
-  * All the providers disallow same message to be post again to avoid spamming.
+  * All the providers disallow same message to be post again to avoid spamming.You may get error if you try to post same message.
   * Facebook shows different language sometimes. This is a bug filed to !FaceBook.Here is the link :
  [https://developers.facebook.com/bugs/407246299295529?browse=search_4fa410ea79db26337556383]
 
@@ -12,3 +12,7 @@
 
  To check :
  Help -> About Eclipse -> Installation Details -> Installed Software Tab -> Android Development Tools
+
+ * Currently the SDK not supports below Android SDK 2.3.3 versions.
+
+*  Currently the  SDK not supports 4.0 version.
