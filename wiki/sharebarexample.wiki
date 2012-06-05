@@ -6,12 +6,21 @@ This option lets you integrate a bar of providers in your app as shown below :
 
 https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
 
-  When user clicks on the provider, in your handling code you should :
-   *	Create instance of !SocialAuthShareBar.
-   *	Call enable() method to enable providers
-   *	Receive the response in !ResponseListener, A Dialoglistener to listen responses. 
-   * 	Call update() to share the status.
+  * Load main.xml and create bar using LinearLayout. You can modify the bar using main.xml for your app.
+{{{
+    setContentView(R.layout.main);
+    LinearLayout bar = (LinearLayout)findViewById(R.id.linearbar);
+    bar.setBackgroundResource(R.drawable.bar_gradient);
+}}}
 
+
+  * Create !SocialAuthAdapter object. 
+  * Add providers to object.
+  * Pass bar object as argument to enable() method. This method will    create the bar and enable providers. 
+  * Receive the response in !ResponseListener, A Dialoglistener to listen responses. 
+  * Call update() to share the status.
+
+*Here is the code snippet :*
 {{{
 
     @Override
@@ -19,7 +28,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
       
-                TextView textview = (TextView)findViewById(R.id.text);
+        TextView textview = (TextView)findViewById(R.id.text);
         textview.setText("Welcome to SocialAuth Demo. We are sharing text SocialAuth Android by Share Bar.");
         
         LinearLayout bar = (LinearLayout)findViewById(R.id.linearbar);
@@ -50,11 +59,11 @@ private final class ResponseListener implements DialogListener
    }
 
    public void onError(DialogError error) {
-     Log.d("Query" , "Error");
+     Log.d("ShareBar" , "Error");
    }
 
    public void onCancel() {
-     Log.d("Query" , "Cancelled");
+     Log.d("ShareBar" , "Cancelled");
    }
 
 }
