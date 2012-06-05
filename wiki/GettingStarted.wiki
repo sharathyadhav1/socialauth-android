@@ -3,7 +3,7 @@
 =Getting Started= 
 
 ==Step 1 : Prerequisites==
-  *   Get Latest Android SDK and ADT plugin installed from [developers.android.com] in your eclipse.
+  *   Get Latest Android SDK and ADT plugin installed from [http://www.developers.android.com] in your eclipse.
   *	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
    * Twitter - [http://twitter.com/apps]
    * Facebook - [http://www.facebook.com/developers/apps.php]
