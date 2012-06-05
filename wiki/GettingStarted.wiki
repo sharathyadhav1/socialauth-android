@@ -11,14 +11,13 @@
 
   * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
-  *	Replace the callback urls and cancel urls in callback.properties file with your callbacks urls and cancel urls. To know more about callback urls and cancel urls refer this document.
-
   *	Add both the properties file in assets folder of your application.
 
 ==Step 2 : Adding library==
-  * Add socialauth-android.jar and socialauth.jar in libs folder of you app. If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
+  * Add socialauth-android.jar and socialauth.jar in libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
 
   *	Now order your jar to top as show below and export.
+
 
   *	Add images from zip folder to drawables.
 
@@ -32,11 +31,11 @@
 
 You can use libarary in following three ways  :
 
- # !SocialAuthAdapter
- # !SocialAuthShareButton
- # !SocialAuthBar
+ # By Creating a Share button that will call a dialog to show list of all providers.
+ # By Creating a Share Bar containing list of all providers that can be launch on single click.
+ # By Creating Custom UI and implement providers in your own way.
 
   
-
-
+== Please Note==
+SocialAuth Android 1.0 supports only Facebook , Twitter , MySpace , Linkedin
  
