@@ -69,4 +69,60 @@ private final class ResponseListener implements DialogListener
 }
 
 }}}
- To see the functionality, download *!SocialSampleShareBar example* from Downloads page.
+
+==Get Profile==
+{{{
+try 
+{
+    profileMap =  adapter.getCurrentProvider().getUserProfile();
+} 
+catch (Exception e) 
+{
+    e.printStackTrace();
+}
+				
+Log.d("ShareBar",  "Validate ID        = " + profileMap.getValidatedId());
+Log.d("ShareBar",  "First Name         = " + profileMap.getFirstName());
+Log.d("ShareBar",  "Last Name          = " + profileMap.getLastName());
+Log.d("ShareBar",  "Email              = " + profileMap.getEmail());
+Log.d("ShareBar",  "Gender  	       = " + profileMap.getGender());
+Log.d("ShareBar",  "Country  	       = " + profileMap.getCountry());
+Log.d("ShareBar",  "Language  	       = " + profileMap.getLanguage());
+Log.d("ShareBar",  "Location 	       = " + profileMap.getLocation());
+Log.d("ShareBar",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+}}}
+  
+
+==Get Contacts==
+{{{
+List<Contact> contactsList = new ArrayList<Contact>();
+				
+try 
+{
+   contactsList = adapter.getCurrentProvider().getContactList();
+} 
+catch (Exception e) 
+{
+   e.printStackTrace();
+}
+				
+		
+if (contactsList != null && contactsList.size() > 0) 
+{
+   for (Contact p : contactsList) 
+   {
+	if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) 
+	{						    
+            p.setFirstName(p.getDisplayName());
+	}
+						
+	Log.d("ShareBar" , "Display Name = " +  p.getDisplayName());
+	Log.d("ShareBar" , "First Name   = " +  p.getFirstName());
+	Log.d("ShareBar" , "Last Name    = " +  p.getLastName());
+	Log.d("ShareBar" , "Contact ID   = " +  p.getId());
+	Log.d("ShareBar" , "Profile URL  = " +  p.getProfileUrl());	
+						
+   }	
+}
+}}}
+ To see the functionality, download *share-bar example* from Downloads page.
