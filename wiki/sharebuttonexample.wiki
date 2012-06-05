@@ -122,11 +122,11 @@ if (contactsList != null && contactsList.size() > 0)
             p.setFirstName(p.getDisplayName());
 	}
 						
-	Log.d("Custom-UI" , "Display Name = " +  p.getDisplayName());
-	Log.d("Custom-UI" , "First Name   = " +  p.getFirstName());
-	Log.d("Custom-UI" , "Last Name    = " +  p.getLastName());
-	Log.d("Custom-UI" , "Contact ID   = " +  p.getId());
-	Log.d("Custom-UI" , "Profile URL  = " +  p.getProfileUrl());	
+	Log.d("ShareButton" , "Display Name = " +  p.getDisplayName());
+	Log.d("ShareButton" , "First Name   = " +  p.getFirstName());
+	Log.d("ShareButton" , "Last Name    = " +  p.getLastName());
+	Log.d("ShareButton" , "Contact ID   = " +  p.getId());
+	Log.d("ShareButton" , "Profile URL  = " +  p.getProfileUrl());	
 						
    }	
 }
