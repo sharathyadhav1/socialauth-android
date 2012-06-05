@@ -1,6 +1,6 @@
 #summary Sharing messages to multiple providers on single click.
 
-=!SocialAuthShareBar=
+=Share Bar=
 
 This option lets you integrate a bar of providers in your app as shown below :
 
@@ -19,25 +19,21 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
       
-        // Welcome Message
-        TextView textview = (TextView)findViewById(R.id.text);
-        textview.setText("Welcome to SocialAuth Demo. We are sharing text SocialAuth Android by share button.");
+                TextView textview = (TextView)findViewById(R.id.text);
+        textview.setText("Welcome to SocialAuth Demo. We are sharing text SocialAuth Android by Share Bar.");
         
+        LinearLayout bar = (LinearLayout)findViewById(R.id.linearbar);
+        bar.setBackgroundResource(R.drawable.bar_gradient);
         
-        //Create Your Own Share Button
-        Button share = (Button)findViewById(R.id.sharebutton);
-        share.setText("Share");
-        share.setTextColor(Color.WHITE);
-        share.setBackgroundResource(R.drawable.button_gradient);
-        		
-        // Add it to Libarary
-        adapter = new SocialAuthShareButton(this,share,new ResponseListener());
-             	 
+        // Add Bar to library
+        adapter = new SocialAuthAdapter(new ResponseListener());
+        
         // Add providers
-        adapter.enable(providers , images);
-        		
-        // set Size of Dialog
-        adapter.setDialogSize(30,60);
+        adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+        adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+        adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+        adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+        adapter.enable(bar);
     }
 }}}
 
