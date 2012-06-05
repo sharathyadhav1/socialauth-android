@@ -5,7 +5,7 @@ This option lets you integrate share button in your app. You will get list of pr
 
 https://socialauth-android.googlecode.com/svn/wiki/images/socialshare.png
 
-When user clicks on the provider, in your handling code you should :
+In your handling code you should :
   * Create a Button.
   * Create !SocialAuthAdapter object. 
   * Add providers to object.
