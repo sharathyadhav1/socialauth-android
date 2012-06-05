@@ -6,4 +6,3 @@
   * Easy to add bar in your app. The bar will  contain will all providers.On clicking any provider , you can share message automatically.
   * Get user profile and contact details. 
   * Easy to add keys and secrets through properties file.
-  * Easy to add callbacks and cancel urls through properties file.
