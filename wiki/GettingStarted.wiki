@@ -17,7 +17,9 @@
   *	Create your project 
   * Add socialauth-android.jar and socialauth.jar in libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
 
-  *    Now order your jar to top as show below and export.
+  *    Now order your jar to top as show below and click checkboxes to export and press OK.
+
+https://socialauth-android.googlecode.com/svn/wiki/images/order.png
 
 
   *    Add images from zip folder to drawables.
