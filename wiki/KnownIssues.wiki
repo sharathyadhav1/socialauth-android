@@ -15,4 +15,4 @@
 
  * Currently the SDK not supports below Android SDK 2.3.3 versions.
 
-*  Currently the  SDK not supports 4.0 version.
+ * Currently the SDK not supports 4.0 version.
