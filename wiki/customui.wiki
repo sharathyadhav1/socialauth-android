@@ -2,10 +2,10 @@
 
 =Custom UI=
 
-This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. 
+This option lets you implement providers in your way. You can show them either in !ListView , !GridView , Context Menu , Dialog or any way you want. 
 Here is example of how to use library with own List View:
 
-android.googlecode.com/svn/wiki/images/socialauthmsg.png
+https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
 
 
 *Here is the code snippet :*
@@ -69,7 +69,7 @@ Log.d("Custom-UI",  "Gender  	         = " + profileMap.getGender());
 Log.d("Custom-UI",  "Country  	         = " + profileMap.getCountry());
 Log.d("Custom-UI",  "Language  	         = " + profileMap.getLanguage());
 Log.d("Custom-UI",  "Location 	         = " + profileMap.getLocation());
-Log.d("Custom-UIn",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+Log.d("Custom-UI",  "Profile Image URL  = " + profileMap.getProfileImageURL());
 }}}
   
 
