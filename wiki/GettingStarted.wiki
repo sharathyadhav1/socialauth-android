@@ -29,7 +29,7 @@
 
 ==Step 4 : Implementation==
 
-You can use libarary in following three ways  :
+You can use library in following three ways  :
 
  * By creating a Share button that will call a dialog to show list of all providers.
  * By creating a Share Bar containing list of all providers that can be launch on single click.
