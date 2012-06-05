@@ -22,27 +22,3 @@ api.myspace.com.consumer_key = 29db395f5ee8426bb90b1db65c91c956
 api.myspace.com.consumer_secret = 0fdccc829c474e42867e16b68cda37a4c4b7b08eda574fe6a959943e3e9be709
 }}}
 
-
-=callback.properties=
-Please place this file in your assets folder of your app after configuring callback and cancel urls. Normally callback and cancel urls
-of facebook and twitter will remain same.You can enter your own callback and cancel urls for linkedin and myspace.
-
-{{{
-#twitter
-twitter.callback_url = twitterapp://connect
-twitter.cancel_url = twitterapp://connect?denied
-
-#facebook
-facebook.callback_url =	fbconnect://success
-facebook.cancel_url = fbconnect://cancel
-
-#LinkedIn
-linkedin.callback_url = http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do
-linkedin.cancel_url = http://brickred.com/socialauthdemo
-
-#MySpace
-myspace.callback_url = http://opensource.brickred.com
-myspace.cancel_url = http://opensource.brickred.com/?oauth_problem
-
-
-}}}
