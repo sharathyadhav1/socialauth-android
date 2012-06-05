@@ -1,0 +1,109 @@
+#summary This class lets you create your own UI and Share your messages, Get Profile Details , Get User Contacts.
+
+=Custom UI=
+
+This option lets you implement providers in your way. You can show them either in ListView , GridView , Context Menu , Dialog or any way you want. 
+Here is example of how to use library with own List View:
+
+android.googlecode.com/svn/wiki/images/socialauthmsg.png
+
+
+*Here is the code snippet :*
+{{{
+    // Adapter initialization
+    adapter = new SocialAuthAdapter(new ResponseListener());
+        
+    listview = (ListView)findViewById(R.id.listview);  
+    listview.setAdapter(new CustomAdapter(this, adapter));   
+}}}
+
+==Share Message==
+{{{
+
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+     
+     Log.d("Custom-UI" , "Authentication Successful");	    
+     try 
+     {
+	
+        adapter.getCurrentProvider().updateStatus("SocialAuth Android");
+	status = true;
+     } 
+     catch (Exception e) 
+     {
+	status = false;
+     }
+			
+   }
+
+   public void onError(DialogError error) {
+     Log.d("Custom-UI" , "Error");
+   }
+
+   public void onCancel() {
+     Log.d("Custom-UI" , "Cancelled");
+   }
+
+}
+
+}}}
+
+==Get Profile==
+{{{
+try 
+{
+    profileMap =  adapter.getCurrentProvider().getUserProfile();
+} 
+catch (Exception e) 
+{
+    e.printStackTrace();
+}
+				
+Log.d("Custom-UI",  "Validate ID         = " + profileMap.getValidatedId());
+Log.d("Custom-UI",  "First Name          = " + profileMap.getFirstName());
+Log.d("Custom-UI",  "Last Name           = " + profileMap.getLastName());
+Log.d("Custom-UI",  "Email               = " + profileMap.getEmail());
+Log.d("Custom-UI",  "Gender  	         = " + profileMap.getGender());
+Log.d("Custom-UI",  "Country  	         = " + profileMap.getCountry());
+Log.d("Custom-UI",  "Language  	         = " + profileMap.getLanguage());
+Log.d("Custom-UI",  "Location 	         = " + profileMap.getLocation());
+Log.d("Custom-UIn",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+}}}
+  
+
+==Get Contacts==
+{{{
+List<Contact> contactsList = new ArrayList<Contact>();
+				
+try 
+{
+   contactsList = adapter.getCurrentProvider().getContactList();
+} 
+catch (Exception e) 
+{
+   e.printStackTrace();
+}
+				
+		
+if (contactsList != null && contactsList.size() > 0) 
+{
+   for (Contact p : contactsList) 
+   {
+	if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) 
+	{						    
+            p.setFirstName(p.getDisplayName());
+	}
+						
+	Log.d("Custom-UI" , "Display Name = " +  p.getDisplayName());
+	Log.d("Custom-UI" , "First Name   = " +  p.getFirstName());
+	Log.d("Custom-UI" , "Last Name    = " +  p.getLastName());
+	Log.d("Custom-UI" , "Contact ID   = " +  p.getId());
+	Log.d("Custom-UI" , "Profile URL  = " +  p.getProfileUrl());	
+						
+   }	
+}
+}}}
+
+ To see the functionality, download *custom-ui example* from Downloads page.
