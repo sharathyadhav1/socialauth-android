@@ -3,6 +3,7 @@
 =Getting Started= 
 
 ==Step 1 : Prerequisites==
+  *   Get Latest Android SDK and ADT plugin installed from [developers.android.com] in your eclipse.
   *	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
    * Twitter - [http://twitter.com/apps]
    * Facebook - [http://www.facebook.com/developers/apps.php]
@@ -11,15 +12,19 @@
 
   * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
-  *	Add both the properties file in assets folder of your application.
 
 ==Step 2 : Adding library==
+  *	Create your project 
   * Add socialauth-android.jar and socialauth.jar in libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
 
-  *	Now order your jar to top as show below and export.
+  *    Now order your jar to top as show below and export.
 
 
-  *	Add images from zip folder to drawables.
+  *    Add images from zip folder to drawables.
+
+  *    Add oauth_consumer.properties file in assets folder of your application.
+
+
 
 ==Step 3 : Adding Permissions in Manifest File==
 {{{
@@ -37,5 +42,5 @@ You can use library in following three ways  :
 
   
 == Please Note==
-SocialAuth Android 1.0 supports only Facebook , Twitter , MySpace , Linkedin
+_SocialAuth_ Android 1.0 supports only Facebook , Twitter , MySpace , Linkedin
  
