@@ -44,5 +44,5 @@ You can use library in following three ways  :
 
   
 == Please Note==
-!SocialAuth Android 1.0 supports only Facebook , Twitter , MySpace , Linkedin
+!SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
  
