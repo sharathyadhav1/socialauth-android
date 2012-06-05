@@ -1,0 +1,134 @@
+#summary Share messages to multiple providers through share button.
+
+=Share Button= 
+This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
+
+https://socialauth-android.googlecode.com/svn/wiki/images/socialshare.png
+
+When user clicks on the provider, in your handling code you should :
+  * Create a Button.
+  * Create !SocialAuthAdapter object. 
+  * Add providers to object.
+  * Pass button object as argument to enable() method. This method will    create the share button and enable providers. 
+  * Receive the response in !ResponseListener, A Dialoglistener to listen responses. 
+  * Call update() to share the status.
+
+*Here is the code snippet :*
+
+{{{	
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main);
+      
+       // Welcome Message
+        TextView textview = (TextView)findViewById(R.id.text);
+        textview.setText("Welcome to SocialAuth Demo. We are sharing text SocialAuth Android by share button.");
+        
+        //Create Your Own Share Button
+        Button share = (Button)findViewById(R.id.sharebutton);
+        share.setText("Share");
+        share.setTextColor(Color.WHITE);
+        share.setBackgroundResource(R.drawable.button_gradient);
+        		
+        // Add it to Library
+        adapter = new SocialAuthAdapter(new ResponseListener());
+             	 
+        // Add providers and enable button
+        adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+        adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+        adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+        adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+        adapter.enable(share);
+    }
+}}}
+
+==Share Message==
+{{{
+
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+     
+     Log.d("ShareButton" , "Authentication Successful");	    
+     try 
+     {
+	
+        adapter.getCurrentProvider().updateStatus("SocialAuth Android");
+	status = true;
+     } 
+     catch (Exception e) 
+     {
+	status = false;
+     }
+			
+   }
+
+   public void onError(DialogError error) {
+     Log.d("ShareButton" , "Error");
+   }
+
+   public void onCancel() {
+     Log.d("ShareButton" , "Cancelled");
+   }
+
+}
+
+}}}
+
+==Get Profile==
+{{{
+try 
+{
+    profileMap =  adapter.getCurrentProvider().getUserProfile();
+} 
+catch (Exception e) 
+{
+    e.printStackTrace();
+}
+				
+Log.d("ShareButton",  "Validate ID        = " + profileMap.getValidatedId());
+Log.d("ShareButton",  "First Name         = " + profileMap.getFirstName());
+Log.d("ShareButton",  "Last Name          = " + profileMap.getLastName());
+Log.d("ShareButton",  "Email              = " + profileMap.getEmail());
+Log.d("ShareButton",  "Gender  	          = " + profileMap.getGender());
+Log.d("ShareButton",  "Country  	  = " + profileMap.getCountry());
+Log.d("ShareButton",  "Language  	  = " + profileMap.getLanguage());
+Log.d("ShareButton",  "Location 	  = " + profileMap.getLocation());
+Log.d("ShareButton",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+}}}
+  
+
+==Get Contacts==
+{{{
+List<Contact> contactsList = new ArrayList<Contact>();
+				
+try 
+{
+   contactsList = adapter.getCurrentProvider().getContactList();
+} 
+catch (Exception e) 
+{
+   e.printStackTrace();
+}
+				
+		
+if (contactsList != null && contactsList.size() > 0) 
+{
+   for (Contact p : contactsList) 
+   {
+	if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) 
+	{						    
+            p.setFirstName(p.getDisplayName());
+	}
+						
+	Log.d("Custom-UI" , "Display Name = " +  p.getDisplayName());
+	Log.d("Custom-UI" , "First Name   = " +  p.getFirstName());
+	Log.d("Custom-UI" , "Last Name    = " +  p.getLastName());
+	Log.d("Custom-UI" , "Contact ID   = " +  p.getId());
+	Log.d("Custom-UI" , "Profile URL  = " +  p.getProfileUrl());	
+						
+   }	
+}
+}}}
+  To see the full functionality, download *share-button example* from Downloads page.
