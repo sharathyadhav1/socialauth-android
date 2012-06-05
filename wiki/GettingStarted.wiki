@@ -38,9 +38,9 @@ https://socialauth-android.googlecode.com/svn/wiki/images/order.png
 
 You can use library in following three ways  :
 
- * By creating a Share button that will call a dialog to show list of all providers.
- * By creating a Share Bar containing list of all providers that can be launch on single click.
- * By creating Custom UI and implement providers in your own way.
+ * By creating a Share Button that will call a dialog to show list of all providers. See share-button wiki page for implementation.
+ * By creating a Share Bar containing list of all providers that can be launch on single click. See share-bar wiki page for implementation.
+ * By creating Custom UI and implement providers in your own way.See custom-ui wiki page for implementation.
 
   
 == Please Note==
