@@ -31,9 +31,9 @@
 
 You can use libarary in following three ways  :
 
- # By Creating a Share button that will call a dialog to show list of all providers.
- # By Creating a Share Bar containing list of all providers that can be launch on single click.
- # By Creating Custom UI and implement providers in your own way.
+ * By creating a Share button that will call a dialog to show list of all providers.
+ * By creating a Share Bar containing list of all providers that can be launch on single click.
+ * By creating Custom UI and implement providers in your own way.
 
   
 == Please Note==
