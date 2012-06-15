@@ -6,7 +6,7 @@ This option lets you integrate a bar of providers in your app as shown below :
 
 https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
 
-  * Load main.xml and create bar using LinearLayout. You can modify the bar using main.xml for your app.
+  * Load main.xml and create bar using !LinearLayout. You can modify the bar using main.xml for your app.
 {{{
     setContentView(R.layout.main);
     LinearLayout bar = (LinearLayout)findViewById(R.id.linearbar);
