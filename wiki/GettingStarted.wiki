@@ -5,10 +5,10 @@
 ==Step 1 : Prerequisites==
   *   Get Latest Android SDK and ADT plugin installed from [http://developer.android.com] in your eclipse.
   *	Get the API Keys and secrets for providers you want to integrate in app. You can take help from following URLs :
-   * Twitter - [http://twitter.com/apps]
+   *  [Twitter (show screenshot)]Twitter - http://code.google.com/p/socialauth-android/wiki/Twitter
    * Facebook - [http://code.google.com/p/socialauth-android/wiki/Facebook]
-   * !MySpace - [http://developer.myspace.com/Apps.mvc]
-   * Linkedin -[https://www.linkedin.com/secure/developer]
+   * !MySpace - [http://code.google.com/p/socialauth-android/wiki/MySpace]
+   * Linkedin -[http://code.google.com/p/socialauth-android/wiki/Linkedin]
 
   * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
