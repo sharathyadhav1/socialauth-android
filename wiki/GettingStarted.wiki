@@ -48,13 +48,13 @@ The SDK contains following directories :
 You can use library in following three ways  :
 
  * By creating a Share Button that will call a dialog to show list of all providers. See [sharebuttonexample (sharebuttonexample)] page for implementation.
- * By creating a Share Bar containing list of all providers that can be launch on single click. See share-bar wiki page for implementation.
- * By creating Custom UI and implement providers in your own way.See custom-ui wiki page for implementation.
+ * By creating a Share Bar containing list of all providers that can be launch on single click. See [sharebarexample (sharebarexample)] page for implementation.
+ * By creating Custom UI and implement providers in your own way.See [customui (customui)] page for implementation.
 
   
 == Please Note==
 !SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
 
-!SocialAuth Android 1.0 not supports below SDK 2.3 GingerBread
+!SocialAuth Android 1.0 not supports below SDK 2.3 !GingerBread
 
  
