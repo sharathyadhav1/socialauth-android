@@ -4,9 +4,9 @@
 
 ==Step 1 : Prerequisites==
   *   Get Latest Android SDK and ADT plugin installed from [http://developer.android.com] in your eclipse.
-  *	Get the API Keys, secrets and callback urls: You can get them from the following URLs :
+  *	Get the API Keys and secrets for providers you want to integrate in app. You can take help from following URLs :
    * Twitter - [http://twitter.com/apps]
-   * Facebook - [http://www.facebook.com/developers/apps.php]
+   * Facebook - [http://code.google.com/p/socialauth-android/wiki/Facebook]
    * !MySpace - [http://developer.myspace.com/Apps.mvc]
    * Linkedin -[https://www.linkedin.com/secure/developer]
 
