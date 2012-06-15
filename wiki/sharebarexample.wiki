@@ -54,7 +54,6 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
      	    
-   // share your message	
    status = adapter.update("SocialAuth Android");
    }
 
@@ -72,14 +71,8 @@ private final class ResponseListener implements DialogListener
 
 ==Get Profile==
 {{{
-try 
-{
-    profileMap =  adapter.getCurrentProvider().getUserProfile();
-} 
-catch (Exception e) 
-{
-    e.printStackTrace();
-}
+
+profileMap =  adapter.getUserProfile();
 				
 Log.d("ShareBar",  "Validate ID        = " + profileMap.getValidatedId());
 Log.d("ShareBar",  "First Name         = " + profileMap.getFirstName());
@@ -95,17 +88,7 @@ Log.d("ShareBar",  "Profile Image URL  = " + profileMap.getProfileImageURL());
 
 ==Get Contacts==
 {{{
-List<Contact> contactsList = new ArrayList<Contact>();
-				
-try 
-{
-   contactsList = adapter.getCurrentProvider().getContactList();
-} 
-catch (Exception e) 
-{
-   e.printStackTrace();
-}
-				
+List<Contact> contactsList = adapter.getContactList();	
 		
 if (contactsList != null && contactsList.size() > 0) 
 {
