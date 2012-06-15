@@ -24,7 +24,6 @@
   
 package org.brickred.customui;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.brickred.socialauth.Contact;
@@ -109,11 +108,6 @@ public class CustomUI extends Activity
 	private final class ResponseListener implements DialogListener
     {
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
 		public void onComplete(Bundle values) {
      	    
 			Log.d("Custom-UI" , "Successful");
@@ -166,15 +160,9 @@ public class CustomUI extends Activity
 		 {
 			 case 0 :            // Code to print user profile details for all providers
 			 {
-				try 
-				{
-					profileMap =  adapter.getCurrentProvider().getUserProfile();
-				} 
-				catch (Exception e)  
-				{
-					e.printStackTrace();
-				}
 				
+				profileMap =  adapter.getUserProfile();
+	
 				Log.d("Custom-UI",  "Validate ID = " + profileMap.getValidatedId());
 				Log.d("Custom-UI",  "First Name  = " + profileMap.getFirstName());
 				Log.d("Custom-UI",  "Last Name   = " + profileMap.getLastName());
@@ -193,21 +181,8 @@ public class CustomUI extends Activity
 			 case 1 :			// Code to Post Message for all providers
 			 {
 					
-				try 
-				{
-					adapter.getCurrentProvider().updateStatus("SocialAuth Android" + System.currentTimeMillis());
-					status = true;
-				} 
-				catch (Exception e) 
-				{
-					status = false;
-				}
-				
-				Log.d("Custom-UI", "Status = " + Boolean.toString(status));		
-				if(status)
-				Toast.makeText(CustomUI.this, "Message posted on " + provider, Toast.LENGTH_SHORT).show();	
-				else
-				Toast.makeText(CustomUI.this, "Error", Toast.LENGTH_SHORT).show();		
+				 adapter.updateStatus("SocialAuth Android" + System.currentTimeMillis());
+				 Toast.makeText(CustomUI.this, "Message posted on " + provider, Toast.LENGTH_SHORT).show();	
 				
 				break;
 			}
@@ -215,18 +190,8 @@ public class CustomUI extends Activity
 			case 2 :			// Code to get Contacts List for all providers
 			{
 				
-				List<Contact> contactsList = new ArrayList<Contact>();
+				List<Contact> contactsList = adapter.getContactList();
 				
-				try 
-				{
-					contactsList = adapter.getCurrentProvider().getContactList();
-				} 
-				catch (Exception e) 
-				{
-					e.printStackTrace();
-				}
-				
-		
 				if (contactsList != null && contactsList.size() > 0) 
 				{
 					for (Contact p : contactsList) 
