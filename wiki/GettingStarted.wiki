@@ -24,7 +24,7 @@ The SDK contains following directories :
 
  * examples - This contains three examples that we have built for you showing how the SDK can be used to build a Share button, Share bar or a completely custom UI.
 
- * javadoc - Documentation for SocialAuth Android.
+ * javadoc - Documentation for !SocialAuth Android.
 
 ==Step 3 : Integrating SDK ==
 
