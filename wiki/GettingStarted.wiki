@@ -18,8 +18,7 @@ The SDK contains following directories :
 
  *  libs - This contains socialauth-android.jar and socialauth-2.3.jar. You need to include both of these in your application. The socialauth-2.3.jar is the underlying OAuth infrastructure and the socialauth-android.jar has the Android components.
 
- * assets - Contains the OAuth consumer keys and secrets, that you can get
-by registering your application with facebook, linkedin, twitter and myspace. We have bundled our keys so that you can test quickly, but it is strongly recommended that you change these keys. First, it is a security issue for your application and secondly sometimes our keys give errors  because too many developers are testing.
+ * assets - Contains the OAuth consumer keys and secrets, that you can get by registering your application with facebook, linkedin, twitter and myspace. We have bundled our keys so that you can test quickly, but it is strongly recommended that you change these keys. First, it is a security issue for your application and secondly sometimes our keys give errors  because too many developers are testing.
 
  *  src - This contains the entire socialauth-android Eclipse project if you would like to debug or you need to make some changes. 
 
@@ -55,4 +54,7 @@ You can use library in following three ways  :
   
 == Please Note==
 !SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
+
+!SocialAuth Android 1.0 not supports below SDK 2.3 GingerBread
+
  
