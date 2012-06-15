@@ -23,8 +23,6 @@
  */
 package org.brickred.socialauth.android;
 
-import java.io.Serializable;
-
 import android.os.Bundle;
 
 /**
@@ -33,7 +31,7 @@ import android.os.Bundle;
  * @author vineeta@brickred.com
  * @author abhinavm@brickred.com
  */
-public interface DialogListener extends Serializable{
+public interface DialogListener {
 
     /**
      * Called when a dialog completes.
