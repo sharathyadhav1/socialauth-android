@@ -18,3 +18,5 @@ https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen1.png
 *3. Create new App and Fill all details as shown below. Fill dummy url in site url field 
 
 https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen2.png
+
+*4. Note down keys and secrets and copy them in oauth_consumers.properties file.
