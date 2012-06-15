@@ -15,7 +15,10 @@ https://socialauth-android.googlecode.com/svn/wiki/images/linkedindeveloper.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/linkedinappinfo.png
 
-*4. fill CallBack Url. Please note this URL will be used as your app callback url. the Integration url will be used as your cancel url.*
+
+*4. fill any dummy url in CallBack Url. Please note Integration url will needs to be empty.*
+
+*5. Note keys and secrets and copy them in oauth_consumers.properties file.
 
 
 
