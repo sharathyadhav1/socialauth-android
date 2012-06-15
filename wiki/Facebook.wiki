@@ -12,8 +12,9 @@ https://socialauth-android.googlecode.com/svn/wiki/images/facebook3.png
 *2. c.	After creation of account , this page will open - [https://developers.facebook.com/apps]*
 
 
-https://socialauth-android.googlecode.com/svn/wiki/images/facebook.png
+https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen1.png
 
 
-*3. Create new App and Fill all details as shown below.*
+*3. Create new App and Fill all details as shown below. Fill dummy url in url 
 
+https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen2.png
