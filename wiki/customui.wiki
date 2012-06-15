@@ -23,19 +23,8 @@ https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
 private final class ResponseListener implements DialogListener 
 {
    public void onComplete(Bundle values) {
-     
-     Log.d("Custom-UI" , "Authentication Successful");	    
-     try 
-     {
-	
-        adapter.getCurrentProvider().updateStatus("SocialAuth Android");
-	status = true;
-     } 
-     catch (Exception e) 
-     {
-	status = false;
-     }
-			
+   
+      adapter.updateStatus("SocialAuth Android");			
    }
 
    public void onError(DialogError error) {
@@ -52,14 +41,8 @@ private final class ResponseListener implements DialogListener
 
 ==Get Profile==
 {{{
-try 
-{
-    profileMap =  adapter.getCurrentProvider().getUserProfile();
-} 
-catch (Exception e) 
-{
-    e.printStackTrace();
-}
+
+profileMap =  adapter.getUserProfile();
 				
 Log.d("Custom-UI",  "Validate ID         = " + profileMap.getValidatedId());
 Log.d("Custom-UI",  "First Name          = " + profileMap.getFirstName());
@@ -75,18 +58,8 @@ Log.d("Custom-UI",  "Profile Image URL  = " + profileMap.getProfileImageURL());
 
 ==Get Contacts==
 {{{
-List<Contact> contactsList = new ArrayList<Contact>();
-				
-try 
-{
-   contactsList = adapter.getCurrentProvider().getContactList();
-} 
-catch (Exception e) 
-{
-   e.printStackTrace();
-}
-				
-		
+List<Contact> contactsList = adapter.getContactList();
+						
 if (contactsList != null && contactsList.size() > 0) 
 {
    for (Contact p : contactsList) 
