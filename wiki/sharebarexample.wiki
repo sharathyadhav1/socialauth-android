@@ -108,4 +108,5 @@ if (contactsList != null && contactsList.size() > 0)
    }	
 }
 }}}
- To see the functionality, download *share-bar example* from Downloads page.
+
+To see the functionality, view *share-bar example* from socialauth-android zip on Download Page. 
