@@ -16,9 +16,9 @@
 
 The SDK contains following directories :
 
- *  dist -  This contains socialauth-android.jar containing Android components.You need to include in your app.
+ *  dist -  This contains socialauth-android.jar containing Android components.You need to include it in your app.
 
- *  libs -  This contains socialauth-2.3.jar.  The socialauth-2.3.jar is the underlying OAuth infrastructure.You need to include in your app.
+ *  libs -  This contains socialauth-2.3.jar.  The socialauth-2.3.jar is the underlying OAuth infrastructure.You need to include it in your app.
  
  * assets - Contains the OAuth consumer keys and secrets, that you can get by registering your application with facebook, linkedin, twitter and myspace. We have bundled our keys so that you can test quickly, but it is strongly recommended that you change these keys. First, it is a security issue for your application and secondly sometimes our keys give errors  because too many developers are testing.
 
