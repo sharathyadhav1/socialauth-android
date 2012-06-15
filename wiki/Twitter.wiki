@@ -15,9 +15,11 @@ https://socialauth-android.googlecode.com/svn/wiki/images/twittersign.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterappform.png
 
-*3. Fill your application name, app description and callback url. In website section fill any anonymous url and press Submit. You will then see this page. *
+*3. Fill your application name, app description and callback url. Write any dummmy url as callback url.In website section fill any anonymous url and press Submit. You will then see this page. *
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterdetails.png
 
 *4. The details page contains info about consumer key and secret.Go to Settings page and give your app read-write access as shown below : 
 https://socialauth-android.googlecode.com/svn/wiki/images/twittersettings.png
+
+* 5. Note down key and secret and copy them in oauth_consumers.properties.
