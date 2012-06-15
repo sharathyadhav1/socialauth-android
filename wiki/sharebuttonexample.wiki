@@ -50,7 +50,7 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
      
-    adapter.updateStatus("SocialAuth Android" + System.currentTimeMillis());
+    adapter.updateStatus("SocialAuth Android");
 			
    }
 
