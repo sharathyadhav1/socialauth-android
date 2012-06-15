@@ -22,8 +22,3 @@ https://socialauth-android.googlecode.com/svn/wiki/images/linkedinappinfo.png
 
 
 *5. Note keys and secrets and copy them in oauth_consumers.properties file.
-
-
-
-
-https://socialauth-android.googlecode.com/svn/wiki/images/linkedinoauth.png
