@@ -61,6 +61,7 @@ public class ShareBarActivity extends Activity {
  
 	// SocialAuth Component
 	SocialAuthAdapter adapter;
+	boolean status;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,15 +97,10 @@ public class ShareBarActivity extends Activity {
 	
 	private final class ResponseListener implements DialogListener 
     {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
 		public void onComplete(Bundle values) {
      	    
 			// Variable to receive message status
-			boolean status;
+			
 			
 			Log.d("ShareBar" , "Authentication Successful");
 			
@@ -112,27 +108,15 @@ public class ShareBarActivity extends Activity {
 			String providerName = values.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareBar", "Provider Name = " + providerName);
 			 
-			try 
-			{
-				// Please avoid sending duplicate message. Social Media Providers block duplicate messages.
-				adapter.getCurrentProvider().updateStatus("SocialAuth Android" + System.currentTimeMillis());
-				status = true;
-			} 
-			catch (Exception e) 
-			{
-				status = false;
-			}
-					
-			// Post Toast or Dialog to display on screen
-			if(status)
-		    Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT).show();	
-			else
-		    Toast.makeText(ShareBarActivity.this, "Message not posted on" + providerName, Toast.LENGTH_SHORT).show();	
-     	    	
+			// Please avoid sending duplicate message. Social Media Providers block duplicate messages.
+			adapter.updateStatus("SocialAuth Android" + System.currentTimeMillis());	
+			
+			Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT).show();	
          }
 
          public void onError(SocialAuthError error) {
-         	Log.d("ShareBar" , "Authentication Error");
+        	error.printStackTrace();
+        	Log.d("ShareBar" , error.getMessage());
          }
 
          public void onCancel() {
