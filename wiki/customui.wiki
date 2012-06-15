@@ -79,4 +79,4 @@ if (contactsList != null && contactsList.size() > 0)
 }
 }}}
 
- To see the functionality, download *custom-ui example* from Downloads page.
+ To see the functionality, view *custom-ui example* from socialauth-android zip on Download Page.
