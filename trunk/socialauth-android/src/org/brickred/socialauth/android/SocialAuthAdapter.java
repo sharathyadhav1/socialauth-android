@@ -26,9 +26,12 @@ package org.brickred.socialauth.android;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import org.brickred.socialauth.AuthProvider;
+import org.brickred.socialauth.Contact;
+import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.SocialAuthConfig;
 import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.util.Constants;
@@ -38,7 +41,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -75,33 +80,24 @@ import android.widget.LinearLayout;
  * 
  */
 
-public class SocialAuthAdapter implements Serializable {
-
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+public class SocialAuthAdapter {
 
 	/**
 	 * Enum of all supported providers
 	 * 
 	 * @author abhinavm@brickred.com
 	 */
-	public enum Provider {
-		FACEBOOK(Constants.FACEBOOK, "fbconnect://success",
-				"fbconnect://cancel"), TWITTER(Constants.TWITTER,
-				"twitterapp://connect", "twitterapp://connect?denied"), LINKEDIN(
-				Constants.LINKEDIN,
-				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do",
-				"http://brickred.com/socialauthdemo"), MYSPACE(
-				Constants.MYSPACE, "http://opensource.brickred.com",
-				"http://opensource.brickred.com/?oauth_problem");
+	public enum Provider 
+	{
+		FACEBOOK(Constants.FACEBOOK, "fbconnect://success","fbconnect://success?error_reason"), 
+		TWITTER(Constants.TWITTER,"twitterapp://connect", "twitterapp://connect?denied"), 
+		LINKEDIN(Constants.LINKEDIN,"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do","http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), 
+		MYSPACE(Constants.MYSPACE, "http://socialauth.brickred.com","http://socialauth.brickred.com/?oauth_problem");
 
 		private String name;
 		private String cancelUri;
 		private String callbackUri;
-
+		
 		/**
 		 * Constructor with unique string representing the provider
 		 * 
@@ -134,15 +130,19 @@ public class SocialAuthAdapter implements Serializable {
 
 	// SocialAuth Components
 	private SocialAuthManager socialAuthManager;
-
+	private Profile profileMap ;
+	private List<Contact> contactsList;
+	
 	// Variables
 	private DialogListener dialogListener;
 	private Provider currentProvider;
 
+	private String url;
 	private int providerCount = 0;
 	private Provider authProviders[];
 	private int authProviderLogos[];
-
+	
+	private Handler handler = new Handler() ;
 	
 	/**
 	 * Constructor
@@ -317,10 +317,10 @@ public class SocialAuthAdapter implements Serializable {
 		} else {
 			Log.d("SocialAuthAdapter","Loading keys and secrets from configuration");
 			Resources resources = ctx.getResources();
-			// Read from the /assets directory
+			// Read from the assets directory
 			AssetManager assetManager = resources.getAssets();
 			try {
-				InputStream inputStream = assetManager.open("oauth_consumer.properties");
+				InputStream inputStream = assetManager.open("oauth_consumer.properties");    
 				SocialAuthConfig config = new SocialAuthConfig();
 				config.load(inputStream);
 				socialAuthManager = new SocialAuthManager();
@@ -328,9 +328,11 @@ public class SocialAuthAdapter implements Serializable {
 				startDialogAuth(ctx, currentProvider);
 
 			} catch (IOException ioe) {
+				Log.d("Error" , "error1");
 				dialogListener.onError(new SocialAuthError(
 						"Could not load configuration", ioe));
 			} catch (Exception e) {
+				Log.d("Error" , e.toString());
 				dialogListener.onError(new SocialAuthError("Unknown error", e));
 			}
 
@@ -347,23 +349,39 @@ public class SocialAuthAdapter implements Serializable {
 	 *            Provider being authenticated
 	 * 
 	 */
-	private void startDialogAuth(Context context, Provider provider) {
+	private void startDialogAuth(final Context context, final Provider provider) {
 		CookieSyncManager.createInstance(context);
-
-		try {
-			String url = socialAuthManager.getAuthenticationUrl(
-					provider.toString(), provider.getCallbackUri())
-					+ "&type=user_agent&display=touch";
-			Log.d("SocialAuthAdapter", "Loading URL : " + url);
-
-			String callbackUri = provider.getCallbackUri();
-			Log.d("SocialAuthAdapter", "Callback URI : " + callbackUri);
-			new SocialAuthDialog(context, url, provider, dialogListener,
-					socialAuthManager).show();
-
-		} catch (Exception e) {
-			dialogListener.onError(new SocialAuthError("Unknown error", e));
-		}
+		
+		Runnable runnable = new Runnable()  
+		{
+	        public void run() 
+	        {
+	        	try
+	        	{
+					url = socialAuthManager.getAuthenticationUrl(provider.toString(), provider.getCallbackUri())
+							+ "&type=user_agent&display=touch";
+					
+					handler.post(new Runnable() 
+					{
+						@Override
+						public void run() 
+						{
+							Log.d("SocialAuthAdapter", "Loading URL : " + url);
+							String callbackUri = provider.getCallbackUri();
+							Log.d("SocialAuthAdapter", "Callback URI : " + callbackUri);
+							new SocialAuthDialog(context, url, provider, dialogListener,socialAuthManager).show();	
+						}
+					});	
+				} 
+	        	catch (Exception e) 
+	        	{
+					e.printStackTrace();
+					dialogListener.onError(new SocialAuthError("URL Authentication error", e));
+				}
+	        }
+	    };
+	    
+	    new Thread(runnable).start();	
 	}
 
 	/**
@@ -377,4 +395,130 @@ public class SocialAuthAdapter implements Serializable {
 		Log.d("SocialAuthAdapter", "Disconnecting " + String.valueOf(signedin));
 		return signedin;
 	}
+	
+	/**
+	 * Method to update status of user
+	 * 
+	 * @param message
+	 *            The message to be send. 
+	 */
+	
+	public void updateStatus(final String message) 
+	{
+		Runnable runnable = new Runnable()  
+		{
+	        public void run() 
+	        {
+	        	try
+	        	{
+	        		getCurrentProvider().updateStatus(message);
+					
+	        	} 
+	        	catch (Exception e) 
+	        	{
+					e.printStackTrace();
+					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
+				}	
+				
+	        	handler.post(new Runnable() 
+				{
+						@Override
+						public void run() 
+						{
+							
+							Log.d("SocialAuthAdapter", "Message Posted");
+						}
+				});	
+	        }
+	    };
+	    
+	    new Thread(runnable).start();		
+	}
+	
+	/**
+	 * Method to get Profile of User
+	 * 
+	 * @return Profile
+	 *            Profile Object containing User Profile Details . 
+	 */
+	
+	public Profile getUserProfile() 
+	{
+	   try 
+	   {
+		   profileMap = new profileTask().execute().get();
+	   } 
+	   catch (InterruptedException e) 
+	   {
+		   e.printStackTrace();
+	   } 
+	   catch (ExecutionException e) 
+	   {
+		   e.printStackTrace();
+	   }
+	   return profileMap;
+	}
+	
+	 private class profileTask extends AsyncTask<Void, Void, Profile> {
+
+	        protected Profile doInBackground(Void... params) {
+	        	try
+	        	{
+	        		
+	        		Profile profileList = getCurrentProvider().getUserProfile();
+	        		Log.d("SocialAuthAdapter", "Received Profile Details");
+	        		return profileList;
+	        	} 
+	        	catch (Exception e) 
+	        	{
+					e.printStackTrace();
+					dialogListener.onError(new SocialAuthError("Profile Details not Received", e));
+					return null;
+				}
+	        }
+	  	}
+
+	
+	/**
+	 * Method to get List of Contacts
+	 * 
+	 * @return List
+	 *            List containing Contacts . 
+	 */
+	
+	public List<Contact> getContactList() 
+	{
+		try 
+		{
+			contactsList = new contactTask().execute().get();
+		} 
+		catch (InterruptedException e) 
+		{
+			e.printStackTrace();
+		} 
+		catch (ExecutionException e) 
+		{
+			e.printStackTrace();
+		}
+	    
+	    return contactsList;
+	}
+	
+	 private class contactTask extends AsyncTask<Void, Void, List<Contact>> {
+
+	        protected List<Contact> doInBackground(Void... params) {
+	        	try
+	        	{
+	        		List<Contact> contactsMap = getCurrentProvider().getContactList();
+	        		Log.d("SocialAuthAdapter", "Received Contact list");
+	        		return contactsMap;
+	        	} 
+	        	catch (Exception e) 
+	        	{
+					e.printStackTrace();
+					dialogListener.onError(new SocialAuthError("Contact List not Received", e));
+					return null;
+				}	 
+	        }
+	    }
 }

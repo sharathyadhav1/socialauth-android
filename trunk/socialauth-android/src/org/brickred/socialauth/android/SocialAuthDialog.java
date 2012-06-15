@@ -34,10 +34,8 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.StrictMode;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -64,32 +62,37 @@ import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
  */
 public class SocialAuthDialog extends Dialog {
 
+	// Variables
 	static final int BLUE = 0xFF6D84B4;
+	static final int MARGIN = 4;
+	static final int PADDING = 2;
+	
 	public static float width = 40;
 	public static float height = 60;
 
 	public static final float[] DIMENSIONS_DIFF_LANDSCAPE = { width, height };
 	public static final float[] DIMENSIONS_DIFF_PORTRAIT = { width, height };
 
-	static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(
-			ViewGroup.LayoutParams.FILL_PARENT,
-			ViewGroup.LayoutParams.FILL_PARENT);
-	static final int MARGIN = 4;
-	static final int PADDING = 2;
 	static final String DISPLAY_STRING = "touch";
 
 	private String mUrl;
-	private Provider mProviderName;
+	
+	// Android Components
 	private TextView mTitle;
-
 	private DialogListener mListener;
 	private ProgressDialog mSpinner;
 	private CustomWebView mWebView;
 	private LinearLayout mContent;
 	private Drawable icon;
+	private Handler handler;
+	static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(
+			ViewGroup.LayoutParams.FILL_PARENT,
+			ViewGroup.LayoutParams.FILL_PARENT);
 
+	// SocialAuth Components
 	private SocialAuthManager mSocialAuthManager;
-
+	private Provider mProviderName;
+	
 	/**
 	 * Constructor for the dialog
 	 * @param context Parent component that opened this dialog
@@ -107,16 +110,10 @@ public class SocialAuthDialog extends Dialog {
 		mSocialAuthManager = socialAuthManager;
 	}
 
-	final Runnable webRunnable = new Runnable() {
-		public void run() {
-			setUpWebView();
-		}
-	};
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		handler = new Handler();
 		mSpinner = new ProgressDialog(getContext());
 		mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mSpinner.setMessage("Loading...");
@@ -124,15 +121,8 @@ public class SocialAuthDialog extends Dialog {
 		mContent = new LinearLayout(getContext());
 		mContent.setOrientation(LinearLayout.VERTICAL);
 		setUpTitle();
+		setUpWebView();
 		
-		if (Build.VERSION.SDK_INT > 9) {
-			StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-			StrictMode.setThreadPolicy(policy);
-		}
-
-		Handler handler = new Handler();
-		handler.post(webRunnable);
-
 		Display display = getWindow().getWindowManager().getDefaultDisplay();
 		final float scale = getContext().getResources().getDisplayMetrics().density;
 		int orientation = getContext().getResources().getConfiguration().orientation;
@@ -187,45 +177,63 @@ public class SocialAuthDialog extends Dialog {
 	}
 
 	
-	private class SocialAuthWebViewClient extends WebViewClient {
+	private class SocialAuthWebViewClient extends WebViewClient 
+	{
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
-			Log.d("SocialAuth-WebView", "Response: " + url);
-			if (url.startsWith(mProviderName.getCallbackUri())) {
-				try {
-					// For twitter and myspace
+			Log.d("SocialAuth-WebView", "Override url: " + url);
+			
+			if (url.startsWith(mProviderName.getCallbackUri()) && (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName.toString().equalsIgnoreCase("twitter"))) {
 					if (url.startsWith(mProviderName.getCancelUri())) {
+						// Handles Twitter and Facebook Cancel
 						mListener.onCancel();
 					} 
-					else { // for Facebook
-						Map<String, String> params = Util.parseUrl(url);
-						String error = params.get("error");
-						if (error == null) {
-							mSocialAuthManager.connect(params);
-							Bundle bundle = new Bundle();
-							bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
-							mListener.onComplete(bundle);
-						} else if (error.equals("access_denied")
-								|| error.equals("OAuthAccessDeniedException")) {
-							mListener.onCancel();
-						}
+					else 
+					{ // for Facebook and Twitter
+						final Map<String, String> params = Util.parseUrl(url);
+						
+						Runnable runnable = new Runnable()  
+						{
+							public void run() 
+						    {
+						        try 
+						        {
+									mSocialAuthManager.connect(params);
+								} 
+						        catch (Exception e) 
+						        {
+						        	e.printStackTrace();
+									mListener.onError(new SocialAuthError("Unknown Error", e));
+								}	
+									
+						        handler.post(new Runnable() 
+								{
+									@Override
+									public void run() 
+									{	
+										Bundle bundle = new Bundle();
+										bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
+										mListener.onComplete(bundle);
+									}
+								});
+						      }
+						    };
+						    new Thread(runnable).start();		
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				//	Log.e("SocialAuth-WebView", e.getMessage());
-					mListener.onError(new SocialAuthError("Unknown Error", e));
-				}
 				SocialAuthDialog.this.dismiss();
 				return true;
-			} else if (url.startsWith(mProviderName.getCancelUri())) {
-				// for linkedin
+			} 
+			else if (url.startsWith(mProviderName.getCancelUri())) {
+				// Handles MySpace and Linkedin Cancel
 				mListener.onCancel();
 				SocialAuthDialog.this.dismiss();
 				return true;
 			} else if (url.contains(DISPLAY_STRING)) {
 				return false;
 			}
+			
 			return false;
+			
 		}
 
 		@Override
@@ -240,28 +248,41 @@ public class SocialAuthDialog extends Dialog {
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
-
+			
+			// For Linkedin and MySpace -  Calls onPageStart to authorize.
 			if (url.startsWith(mProviderName.getCallbackUri())) {
-				try {
-					if (url.startsWith(mProviderName.getCancelUri())) {
-						mListener.onCancel();
-					} else {
-						Log.d("SocialAuth-WebView", "onPageStart:" + url);
-						Map<String, String> params = Util.parseUrl(url);
-						mSocialAuthManager.connect(params);
-
-						Bundle bundle = new Bundle();
-						bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
-						mListener.onComplete(bundle);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					mListener.onError(new SocialAuthError("Could not connect using SocialAuth", e));
+				Log.d("SocialAuth-WebView", "onPageStart:" + url);
+				if (url.startsWith(mProviderName.getCancelUri())) {
+					mListener.onCancel();
+				} 
+				else {
+					final Map<String, String> params = Util.parseUrl(url);	
+					Runnable runnable = new Runnable()  
+					{
+						public void run() {
+							try {
+								mSocialAuthManager.connect(params);
+							} 
+					        catch (Exception e) {
+					        	e.printStackTrace();
+								mListener.onError(new SocialAuthError("Could not connect using SocialAuth", e));
+							}	
+								
+					        handler.post(new Runnable() 
+							{
+								@Override
+								public void run() {	
+									Bundle bundle = new Bundle();
+									bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
+									mListener.onComplete(bundle);
+								}
+							});
+						}
+					};
+					new Thread(runnable).start();    
 				}
 				SocialAuthDialog.this.dismiss();
-				return;
 			}
-
 			mSpinner.show();
 		}
 
@@ -269,6 +290,7 @@ public class SocialAuthDialog extends Dialog {
 		public void onPageFinished(WebView view, String url) {
 
 			super.onPageFinished(view, url);
+			
 			String title = mWebView.getTitle();
 			if (title != null && title.length() > 0) {
 				mTitle.setText(title);
