@@ -99,15 +99,9 @@ public class ShareButtonActivity extends Activity {
 	
 	private final class ResponseListener implements DialogListener 
     {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
 		public void onComplete(Bundle values) {
      	    
 			// Variable to receive message status
-			boolean status;
 			
 			Log.d("ShareButton" , "Authentication Successful");
 			
@@ -115,22 +109,8 @@ public class ShareButtonActivity extends Activity {
 			String providerName = values.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
 			
-			try 
-			{
-				// Please avoid sending duplicate message. Social Media Providers block duplicate messages.
-				adapter.getCurrentProvider().updateStatus("SocialAuth Android" + System.currentTimeMillis());
-				status = true;
-			} 
-			catch (Exception e) 
-			{
-				status = false;
-			}
-			
-			// Post Toast or Dialog to display on screen
-			if(status)
-			Toast.makeText(ShareButtonActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT).show();	
-			else
-			Toast.makeText(ShareButtonActivity.this, "Message not posted on" + providerName, Toast.LENGTH_SHORT).show();	
+			adapter.updateStatus("SocialAuth Android" + System.currentTimeMillis());
+			Toast.makeText(ShareButtonActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT).show();		
      	    	
          }
 
