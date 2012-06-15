@@ -104,4 +104,5 @@ if (contactsList != null && contactsList.size() > 0)
    }	
 }
 }}}
-  To see the full functionality, download *share-button example* from Downloads page.
+
+  To see the full functionality, view *share-button example* from socialauth-android.zip on Downloads page.
