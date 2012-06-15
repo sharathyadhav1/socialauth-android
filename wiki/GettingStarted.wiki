@@ -12,8 +12,34 @@
 
   * 	Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
+== Step 2 : Know SDK ==
 
-==Step 2 : Adding library==
+The SDK contains all the material you need to use SocialAuth Android project.
+The directories are as follows:
+
+1. libs - This contains socialauth-android.jar and socialauth-2.3.jar. You need 
+to include both of these in your application. The socialauth-2.3.jar is the 
+underlying OAuth infrastructure and the socialauth-android.jar has the Android 
+components.
+
+2. assets - Contains the OAuth consumer keys and secrets, that you can get
+by registering your application with facebook, linkedin, twitter and myspace.
+We have bundled our keys so that you can test quickly, but it is strongly
+recommended that you change these keys. First, it is a security issue for
+your application and secondly sometimes our keys give errors  because too 
+many developers are testing.
+
+3. src - This contains the entire socialauth-android Eclipse project if you
+would like to debug or you need to make some changes. Most of the time you
+should not need to.
+
+4. examples - This contains three examples that we have built for you showing
+how the SDK can be used to build a Share button, Share bar or a completely
+custom UI.
+
+5. javadoc - Documentation for SocialAuth Android
+
+==Step 3 : Integrating SDK ==
   *	Create your project 
   * Add socialauth-android.jar and socialauth.jar in libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
 
