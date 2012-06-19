@@ -1,4 +1,4 @@
-#summary This example help you to show how to implement only Facebook , Twitter, !Linkedin or !MySpace into your app.
+#summary This example help you to show how to implement only Facebook , Twitter, Linkedin or MySpace into your app.
 
 =Custom UI Single Provider Example=
 
