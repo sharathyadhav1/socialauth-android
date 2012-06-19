@@ -1,9 +1,8 @@
-#summary This class lets you create your own UI and Share your messages, Get Profile Details , Get User Contacts.
+#summary This example help you to show how to implement only Facebook , Twitter, !Linkedin or !MySpace into your app.
 
-=Custom UI=
+=Custom UI Single Provider Example=
 
-This option lets you implement providers in your way. You can show them either in !ListView , !GridView , Context Menu , Dialog or any way you want. 
-Here is example of how to use library with own List View:
+Here is example to implement facebook in your app
 
 https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
 
@@ -13,9 +12,19 @@ https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
     // Adapter initialization
     adapter = new SocialAuthAdapter(new ResponseListener());
         
-    listview = (ListView)findViewById(R.id.listview);  
-    listview.setAdapter(new CustomAdapter(this, adapter));   
+    facebook_button = (Button)findViewById(R.id.fb_btn);
+    facebook_button.setBackgroundResource(R.drawable.facebook);
+     
+    facebook_button.setOnClickListener(new OnClickListener() 
+    {
+	public void onClick(View v) 
+	{
+	    adapter.authorize(ProviderUI.this, Provider.FACEBOOK);
+	}
+    });
 }}}
+
+To implement linkedin use Provider.Linkedin , for twitter use Provider.Twitter and For MySpace Provider.MySpace
 
 ==Share Message==
 {{{
@@ -78,5 +87,3 @@ if (contactsList != null && contactsList.size() > 0)
    }	
 }
 }}}
-
- To see the functionality, view *custom-ui example* from socialauth-android zip on Download Page.
