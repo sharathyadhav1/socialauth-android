@@ -4,7 +4,7 @@
 
 Here is example to implement facebook in your app
 
-https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
+https://socialauth-android.googlecode.com/svn/wiki/images/onlyfacebook.png
 
 
 *Here is the code snippet :*
