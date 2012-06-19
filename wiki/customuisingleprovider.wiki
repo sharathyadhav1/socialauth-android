@@ -24,7 +24,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
     });
 }}}
 
-To implement linkedin use Provider.Linkedin , for twitter use Provider.Twitter and for !MySpace Provider.!MySpace
+To implement linkedin use Provider.Linkedin , for twitter use Provider.Twitter and for !MySpace use Provider.!MySpace
 
 ==Share Message==
 {{{
