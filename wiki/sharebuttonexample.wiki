@@ -1,4 +1,4 @@
-#summary Share messages to multiple providers through share button.
+#summary Share messages and links to multiple providers through share button.
 
 =Share Button= 
 This option lets you integrate share button in your app. You will get list of providers on clicking the share button as shown below :
@@ -50,7 +50,7 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
      
-    adapter.updateStatus("SocialAuth Android");
+    adapter.updateStatus("http://www.socialauth.in");
 			
    }
 
