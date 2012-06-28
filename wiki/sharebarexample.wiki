@@ -1,4 +1,4 @@
-#summary Sharing messages to multiple providers on single click.
+#summary Sharing messages and links to multiple providers on single click.
 
 =Share Bar=
 
