@@ -459,7 +459,7 @@ public class SocialAuthAdapter {
 	   return profileMap;
 	}
 	
-	 private class profileTask extends AsyncTask<Void, Void, Profile> {
+	private class profileTask extends AsyncTask<Void, Void, Profile> {
 
 	        protected Profile doInBackground(Void... params) {
 	        	try
