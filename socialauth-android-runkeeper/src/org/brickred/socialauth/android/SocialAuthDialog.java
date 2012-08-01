@@ -216,7 +216,6 @@ public class SocialAuthDialog extends Dialog {
 			Log.d("SocialAuth-WebView", "Override url: " + url);
 			
 			if ((url.startsWith(mProviderName.getCallbackUri()) && (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName.toString().equalsIgnoreCase("twitter"))) 
-					|| url.contains("http://socialauth.in") 
 					) {
 					if (url.startsWith(mProviderName.getCancelUri())) {
 						// Handles Twitter and Facebook Cancel
@@ -258,12 +257,14 @@ public class SocialAuthDialog extends Dialog {
 					}
 				SocialAuthDialog.this.dismiss();
 				return true;
-			} else if(url.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp")){
-				Log.d("Again Calling authenticationnnnnnnnnnn","Runkeeperre");
+			} 
+			else if(url.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp"))
+			{
 				mWebView.loadUrl("http://runkeeper.com/facebookSignIn");
 				return true;
-			}else if(url.startsWith("http://runkeeper.com/home")){
-				Log.d("Again Calling auth URL ","SocialAuth");
+			}
+			else if(url.startsWith("http://runkeeper.com/home")){
+				// telling facebook that we are already login
 				mWebView.loadUrl(mUrl);
 				return false;
 			}else if (url.startsWith(mProviderName.getCancelUri())) {
