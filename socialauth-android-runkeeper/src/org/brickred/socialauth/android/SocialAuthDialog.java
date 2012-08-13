@@ -44,6 +44,7 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -86,6 +87,7 @@ public class SocialAuthDialog extends Dialog {
 	static final String DISPLAY_STRING = "touch";
 
 	private String mUrl;
+	String newUrl ;
 	
 	// Android Components
 	private TextView mTitle;
@@ -205,6 +207,7 @@ public class SocialAuthDialog extends Dialog {
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.loadUrl(mUrl);
 		mWebView.setLayoutParams(FILL);
+		mWebView.getSettings().setUseWideViewPort(true);
 		mContent.addView(mWebView);
 	}
 
@@ -263,7 +266,7 @@ public class SocialAuthDialog extends Dialog {
 			// ****************** Handling Runkeeper Start************************
 			else if(url.startsWith("https://www.facebook.com/dialog/oauth"))
 			{
-				String newUrl  = url.replace("https://www.facebook.com/dialog/oauth", "https://m.facebook.com/dialog/oauth");
+				newUrl  = url.replace("https://www.facebook.com/dialog/oauth", "https://m.facebook.com/dialog/oauth");
 				mWebView.loadUrl(newUrl);
 				return true;
 			}
@@ -307,12 +310,6 @@ public class SocialAuthDialog extends Dialog {
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
 			
-			// To Handle scaling of Runkeeper Dialog Only
-			if(url.startsWith("https://runkeeper.com"))
-			{
-				mWebView.setInitialScale(110);
-			}
-		
 			Log.d("SocialAuth-WebView", "onPageStart:" + url);
 		
 			// For Linkedin and MySpace -  Calls onPageStart to authorize.
@@ -369,6 +366,7 @@ public class SocialAuthDialog extends Dialog {
 			
 			mSpinner.dismiss();
 		}
+		
 	}
 
 	
