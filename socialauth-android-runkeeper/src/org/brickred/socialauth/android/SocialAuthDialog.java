@@ -216,6 +216,7 @@ public class SocialAuthDialog extends Dialog {
 			Log.d("SocialAuth-WebView", "Override url: " + url);
 			
 			if ((url.startsWith(mProviderName.getCallbackUri()) && (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName.toString().equalsIgnoreCase("twitter"))) 
+					|| url.contains("http://socialauth.in") 
 					) {
 					if (url.startsWith(mProviderName.getCancelUri())) {
 						// Handles Twitter and Facebook Cancel
@@ -223,7 +224,7 @@ public class SocialAuthDialog extends Dialog {
 					} 
 					else 
 					{ 
-						Log.d("test1" , "test1");
+						Log.d("SocialAuth-WebView" , "Inside Override URL");
 						// for Facebook and Twitter
 						final Map<String, String> params = Util.parseUrl(url);
 						
@@ -258,17 +259,30 @@ public class SocialAuthDialog extends Dialog {
 				SocialAuthDialog.this.dismiss();
 				return true;
 			} 
+			
+			// ****************** Handling Runkeeper Start************************
+			else if(url.startsWith("https://www.facebook.com/dialog/oauth"))
+			{
+				String newUrl  = url.replace("https://www.facebook.com/dialog/oauth", "https://m.facebook.com/dialog/oauth");
+				mWebView.loadUrl(newUrl);
+				return true;
+			}
 			else if(url.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp"))
 			{
 				mWebView.loadUrl("http://runkeeper.com/facebookSignIn");
 				return true;
 			}
-			else if(url.startsWith("http://runkeeper.com/home")){
-				// telling facebook that we are already login
+			else if(url.startsWith("http://runkeeper.com/home"))
+			{
+				Log.d("Again Calling auth URL ","SocialAuth");
 				mWebView.loadUrl(mUrl);
 				return false;
-			}else if (url.startsWith(mProviderName.getCancelUri())) {
-				// Handles MySpace and Linkedin Cancel
+			}
+			
+			// ****************** Handling Runkeeper End************************
+			
+			else if (url.startsWith(mProviderName.getCancelUri())) {
+			// Handles MySpace and Linkedin Cancel
 				mListener.onCancel();
 				SocialAuthDialog.this.dismiss();
 				return true;
@@ -284,7 +298,7 @@ public class SocialAuthDialog extends Dialog {
 				String description, String failingUrl) {
 
 			super.onReceivedError(view, errorCode, description, failingUrl);
-			Log.d("test4" , "test4");
+			Log.d("SocialAuth-WebView" , "Inside OnReceived Error");
 			mListener.onError(new SocialAuthError(description, new Exception(failingUrl)));
 			SocialAuthDialog.this.dismiss();
 		}
@@ -292,14 +306,24 @@ public class SocialAuthDialog extends Dialog {
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
+			
+			// To Handle scaling of Runkeeper Dialog Only
+			if(url.startsWith("https://runkeeper.com"))
+			{
+				mWebView.setInitialScale(110);
+			}
+		
+			Log.d("SocialAuth-WebView", "onPageStart:" + url);
 		
 			// For Linkedin and MySpace -  Calls onPageStart to authorize.
-			if (url.startsWith(mProviderName.getCallbackUri())) {
-				Log.d("SocialAuth-WebView", "onPageStart:" + url);
-				if (url.startsWith(mProviderName.getCancelUri())) {
+			if (url.startsWith(mProviderName.getCallbackUri())) 
+			{
+				if (url.startsWith(mProviderName.getCancelUri())) 
+				{
 					mListener.onCancel();
 				} 
-				else {
+				else 
+				{
 					final Map<String, String> params = Util.parseUrl(url);	
 					Runnable runnable = new Runnable()  
 					{
@@ -307,22 +331,21 @@ public class SocialAuthDialog extends Dialog {
 						{
 							try 
 							{
-								mSocialAuthManager.connect(params);
-								
+								mSocialAuthManager.connect(params);				
 								handler.post(new Runnable() 
 								{
 									@Override
 									public void run() {	
 									Bundle bundle = new Bundle();
 									bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
-									Log.d("test2" , "test2");
+									Log.d("SocialAuth-WebView" , "Inside On Page Start");
 									mListener.onComplete(bundle);
 									}
 								});
 					        
 							} 
 					        catch (Exception e) {
-					        	Log.d("test3" , "test3");
+					        	Log.d("SocialAuth-WebView" , "Inside On Page Start Catch");
 					        	e.printStackTrace();
 								mListener.onError(new SocialAuthError("Could not connect using SocialAuth", e));
 							}
@@ -337,7 +360,6 @@ public class SocialAuthDialog extends Dialog {
 
 		@Override
 		public void onPageFinished(WebView view, String url) {
-			Log.d("SocialAuth-WebView", "onPageFinish:" + url);
 			super.onPageFinished(view, url);
 			
 			String title = mWebView.getTitle();
