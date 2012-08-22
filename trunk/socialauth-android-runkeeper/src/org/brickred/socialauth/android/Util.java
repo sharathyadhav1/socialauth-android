@@ -37,6 +37,9 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.WindowManager;
 
 /**
  * 
@@ -49,6 +52,7 @@ import android.os.Bundle;
 
 public final class Util {
 
+	public static int WEBVIEW_SCALE;
 	/**
 	 * URL encoding of query parameters of a URL
 	 * 
@@ -147,4 +151,44 @@ public final class Util {
 		NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnected();
 	}
+	
+	 public static void getDisplayDpi(Context ctx) {
+    	 DisplayMetrics dm = new DisplayMetrics();
+    	 WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
+    	 wm.getDefaultDisplay().getMetrics(dm); 
+	     double x = Math.pow(dm.widthPixels/dm.xdpi,2);
+	     double y = Math.pow(dm.heightPixels/dm.ydpi,2);
+	     double screenInches = Math.sqrt(x+y);
+	     int screenInch=(int) Math.round(screenInches);
+	     Log.d("screeninch", String.valueOf(screenInch));
+	     int dapi = dm.densityDpi;
+	     Log.d("dapi", String.valueOf(dapi));
+	     try{
+    		  switch(dm.densityDpi){
+    		       case DisplayMetrics.DENSITY_MEDIUM:
+    		    	   if(screenInch<=7){
+	    		    	   WEBVIEW_SCALE = 1000;
+    		    	   }
+    		    	   else{
+    		    		   
+    		    		   WEBVIEW_SCALE = 1000;
+    		    	   }
+    		          break;
+    		       case DisplayMetrics.DENSITY_HIGH:
+    		    	   if(screenInch<=7){
+    		    		   
+    		    		   WEBVIEW_SCALE = 1000;
+    		    	   }else{
+    		    		   WEBVIEW_SCALE = 1000;
+    		    	   } 
+    		           break;
+    		           		    	   
+    		       default: 
+    		    	   break;
+    		  }
+    		}catch(Exception e){
+    		  // Caught exception here
+    		}
+    	} 
+	
 }
