@@ -80,7 +80,6 @@ import android.widget.LinearLayout;
  * 
  */
 
-
 public class SocialAuthAdapter {
 
 	/**
@@ -88,22 +87,36 @@ public class SocialAuthAdapter {
 	 * 
 	 * @author abhinavm@brickred.com
 	 */
-	public enum Provider 
-	{
-		FACEBOOK(Constants.FACEBOOK, "fbconnect://success","fbconnect://success?error_reason"), 
-		TWITTER(Constants.TWITTER,"twitterapp://connect", "twitterapp://connect?denied"), 
-		LINKEDIN(Constants.LINKEDIN,"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do","http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), 
-		MYSPACE(Constants.MYSPACE, "http://socialauth.brickred.com","http://socialauth.brickred.com/?oauth_problem"),
-	    RUNKEEPER(Constants.RUNKEEPER ,"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do" , "http://socialauth.in/socialauthdemo/socialauthSuccessAction.do/?error"),
-		YAHOO(Constants.YAHOO, "http://opensource.brickred.com","http://labs.threepillarglobal.com/?oauth_problem"),
-		FOURSQUARE(Constants.FOURSQUARE, "http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do","http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"),
-		GOOGLE(Constants.GOOGLE, "http://opensource.brickred.com","http://labs.threepillarglobal.com/?oauth_problem"),
-		YAMMER(Constants.YAMMER, "http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do","http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem");
-		
+	public enum Provider {
+		FACEBOOK(Constants.FACEBOOK, "fbconnect://success",
+				"fbconnect://success?error_reason"), TWITTER(Constants.TWITTER,
+				"twitterapp://connect", "twitterapp://connect?denied"), LINKEDIN(
+				Constants.LINKEDIN,
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), MYSPACE(
+				Constants.MYSPACE, "http://socialauth.brickred.com",
+				"http://socialauth.brickred.com/?oauth_problem"), RUNKEEPER(
+				Constants.RUNKEEPER,
+				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do/?error"), YAHOO(
+				Constants.YAHOO, "http://opensource.brickred.com",
+				"http://opensource.brickred.com/?oauth_problem"), FOURSQUARE(
+				Constants.FOURSQUARE,
+				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do",
+				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), GOOGLE(
+				Constants.GOOGLE, "http://opensource.brickred.com",
+				"http://opensource.brickred.com/?oauth_problem"), YAMMER(
+				Constants.YAMMER,
+				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do",
+				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
+				Constants.SALESFORCE,
+				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do",
+				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem");
+
 		private String name;
 		private String cancelUri;
 		private String callbackUri;
-		
+
 		/**
 		 * Constructor with unique string representing the provider
 		 * 
@@ -126,6 +139,7 @@ public class SocialAuthAdapter {
 		/**
 		 * Returns the unique string representing the provider
 		 */
+		@Override
 		public String toString() {
 			return name;
 		}
@@ -136,33 +150,32 @@ public class SocialAuthAdapter {
 
 	// SocialAuth Components
 	private SocialAuthManager socialAuthManager;
-	private Profile profileMap ;
+	private Profile profileMap;
 	private List<Contact> contactsList;
-	
+
 	// Variables
 	private DialogListener dialogListener;
 	private Provider currentProvider;
 
 	private String url;
 	private int providerCount = 0;
-	private Provider authProviders[];
-	private int authProviderLogos[];
-	
-	private Handler handler = new Handler() ;
-	
+	private final Provider authProviders[];
+	private final int authProviderLogos[];
+
+	private final Handler handler = new Handler();
+
 	/**
 	 * Constructor
 	 * 
 	 * @param listener
 	 *            Listener for the adapter events
 	 */
-	
+
 	public SocialAuthAdapter(DialogListener listener) {
 		authProviders = new Provider[Provider.values().length];
 		authProviderLogos = new int[Provider.values().length];
 		this.dialogListener = listener;
 	}
-	
 
 	/**
 	 * Attaches a new listener to the adapter. Define logos and providers.
@@ -200,6 +213,7 @@ public class SocialAuthAdapter {
 
 		// Click Listener For Share Button
 		sharebtn.setOnClickListener(new OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				// This dialog will show list of all providers
 				AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
@@ -219,6 +233,7 @@ public class SocialAuthAdapter {
 				builder.setSingleChoiceItems(new ShareButtonAdapter(ctx,
 						providerNames, providerLogos), 0,
 						new DialogInterface.OnClickListener() {
+							@Override
 							public void onClick(DialogInterface dialog, int item) {
 								// Getting selected provider and starting
 								// authentication
@@ -245,6 +260,7 @@ public class SocialAuthAdapter {
 
 		// Handles Clicking Events for Buttons
 		View.OnClickListener viewlistener = new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				// Getting selected provider and starting authentication
 				authorize(ctx, authProviders[v.getId()]);
@@ -277,45 +293,49 @@ public class SocialAuthAdapter {
 	}
 
 	/**
-	 * Sets Size of Dialog.Use this method to define dialog size manually 
+	 * Sets Size of Dialog.Use this method to define dialog size manually
 	 * 
-	 * @param width    width of dialog
-	 * @param height   height of dialog 
-	 * @param border   border of dialog , true for borderless dialog, false for border dialog       
+	 * @param width
+	 *            width of dialog
+	 * @param height
+	 *            height of dialog
+	 * @param border
+	 *            border of dialog , true for borderless dialog, false for
+	 *            border dialog
 	 */
 	public void setDialog(float width, float height, boolean border) {
-		
+
 		SocialAuthDialog.setSize = true;
 		SocialAuthDialog.width = width;
-		SocialAuthDialog.height = height;	
+		SocialAuthDialog.height = height;
 		SocialAuthDialog.border = border;
 	}
-	
-	
-	/**
-	 * Move dialog
-	 * @param moveX   move in x direction
-	 * @param moveY   move in y direction        
-	 */
-    public void moveDialog(int moveX, int moveY) {
-		
-    	SocialAuthDialog.moveX = moveX;
-    	SocialAuthDialog.moveY = moveY;
-	}
-    
 
 	/**
-	 * Disable title of dialog. 
+	 * Move dialog
 	 * 
-	 * @param titleStatus           default false , Set true to disable dialog titlebar
-	 *            
+	 * @param moveX
+	 *            move in x direction
+	 * @param moveY
+	 *            move in y direction
+	 */
+	public void moveDialog(int moveX, int moveY) {
+
+		SocialAuthDialog.moveX = moveX;
+		SocialAuthDialog.moveY = moveY;
+	}
+
+	/**
+	 * Disable title of dialog.
+	 * 
+	 * @param titleStatus
+	 *            default false , Set true to disable dialog titlebar
+	 * 
 	 */
 	public void disableTitle(boolean titleStatus) {
 		SocialAuthDialog.titleStatus = titleStatus;
 	}
-	
 
-	
 	/**
 	 * Method to handle configuration
 	 */
@@ -333,25 +353,27 @@ public class SocialAuthAdapter {
 		// Initialize socialauth manager if not already done
 		if (socialAuthManager != null) {
 			// Mechanism for multiple provider selection
-			if (socialAuthManager.getConnectedProvidersIds().contains(currentProvider.toString())) 
-			{
+			if (socialAuthManager.getConnectedProvidersIds().contains(
+					currentProvider.toString())) {
 				Bundle bundle = new Bundle();
-				bundle.putString(SocialAuthAdapter.PROVIDER,currentProvider.toString());
+				bundle.putString(SocialAuthAdapter.PROVIDER,
+						currentProvider.toString());
 				dialogListener.onComplete(bundle);
 				Log.d("SocialAuthAdapter", "Provider already connected");
-			} 
-			else 
-			{
-				Log.d("SocialAuthAdapter","Starting webview for authentication");
+			} else {
+				Log.d("SocialAuthAdapter",
+						"Starting webview for authentication");
 				startDialogAuth(ctx, currentProvider);
 			}
 		} else {
-			Log.d("SocialAuthAdapter","Loading keys and secrets from configuration");
+			Log.d("SocialAuthAdapter",
+					"Loading keys and secrets from configuration");
 			Resources resources = ctx.getResources();
 			// Read from the assets directory
 			AssetManager assetManager = resources.getAssets();
 			try {
-				InputStream inputStream = assetManager.open("oauth_consumer.properties");    
+				InputStream inputStream = assetManager
+						.open("oauth_consumer.properties");
 				SocialAuthConfig config = new SocialAuthConfig();
 				config.load(inputStream);
 				socialAuthManager = new SocialAuthManager();
@@ -359,11 +381,11 @@ public class SocialAuthAdapter {
 				startDialogAuth(ctx, currentProvider);
 
 			} catch (IOException ioe) {
-				Log.d("Error" , "error1");
+				Log.d("Error", "error1");
 				dialogListener.onError(new SocialAuthError(
 						"Could not load configuration", ioe));
 			} catch (Exception e) {
-				Log.d("Error" , e.toString());
+				Log.d("Error", e.toString());
 				dialogListener.onError(new SocialAuthError("Unknown error", e));
 			}
 
@@ -382,37 +404,35 @@ public class SocialAuthAdapter {
 	 */
 	private void startDialogAuth(final Context context, final Provider provider) {
 		CookieSyncManager.createInstance(context);
-		
-		Runnable runnable = new Runnable()  
-		{
-	        public void run() 
-	        {
-	        	try
-	        	{
-	        		url = socialAuthManager.getAuthenticationUrl(provider.toString(), provider.getCallbackUri())
+
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					url = socialAuthManager.getAuthenticationUrl(
+							provider.toString(), provider.getCallbackUri())
 							+ "&type=user_agent&display=touch";
-					
-					handler.post(new Runnable() 
-					{
+
+					handler.post(new Runnable() {
 						@Override
-						public void run() 
-						{
+						public void run() {
 							Log.d("SocialAuthAdapter", "Loading URL : " + url);
 							String callbackUri = provider.getCallbackUri();
-							Log.d("SocialAuthAdapter", "Callback URI : " + callbackUri);
-							new SocialAuthDialog(context, url, provider, dialogListener,socialAuthManager).show();
+							Log.d("SocialAuthAdapter", "Callback URI : "
+									+ callbackUri);
+							new SocialAuthDialog(context, url, provider,
+									dialogListener, socialAuthManager).show();
 						}
-					});	
-				} 
-	        	catch (Exception e) 
-	        	{
+					});
+				} catch (Exception e) {
 					e.printStackTrace();
-					dialogListener.onError(new SocialAuthError("URL Authentication error", e));
+					dialogListener.onError(new SocialAuthError(
+							"URL Authentication error", e));
 				}
-	        }
-	    };
-	    
-	    new Thread(runnable).start();	
+			}
+		};
+
+		new Thread(runnable).start();
 	}
 
 	/**
@@ -426,129 +446,107 @@ public class SocialAuthAdapter {
 		Log.d("SocialAuthAdapter", "Disconnecting " + String.valueOf(signedin));
 		return signedin;
 	}
-	
+
 	/**
 	 * Method to update status of user
 	 * 
 	 * @param message
-	 *            The message to be send. 
+	 *            The message to be send.
 	 */
-	
-	public void updateStatus(final String message) 
-	{
-		Runnable runnable = new Runnable()  
-		{
-	        public void run() 
-	        {
-	        	try
-	        	{
-	        		getCurrentProvider().updateStatus(message);
-					
-		        	handler.post(new Runnable() 
-					{
-							@Override
-							public void run() 
-							{
-								
-								Log.d("SocialAuthAdapter", "Message Posted");
-							}
+
+	public void updateStatus(final String message) {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					getCurrentProvider().updateStatus(message);
+
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+
+							Log.d("SocialAuthAdapter", "Message Posted");
+						}
 					});
-	        	} 
-	        	catch (Exception e) 
-	        	{
+				} catch (Exception e) {
 					e.printStackTrace();
-					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
-				}	
-	        }
-	    };
-	    
-	    new Thread(runnable).start();		
+					dialogListener.onError(new SocialAuthError(
+							"Message Not Posted", e));
+				}
+			}
+		};
+
+		new Thread(runnable).start();
 	}
-	
+
 	/**
 	 * Method to get Profile of User
 	 * 
-	 * @return Profile
-	 *            Profile Object containing User Profile Details . 
+	 * @return Profile Profile Object containing User Profile Details .
 	 */
-	
-	public Profile getUserProfile() 
-	{
-	   try 
-	   {
-		   profileMap = new profileTask().execute().get();
-	   } 
-	   catch (InterruptedException e) 
-	   {
-		   e.printStackTrace();
-	   } 
-	   catch (ExecutionException e) 
-	   {
-		   e.printStackTrace();
-	   }
-	   return profileMap;
+
+	public Profile getUserProfile() {
+		try {
+			profileMap = new profileTask().execute().get();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		return profileMap;
 	}
-	
-	 private class profileTask extends AsyncTask<Void, Void, Profile> {
 
-	        protected Profile doInBackground(Void... params) {
-	        	try
-	        	{
-	        		
-	        		Profile profileList = getCurrentProvider().getUserProfile();
-	        		Log.d("SocialAuthAdapter", "Received Profile Details");
-	        		return profileList;
-	        	} 
-	        	catch (Exception e) 
-	        	{
-					e.printStackTrace();
-					dialogListener.onError(new SocialAuthError("Profile Details not Received", e));
-					return null;
-				}
-	        }
-	  	}
+	private class profileTask extends AsyncTask<Void, Void, Profile> {
 
-	
+		@Override
+		protected Profile doInBackground(Void... params) {
+			try {
+
+				Profile profileList = getCurrentProvider().getUserProfile();
+				Log.d("SocialAuthAdapter", "Received Profile Details");
+				return profileList;
+			} catch (Exception e) {
+				e.printStackTrace();
+				dialogListener.onError(new SocialAuthError(
+						"Profile Details not Received", e));
+				return null;
+			}
+		}
+	}
+
 	/**
 	 * Method to get List of Contacts
 	 * 
-	 * @return List
-	 *            List containing Contacts . 
+	 * @return List List containing Contacts .
 	 */
-	
-	public List<Contact> getContactList() 
-	{
-		try 
-		{
+
+	public List<Contact> getContactList() {
+		try {
 			contactsList = new contactTask().execute().get();
-		} 
-		catch (InterruptedException e) 
-		{
+		} catch (InterruptedException e) {
 			e.printStackTrace();
-		} 
-		catch (ExecutionException e) 
-		{
+		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
-	    
-	    return contactsList;
-	}
-	
-	 private class contactTask extends AsyncTask<Void, Void, List<Contact>> {
 
-	        protected List<Contact> doInBackground(Void... params) {
-	        	try
-	        	{
-	        		List<Contact> contactsMap = getCurrentProvider().getContactList();
-	        		Log.d("SocialAuthAdapter", "Received Contact list");
-	        		return contactsMap;
-	        	} 
-	        	catch (Exception e) 
-	        	{
-					e.printStackTrace();
-					dialogListener.onError(new SocialAuthError("Contact List not Received", e));
-					return null;
-				}	 
-	        }
-	    }
+		return contactsList;
+	}
+
+	private class contactTask extends AsyncTask<Void, Void, List<Contact>> {
+
+		@Override
+		protected List<Contact> doInBackground(Void... params) {
+			try {
+				List<Contact> contactsMap = getCurrentProvider()
+						.getContactList();
+				Log.d("SocialAuthAdapter", "Received Contact list");
+				return contactsMap;
+			} catch (Exception e) {
+				e.printStackTrace();
+				dialogListener.onError(new SocialAuthError(
+						"Contact List not Received", e));
+				return null;
+			}
+		}
+	}
 }
