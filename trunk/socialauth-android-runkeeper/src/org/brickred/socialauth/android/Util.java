@@ -47,12 +47,13 @@ import android.view.WindowManager;
  * 
  * @author vineeta@brickred.com
  * @author abhinavm@brickred.com
- *
+ * 
  */
 
 public final class Util {
 
-	public static int WEBVIEW_SCALE;
+	public static int UI_SIZE;
+
 	/**
 	 * URL encoding of query parameters of a URL
 	 * 
@@ -80,7 +81,8 @@ public final class Util {
 	/**
 	 * URL decoding of query parameters of a URL
 	 * 
-	 * @param s URL to be decoded
+	 * @param s
+	 *            URL to be decoded
 	 * @return Map of parameter and values
 	 */
 	public static Map<String, String> decodeUrl(String s) {
@@ -151,44 +153,52 @@ public final class Util {
 		NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnected();
 	}
-	
-	 public static void getDisplayDpi(Context ctx) {
-    	 DisplayMetrics dm = new DisplayMetrics();
-    	 WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
-    	 wm.getDefaultDisplay().getMetrics(dm); 
-	     double x = Math.pow(dm.widthPixels/dm.xdpi,2);
-	     double y = Math.pow(dm.heightPixels/dm.ydpi,2);
-	     double screenInches = Math.sqrt(x+y);
-	     int screenInch=(int) Math.round(screenInches);
-	     Log.d("screeninch", String.valueOf(screenInch));
-	     int dapi = dm.densityDpi;
-	     Log.d("dapi", String.valueOf(dapi));
-	     try{
-    		  switch(dm.densityDpi){
-    		       case DisplayMetrics.DENSITY_MEDIUM:
-    		    	   if(screenInch<=7){
-	    		    	   WEBVIEW_SCALE = 1000;
-    		    	   }
-    		    	   else{
-    		    		   
-    		    		   WEBVIEW_SCALE = 1000;
-    		    	   }
-    		          break;
-    		       case DisplayMetrics.DENSITY_HIGH:
-    		    	   if(screenInch<=7){
-    		    		   
-    		    		   WEBVIEW_SCALE = 1000;
-    		    	   }else{
-    		    		   WEBVIEW_SCALE = 1000;
-    		    	   } 
-    		           break;
-    		           		    	   
-    		       default: 
-    		    	   break;
-    		  }
-    		}catch(Exception e){
-    		  // Caught exception here
-    		}
-    	} 
-	
+
+	public static void getDisplayDpi(Context ctx) {
+		DisplayMetrics dm = new DisplayMetrics();
+		WindowManager wm = (WindowManager) ctx
+				.getSystemService(Context.WINDOW_SERVICE);
+		wm.getDefaultDisplay().getMetrics(dm);
+		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
+		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+		double screenInches = Math.sqrt(x + y);
+		int screenInch = (int) Math.round(screenInches);
+		Log.d("screeninch", String.valueOf(screenInch));
+		int dapi = dm.densityDpi;
+		Log.d("dapi", String.valueOf(dapi));
+		try {
+			switch (dm.densityDpi) {
+			case DisplayMetrics.DENSITY_LOW:
+				if (screenInch <= 7) {
+					UI_SIZE = 4;
+
+				} else {
+					UI_SIZE = 10;
+				}
+				break;
+			case DisplayMetrics.DENSITY_MEDIUM:
+				if (screenInch <= 7) {
+					UI_SIZE = 4;
+				} else {
+
+					UI_SIZE = 10;
+				}
+				break;
+			case DisplayMetrics.DENSITY_HIGH:
+				if (screenInch <= 7) {
+
+					UI_SIZE = 4;
+				} else {
+					UI_SIZE = 10;
+				}
+				break;
+
+			default:
+				break;
+			}
+		} catch (Exception e) {
+			// Caught exception here
+		}
+	}
+
 }
