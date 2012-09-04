@@ -321,13 +321,13 @@ public class SocialAuthDialog extends Dialog {
 			// To set zoom density of runkeeper dialog
 			if (url.startsWith("https://runkeeper.com/apps/authorize")
 					& count < 1) {
-				if (Util.UI_SIZE == 4) {
+				if (Util.UI_SIZE == 4 && Util.UI_DENSITY == 120) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 					mWebView.setInitialScale(65);
 					count = 1;
 				} else {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
-					mWebView.setInitialScale(100);
+					mWebView.setInitialScale(130);
 					count = 1;
 				}
 			}
