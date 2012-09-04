@@ -52,6 +52,7 @@ import android.view.WindowManager;
 
 public final class Util {
 
+	public static int UI_DENSITY;
 	public static int UI_SIZE;
 
 	/**
@@ -168,7 +169,9 @@ public final class Util {
 		Log.d("dapi", String.valueOf(dapi));
 		try {
 			switch (dm.densityDpi) {
+
 			case DisplayMetrics.DENSITY_LOW:
+				UI_DENSITY = 120;
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
 
@@ -177,16 +180,16 @@ public final class Util {
 				}
 				break;
 			case DisplayMetrics.DENSITY_MEDIUM:
+				UI_DENSITY = 160;
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
 				} else {
-
 					UI_SIZE = 10;
 				}
 				break;
 			case DisplayMetrics.DENSITY_HIGH:
+				UI_DENSITY = 240;
 				if (screenInch <= 7) {
-
 					UI_SIZE = 4;
 				} else {
 					UI_SIZE = 10;
