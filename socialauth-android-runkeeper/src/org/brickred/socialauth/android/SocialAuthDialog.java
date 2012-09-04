@@ -47,7 +47,6 @@ import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
@@ -71,6 +70,8 @@ public class SocialAuthDialog extends Dialog {
 	static final int BLUE = 0xFF6D84B4;
 	static final int MARGIN = 4;
 	static final int PADDING = 2;
+	int scale;
+	int count;
 
 	public static int moveX;
 	public static int moveY;
@@ -222,6 +223,7 @@ public class SocialAuthDialog extends Dialog {
 		mWebView.getSettings().setJavaScriptEnabled(true);
 		mWebView.getSettings().setPluginState(PluginState.ON);
 		mWebView.loadUrl(mUrl);
+		mWebView.clearCache(true);
 		mWebView.setLayoutParams(FILL);
 		mContent.addView(mWebView);
 	}
@@ -273,6 +275,9 @@ public class SocialAuthDialog extends Dialog {
 			else if (url.startsWith("https://www.facebook.com/dialog/oauth")) {
 				newUrl = url.replace("https://www.facebook.com/dialog/oauth",
 						"https://m.facebook.com/dialog/oauth");
+
+				// Set Zoom Density of FaceBook Dialog
+				mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 				mWebView.loadUrl(newUrl);
 				return true;
 			} else if (url
@@ -286,15 +291,6 @@ public class SocialAuthDialog extends Dialog {
 			}
 
 			// ****************** Handling Runkeeper End************************
-
-			// ****************** Handling Yahoo Start**************************
-			else if (url.startsWith("http://runkeeper.com/home")) {
-				Log.d("Again Calling auth URL ", "SocialAuth");
-				mWebView.loadUrl(mUrl);
-				return false;
-			}
-
-			// ****************** Handling Yahoo End **************************
 
 			else if (url.startsWith(mProviderName.getCancelUri())) {
 				// Handles MySpace and Linkedin Cancel
@@ -323,16 +319,20 @@ public class SocialAuthDialog extends Dialog {
 			super.onPageStarted(view, url, favicon);
 
 			// To set zoom density of runkeeper dialog
-			if (mProviderName.toString().equalsIgnoreCase("runkeeper"))
-				mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-
-			if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
-				mWebView.getSettings().setLayoutAlgorithm(
-						LayoutAlgorithm.NARROW_COLUMNS);
+			if (url.startsWith("https://runkeeper.com/apps/authorize")
+					& count < 1) {
+				if (Util.UI_SIZE == 4) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(65);
+					count = 1;
+				} else {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+					mWebView.setInitialScale(100);
+					count = 1;
+				}
 			}
 
 			Log.d("SocialAuth-WebView", "onPageStart:" + url);
-
 			mSpinner.show();
 
 			// For Linkedin, MySpace, Runkeeper - Calls onPageStart to
@@ -386,10 +386,6 @@ public class SocialAuthDialog extends Dialog {
 			if (title != null && title.length() > 0) {
 				mTitle.setText(title);
 			}
-
-			// To set zoom density of Facebook Page
-			if (url.startsWith("http://m.facebook.com/login.php"))
-				mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 
 			mSpinner.dismiss();
 		}
