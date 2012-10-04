@@ -35,72 +35,68 @@ import android.widget.TextView;
 /**
  * 
  * Adapter for creating menu of social networks for Share Button
- * @author vineeta@brickred.com
- *
+ * 
+ * @author vineet.aggarwal@3pillarglobal.com
+ * 
  */
-public class ShareButtonAdapter extends BaseAdapter 
-{
-    private Context ctx;
-    String[] data;
-    int[] imagesdata;
-       
-    public ShareButtonAdapter(Context context , String[] objects , int[] images) 
-    {
-        // Cache the LayoutInflate to avoid asking for a new one each time.
-        ctx = context;
-        data = objects;
-        imagesdata = images;
-    }
 
-    /**
-     * The number of items in the list is determined by the number of speeches
-     * in our array.
-     */
-    public int getCount() 
-    {
-        return data.length;
-    }
+public class ShareButtonAdapter extends BaseAdapter {
+	private final Context ctx;
+	String[] data;
+	int[] imagesdata;
 
-    /**
-     * Since the data comes from an array, just returning the index is
-     * sufficent to get at the data. If we were using a more complex data
-     * structure, we would return whatever object represents one row in the
-     * list.
-     */
-    public Object getItem(int position) 
-    {
-        return position;
-    }
+	public ShareButtonAdapter(Context context, String[] objects, int[] images) {
+		// Cache the LayoutInflate to avoid asking for a new one each time.
+		ctx = context;
+		data = objects;
+		imagesdata = images;
+	}
 
-    /**
-     * Use the array index as a unique id.
-     */
-    public long getItemId(int position) 
-    {
-        return position;
-    }
+	/**
+	 * The number of items in the list is determined by the number of speeches
+	 * in our array.
+	 */
+	@Override
+	public int getCount() {
+		return data.length;
+	}
 
-    /**
-     * Make a view to hold each row.
-     *
-     * @see android.widget.ListAdapter#getView(int, android.view.View,
-     *      android.view.ViewGroup)
-     */
-    public View getView(int position, View convertView, ViewGroup parent) 
-    {
-    	TextView text;
-    	
-        if (convertView == null) 
-        {
-        	text =  new TextView(ctx); 
-        } 
-        else 
-        {
-        	text = (TextView) convertView;
-        }
-         
-        text.setText(data[position]);
-        final Drawable image;
+	/**
+	 * Since the data comes from an array, just returning the index is sufficent
+	 * to get at the data. If we were using a more complex data structure, we
+	 * would return whatever object represents one row in the list.
+	 */
+	@Override
+	public Object getItem(int position) {
+		return position;
+	}
+
+	/**
+	 * Use the array index as a unique id.
+	 */
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	/**
+	 * Make a view to hold each row.
+	 * 
+	 * @see android.widget.ListAdapter#getView(int, android.view.View,
+	 *      android.view.ViewGroup)
+	 */
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		TextView text;
+
+		if (convertView == null) {
+			text = new TextView(ctx);
+		} else {
+			text = (TextView) convertView;
+		}
+
+		text.setText(data[position]);
+		final Drawable image;
 		image = ctx.getResources().getDrawable(imagesdata[position]);
 		image.setBounds(0, 0, 30, 30);
 		text.setCompoundDrawables(image, null, null, null);
@@ -108,7 +104,7 @@ public class ShareButtonAdapter extends BaseAdapter
 		text.setTextColor(Color.BLACK);
 		text.setCompoundDrawablePadding(10);
 		text.setGravity(Gravity.CENTER_VERTICAL);
-        
-        return text;
-    }
+
+		return text;
+	}
 }

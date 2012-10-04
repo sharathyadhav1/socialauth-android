@@ -24,7 +24,15 @@
 
 package org.brickred.socialauth.android;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
 import java.util.Map;
+
+import org.brickred.socialauth.AuthProvider;
+import org.brickred.socialauth.SocialAuthManager;
+import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
+import org.brickred.socialauth.util.AccessGrant;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -42,44 +50,45 @@ import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.brickred.socialauth.SocialAuthManager;
-import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
-
 /**
- * Dialog that wraps a Web view for authenticating with the given
- * social network. All the OAuth redirection happens over here and 
- * the success and failure are handed over to the listener
+ * Dialog that wraps a Web view for authenticating with the given social
+ * network. All the OAuth redirection happens over here and the success and
+ * failure are handed over to the listener
  * 
- * @author vineeta@brickred.com
- * @author abhinavm@brickred.com
- *
+ * @author vineet.aggarwal@3pillarglobal.com
+ * @author abhinav.maheswari@3pillarglobal.com
+ * 
  */
 public class SocialAuthDialog extends Dialog {
 
 	// Variables
-	static final int BLUE = 0xFF6D84B4;
-	static final int MARGIN = 4;
-	static final int PADDING = 2;
-	
+	public static final int BLUE = 0xFF6D84B4;
+	public static final int MARGIN = 4;
+	public static final int PADDING = 2;
+
 	public static float width = 40;
 	public static float height = 60;
 
 	public static final float[] DIMENSIONS_DIFF_LANDSCAPE = { width, height };
 	public static final float[] DIMENSIONS_DIFF_PORTRAIT = { width, height };
 
-	static final String DISPLAY_STRING = "touch";
+	public static boolean titleStatus = false;
+	public static final String DISPLAY_STRING = "touch";
 
-	private String mUrl;
-	
+	private final String mUrl;
+	private String newUrl;
+	private int count;
+
 	// Android Components
 	private TextView mTitle;
-	private DialogListener mListener;
+	private final DialogListener mListener;
 	private ProgressDialog mSpinner;
 	private CustomWebView mWebView;
 	private LinearLayout mContent;
@@ -90,19 +99,25 @@ public class SocialAuthDialog extends Dialog {
 			ViewGroup.LayoutParams.FILL_PARENT);
 
 	// SocialAuth Components
-	private SocialAuthManager mSocialAuthManager;
-	private Provider mProviderName;
-	
+	private final SocialAuthManager mSocialAuthManager;
+	private final Provider mProviderName;
+
 	/**
 	 * Constructor for the dialog
-	 * @param context Parent component that opened this dialog
-	 * @param url URL that will be used for authenticating
-	 * @param providerName Name of provider that is being authenticated
-	 * @param listener Listener object to handle events
-	 * @param socialAuthManager Underlying SocialAuth framework for OAuth
+	 * 
+	 * @param context
+	 *            Parent component that opened this dialog
+	 * @param url
+	 *            URL that will be used for authenticating
+	 * @param providerName
+	 *            Name of provider that is being authenticated
+	 * @param listener
+	 *            Listener object to handle events
+	 * @param socialAuthManager
+	 *            Underlying SocialAuth framework for OAuth
 	 */
-	public SocialAuthDialog(Context context, String url, Provider providerName, DialogListener listener,
-			SocialAuthManager socialAuthManager) {
+	public SocialAuthDialog(Context context, String url, Provider providerName,
+			DialogListener listener, SocialAuthManager socialAuthManager) {
 		super(context);
 		mProviderName = providerName;
 		mUrl = url;
@@ -114,6 +129,8 @@ public class SocialAuthDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		handler = new Handler();
+		Util.getDisplayDpi(getContext());
+
 		mSpinner = new ProgressDialog(getContext());
 		mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mSpinner.setMessage("Loading...");
@@ -122,7 +139,7 @@ public class SocialAuthDialog extends Dialog {
 		mContent.setOrientation(LinearLayout.VERTICAL);
 		setUpTitle();
 		setUpWebView();
-		
+
 		Display display = getWindow().getWindowManager().getDefaultDisplay();
 		final float scale = getContext().getResources().getDisplayMetrics().density;
 		int orientation = getContext().getResources().getConfiguration().orientation;
@@ -140,16 +157,18 @@ public class SocialAuthDialog extends Dialog {
 	 * Sets title and icon of provider
 	 * 
 	 */
-	
+
 	private void setUpTitle() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mTitle = new TextView(getContext());
-		int res = getContext().getResources().getIdentifier(mProviderName.toString(),
-				"drawable", getContext().getPackageName());
+		int res = getContext().getResources().getIdentifier(
+				mProviderName.toString(), "drawable",
+				getContext().getPackageName());
 		icon = getContext().getResources().getDrawable(res);
 		StringBuilder sb = new StringBuilder();
 		sb.append(mProviderName.toString().substring(0, 1).toUpperCase());
-		sb.append(mProviderName.toString().substring(1, mProviderName.toString().length()));
+		sb.append(mProviderName.toString().substring(1,
+				mProviderName.toString().length()));
 		mTitle.setText(sb.toString());
 		mTitle.setGravity(Gravity.CENTER_VERTICAL);
 		mTitle.setTextColor(Color.WHITE);
@@ -158,7 +177,9 @@ public class SocialAuthDialog extends Dialog {
 		mTitle.setPadding(MARGIN + PADDING, MARGIN, MARGIN, MARGIN);
 		mTitle.setCompoundDrawablePadding(MARGIN + PADDING);
 		mTitle.setCompoundDrawablesWithIntrinsicBounds(icon, null, null, null);
-		mContent.addView(mTitle);
+
+		if (!titleStatus)
+			mContent.addView(mTitle);
 	}
 
 	/**
@@ -176,53 +197,74 @@ public class SocialAuthDialog extends Dialog {
 		mContent.addView(mWebView);
 	}
 
-	
-	private class SocialAuthWebViewClient extends WebViewClient 
-	{
+	private class SocialAuthWebViewClient extends WebViewClient {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			Log.d("SocialAuth-WebView", "Override url: " + url);
-			
-			if (url.startsWith(mProviderName.getCallbackUri()) && (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName.toString().equalsIgnoreCase("twitter"))) {
-					if (url.startsWith(mProviderName.getCancelUri())) {
-						// Handles Twitter and Facebook Cancel
-						mListener.onCancel();
-					} 
-					else 
-					{ // for Facebook and Twitter
-						final Map<String, String> params = Util.parseUrl(url);
-						
-						Runnable runnable = new Runnable()  
-						{
-							public void run() 
-						    {
-						        try 
-						        {
-									mSocialAuthManager.connect(params);
-								} 
-						        catch (Exception e) 
-						        {
-						        	e.printStackTrace();
-									mListener.onError(new SocialAuthError("Unknown Error", e));
-								}	
-									
-						        handler.post(new Runnable() 
-								{
+
+			if (url.startsWith(mProviderName.getCallBackUri())
+					&& (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName
+							.toString().equalsIgnoreCase("twitter"))) {
+				if (url.startsWith(mProviderName.getCancelUri())) {
+					// Handles Twitter and Facebook Cancel
+					mListener.onCancel();
+				} else { // for Facebook and Twitter
+					final Map<String, String> params = Util.parseUrl(url);
+
+					Runnable runnable = new Runnable() {
+						@Override
+						public void run() {
+							try {
+
+								AuthProvider auth = mSocialAuthManager
+										.connect(params);
+								writeTokentoFile(auth);
+
+								handler.post(new Runnable() {
 									@Override
-									public void run() 
-									{	
+									public void run() {
 										Bundle bundle = new Bundle();
-										bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
+										bundle.putString(
+												SocialAuthAdapter.PROVIDER,
+												mProviderName.toString());
 										mListener.onComplete(bundle);
 									}
 								});
-						      }
-						    };
-						    new Thread(runnable).start();		
-					}
+							} catch (Exception e) {
+								e.printStackTrace();
+								mListener.onError(new SocialAuthError(
+										"Unknown Error", e));
+							}
+						}
+					};
+					new Thread(runnable).start();
+				}
 				SocialAuthDialog.this.dismiss();
 				return true;
-			} 
+			}
+
+			// ***Handling Runkeeper Facebook Start**************
+
+			else if (url.startsWith("https://www.facebook.com/dialog/oauth")) {
+				newUrl = url.replace("https://www.facebook.com/dialog/oauth",
+						"https://m.facebook.com/dialog/oauth");
+
+				// Set Zoom Density of FaceBook Dialog
+				mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+				mWebView.loadUrl(newUrl);
+				return true;
+			} else if (url
+					.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp")) {
+				mWebView.loadUrl("http://runkeeper.com/facebookSignIn");
+				return true;
+			} else if (url.startsWith("http://runkeeper.com/home")) {
+				Log.d("Again Calling auth URL ", "SocialAuth");
+				mWebView.loadUrl(mUrl);
+				return false;
+			}
+
+			// ****Handling Runkeeper Facebook End*************
+
 			else if (url.startsWith(mProviderName.getCancelUri())) {
 				// Handles MySpace and Linkedin Cancel
 				mListener.onCancel();
@@ -231,66 +273,88 @@ public class SocialAuthDialog extends Dialog {
 			} else if (url.contains(DISPLAY_STRING)) {
 				return false;
 			}
-			
+
 			return false;
-			
+
 		}
 
 		@Override
 		public void onReceivedError(WebView view, int errorCode,
 				String description, String failingUrl) {
-
+			Log.d("SocialAuth-WebView", "Inside OnReceived Error");
+			Log.d("SocialAuth-WebView", String.valueOf(errorCode));
 			super.onReceivedError(view, errorCode, description, failingUrl);
-			mListener.onError(new SocialAuthError(description, new Exception(failingUrl)));
+			mListener.onError(new SocialAuthError(description, new Exception(
+					failingUrl)));
 			SocialAuthDialog.this.dismiss();
 		}
 
 		@Override
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
-			
-			// For Linkedin and MySpace -  Calls onPageStart to authorize.
-			if (url.startsWith(mProviderName.getCallbackUri())) {
-				Log.d("SocialAuth-WebView", "onPageStart:" + url);
+
+			// To set zoom density of runkeeper dialog
+			if (url.startsWith("https://runkeeper.com/apps/authorize")
+					& count < 1) {
+				if (Util.UI_SIZE == 4 && Util.UI_DENSITY == 120) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(65);
+					count = 1;
+				} else {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+					mWebView.setInitialScale(130);
+					count = 1;
+				}
+			}
+
+			Log.d("SocialAuth-WebView", "onPageStart:" + url);
+			mSpinner.show();
+
+			// For Linkedin, MySpace, Runkeeper - Calls onPageStart to
+			// authorize.
+			if (url.startsWith(mProviderName.getCallBackUri())) {
 				if (url.startsWith(mProviderName.getCancelUri())) {
 					mListener.onCancel();
-				} 
-				else {
-					final Map<String, String> params = Util.parseUrl(url);	
-					Runnable runnable = new Runnable()  
-					{
+				} else {
+					final Map<String, String> params = Util.parseUrl(url);
+					Runnable runnable = new Runnable() {
+						@Override
 						public void run() {
 							try {
-								mSocialAuthManager.connect(params);
-							} 
-					        catch (Exception e) {
-					        	e.printStackTrace();
-								mListener.onError(new SocialAuthError("Could not connect using SocialAuth", e));
-							}	
-								
-					        handler.post(new Runnable() 
-							{
-								@Override
-								public void run() {	
-									Bundle bundle = new Bundle();
-									bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
-									mListener.onComplete(bundle);
-								}
-							});
+								AuthProvider auth = mSocialAuthManager
+										.connect(params);
+								writeTokentoFile(auth);
+
+								handler.post(new Runnable() {
+									@Override
+									public void run() {
+										Bundle bundle = new Bundle();
+										bundle.putString(
+												SocialAuthAdapter.PROVIDER,
+												mProviderName.toString());
+										mListener.onComplete(bundle);
+									}
+								});
+							} catch (Exception e) {
+								e.printStackTrace();
+								mListener
+										.onError(new SocialAuthError(
+												"Could not connect using SocialAuth",
+												e));
+							}
 						}
 					};
-					new Thread(runnable).start();    
+					new Thread(runnable).start();
 				}
 				SocialAuthDialog.this.dismiss();
 			}
-			mSpinner.show();
 		}
 
 		@Override
 		public void onPageFinished(WebView view, String url) {
 
 			super.onPageFinished(view, url);
-			
+
 			String title = mWebView.getTitle();
 			if (title != null && title.length() > 0) {
 				mTitle.setText(title);
@@ -299,7 +363,35 @@ public class SocialAuthDialog extends Dialog {
 		}
 	}
 
-	
+	/**
+	 * Internal Method to create new File in internal memory for each provider
+	 * and save accessGrant
+	 * 
+	 * @param auth
+	 *            AuthProvider
+	 */
+
+	private void writeTokentoFile(AuthProvider auth) {
+		try {
+
+			AccessGrant accessGrant = auth.getAccessGrant();
+
+			String filePath = getContext().getFilesDir().getAbsolutePath()
+					+ File.separatorChar + mProviderName.toString()
+					+ "_accessGrant.ser";
+
+			FileOutputStream fs = new FileOutputStream(new File(filePath));
+			ObjectOutputStream os = new ObjectOutputStream(fs);
+			os.writeObject(accessGrant);
+
+			os.flush();
+			os.close();
+			fs.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Workaround for Null pointer exception in WebView.onWindowFocusChanged in
 	 * droid phones and emulator with android 2.2 os. It prevents first time

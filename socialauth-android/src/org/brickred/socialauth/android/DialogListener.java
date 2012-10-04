@@ -28,31 +28,32 @@ import android.os.Bundle;
 /**
  * Callback interface for dialog requests.
  * 
- * @author vineeta@brickred.com
- * @author abhinavm@brickred.com
+ * @author vineet.aggarwal@3pillarglobal.com
+ * @author abhinav.maheswari@3pillarglobal.com
  */
+
 public interface DialogListener {
 
-    /**
-     * Called when a dialog completes.
-     * Executed by the thread that initiated the dialog.
-     * @param values
-     *            Key-value string pairs extracted from the response.
-     */
-    public void onComplete(Bundle values);
-   
-    /**
-     * Called when a dialog has an error.
-     * Executed by the thread that initiated the dialog.
-     */
-    public void onError(SocialAuthError e);
+	/**
+	 * Called when a dialog completes. Executed by the thread that initiated the
+	 * dialog.
+	 * 
+	 * @param values
+	 *            Key-value string pairs extracted from the response.
+	 */
+	public void onComplete(Bundle values);
 
-    /**
-     * Called when a dialog is canceled by the user.
-     * Executed by the thread that initiated the dialog.
-     *
-     */
-    public void onCancel();
+	/**
+	 * Called when a dialog has an error. Executed by the thread that initiated
+	 * the dialog.
+	 */
+	public void onError(SocialAuthError e);
+
+	/**
+	 * Called when a dialog is canceled by the user. Executed by the thread that
+	 * initiated the dialog.
+	 * 
+	 */
+	public void onCancel();
 
 }
-

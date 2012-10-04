@@ -23,30 +23,37 @@
  */
 package org.brickred.socialauth.android;
 
+import android.util.Log;
+
 /**
  * Wrapper class for handling errors via the listener
  * 
- * @author vineeta@brickred.com
- * @author abhinavm@brickred.com
- *
+ * @author vineet.aggarwal@3pillarglobal.com
+ * @author abhinav.maheswari@3pillarglobal.com
+ * 
  */
 public class SocialAuthError extends Throwable {
 
 	private static final long serialVersionUID = 1L;
-	private Exception innerException;
+	private final Exception innerException;
 
 	/**
 	 * Constructor
-	 * @param message User readable message for the error
-	 * @param e Inner exception that may be used for further debugging
+	 * 
+	 * @param message
+	 *            User readable message for the error
+	 * @param e
+	 *            Inner exception that may be used for further debugging
 	 */
 	public SocialAuthError(String message, Exception e) {
 		super(message);
 		this.innerException = e;
+		Log.d("SocialAuthError", e.toString());
 	}
 
 	/**
 	 * Returns the inner exception
+	 * 
 	 * @return Inner exception
 	 */
 	public Exception getInnerException() {
