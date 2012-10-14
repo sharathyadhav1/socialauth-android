@@ -108,8 +108,9 @@ public class SocialAuthAdapter {
 				Constants.RUNKEEPER,
 				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do/?error"), YAHOO(
-				Constants.YAHOO, "http://testapp.com",
-				"http://opensource.brickred.com/?oauth_problem"), FOURSQUARE(
+				Constants.YAHOO,
+				"http://opensource.brickred.com/socialauthdemo",
+				"http://opensource.brickred.com/socialauthdemo/?oauth_problem"), FOURSQUARE(
 				Constants.FOURSQUARE,
 				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do",
 				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), GOOGLE(
@@ -119,7 +120,7 @@ public class SocialAuthAdapter {
 				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do",
 				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
 				Constants.SALESFORCE,
-				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do",
+				"https://opensource.brickred.com:8443/socialauthdemo/socialAuthSuccessAction.do",
 				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem");
 
 		private String name;
@@ -401,18 +402,12 @@ public class SocialAuthAdapter {
 			public void run() {
 				try {
 					getCurrentProvider().updateStatus(message);
+					Log.d("SocialAuthAdapter", "Message Posted");
 
 				} catch (Exception e) {
 					dialogListener.onError(new SocialAuthError(
 							"Message Not Posted", e));
 				}
-
-				handler.post(new Runnable() {
-					@Override
-					public void run() {
-						Log.d("SocialAuthAdapter", "Message Posted");
-					}
-				});
 			}
 		};
 
@@ -500,13 +495,18 @@ public class SocialAuthAdapter {
 			uploadStatus = new uploadImageTask().execute(message, fileName,
 					inputStream).get();
 
+			return uploadStatus.intValue();
+
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
+			return 0;
+
 		} catch (ExecutionException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
+			return 0;
+		} catch (Exception e) {
+			return 0;
 		}
-
-		return uploadStatus.intValue();
 
 	}
 
@@ -721,12 +721,14 @@ public class SocialAuthAdapter {
 			try {
 				res = getCurrentProvider().uploadImage((String) params[0],
 						(String) params[1], (InputStream) params[2]);
+				Log.d("SocialAuthAdapter", "Image Uploaded");
+				return res.getStatus();
 			} catch (Exception e) {
 				dialogListener.onError(new SocialAuthError(
 						"Image Upload Error", e));
+				return null;
 			}
 
-			return res.getStatus();
 		}
 	}
 
