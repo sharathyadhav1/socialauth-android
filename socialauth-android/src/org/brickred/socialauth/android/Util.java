@@ -54,6 +54,8 @@ public final class Util {
 
 	public static int UI_DENSITY;
 	public static int UI_SIZE;
+	public static int UI_YAHOO_SCROLL;
+	public static int UI_RESOLUTION;
 
 	/**
 	 * URL encoding of query parameters of a URL
@@ -162,10 +164,15 @@ public final class Util {
 		wm.getDefaultDisplay().getMetrics(dm);
 		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
 		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+		int width = wm.getDefaultDisplay().getWidth();
+		int height = wm.getDefaultDisplay().getHeight();
 		double screenInches = Math.sqrt(x + y);
 		int screenInch = (int) Math.round(screenInches);
-		Log.d("screeninch", String.valueOf(screenInch));
 		int dapi = dm.densityDpi;
+
+		Log.d("Resolution X", String.valueOf(width));
+		Log.d("Resolution Y", String.valueOf(height));
+		Log.d("screeninch", String.valueOf(screenInch));
 		Log.d("dapi", String.valueOf(dapi));
 		try {
 			switch (dm.densityDpi) {
@@ -174,6 +181,7 @@ public final class Util {
 				UI_DENSITY = 120;
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
+					UI_YAHOO_SCROLL = 290;
 
 				} else {
 					UI_SIZE = 10;
@@ -182,7 +190,13 @@ public final class Util {
 			case DisplayMetrics.DENSITY_MEDIUM:
 				UI_DENSITY = 160;
 				if (screenInch <= 7) {
-					UI_SIZE = 4;
+					if (width == 320) {
+						UI_YAHOO_SCROLL = 390;
+						UI_SIZE = 3;
+					} else {
+						UI_YAHOO_SCROLL = 500;
+						UI_SIZE = 4;
+					}
 				} else {
 					UI_SIZE = 10;
 				}
@@ -190,7 +204,29 @@ public final class Util {
 			case DisplayMetrics.DENSITY_HIGH:
 				UI_DENSITY = 240;
 				if (screenInch <= 7) {
+					if (width == 720) {
+						UI_SIZE = 6;
+						UI_YAHOO_SCROLL = 700;
+
+					} else if (width == 600) {
+						UI_YAHOO_SCROLL = 450;
+						UI_SIZE = 4;
+					} else {
+						UI_SIZE = 4;
+						UI_YAHOO_SCROLL = 720;
+					}
+				} else {
+					UI_SIZE = 10;
+				}
+				break;
+			case DisplayMetrics.DENSITY_XHIGH:
+				UI_DENSITY = 320;
+				if (screenInch <= 7) {
 					UI_SIZE = 4;
+					if (width < 1000)
+						UI_YAHOO_SCROLL = 750;
+					else
+						UI_YAHOO_SCROLL = 250;
 				} else {
 					UI_SIZE = 10;
 				}

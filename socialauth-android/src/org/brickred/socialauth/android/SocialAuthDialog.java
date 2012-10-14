@@ -40,6 +40,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Picture;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -52,6 +53,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
+import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -151,6 +153,7 @@ public class SocialAuthDialog extends Dialog {
 				new LinearLayout.LayoutParams(display.getWidth()
 						- ((int) (dimensions[0] * scale + 0.5f)), display
 						.getHeight() - ((int) (dimensions[1] * scale + 0.5f))));
+
 	}
 
 	/**
@@ -192,8 +195,13 @@ public class SocialAuthDialog extends Dialog {
 		mWebView.setHorizontalScrollBarEnabled(false);
 		mWebView.setWebViewClient(new SocialAuthDialog.SocialAuthWebViewClient());
 		mWebView.getSettings().setJavaScriptEnabled(true);
+
 		mWebView.loadUrl(mUrl);
 		mWebView.setLayoutParams(FILL);
+
+		if (mProviderName.toString().equalsIgnoreCase("yahoo"))
+			mWebView.getSettings().setUseWideViewPort(true);
+
 		mContent.addView(mWebView);
 	}
 
@@ -249,8 +257,6 @@ public class SocialAuthDialog extends Dialog {
 				newUrl = url.replace("https://www.facebook.com/dialog/oauth",
 						"https://m.facebook.com/dialog/oauth");
 
-				// Set Zoom Density of FaceBook Dialog
-				mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 				mWebView.loadUrl(newUrl);
 				return true;
 			} else if (url
@@ -298,13 +304,41 @@ public class SocialAuthDialog extends Dialog {
 					& count < 1) {
 				if (Util.UI_SIZE == 4 && Util.UI_DENSITY == 120) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-					mWebView.setInitialScale(65);
+					mWebView.setInitialScale(60);
+					count = 1;
+				} else if (Util.UI_SIZE == 3 && Util.UI_DENSITY == 160) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(70);
+					count = 1;
+				} else if (Util.UI_SIZE == 6 && Util.UI_DENSITY == 240) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(160);
 					count = 1;
 				} else {
-					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
-					mWebView.setInitialScale(130);
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(120);
 					count = 1;
 				}
+			}
+
+			// To set zoom density of yahoo dialog
+			if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
+				if (Util.UI_DENSITY == 160) {
+					if (Util.UI_SIZE == 3)
+						mWebView.getSettings().setDefaultZoom(
+								ZoomDensity.MEDIUM);
+					else
+						mWebView.getSettings()
+								.setDefaultZoom(ZoomDensity.CLOSE);
+				} else if (Util.UI_DENSITY == 240) {
+					if (Util.UI_SIZE == 6)
+						mWebView.getSettings()
+								.setDefaultZoom(ZoomDensity.CLOSE);
+					else
+						mWebView.getSettings().setDefaultZoom(
+								ZoomDensity.MEDIUM);
+				} else
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 			}
 
 			Log.d("SocialAuth-WebView", "onPageStart:" + url);
@@ -351,16 +385,38 @@ public class SocialAuthDialog extends Dialog {
 		}
 
 		@Override
-		public void onPageFinished(WebView view, String url) {
+		public void onPageFinished(WebView view, final String url) {
 
 			super.onPageFinished(view, url);
+
+			mWebView.setPictureListener(new PictureListener() {
+				@Override
+				public void onNewPicture(WebView view, Picture arg1) {
+					// To set zoom density of yahoo dialog
+					if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
+						mWebView.scrollTo(Util.UI_YAHOO_SCROLL, 0);
+						mSpinner.dismiss();
+					}
+
+					if (mProviderName.toString().equalsIgnoreCase("runkeeper")
+							&& (url.startsWith("http://m.facebook.com/login.php") || url
+									.startsWith("https://m.facebook.com/dialog/oauth"))) {
+						// Set Zoom Density of FaceBook Dialog
+						mWebView.getSettings().setDefaultZoom(
+								ZoomDensity.MEDIUM);
+					}
+				}
+			});
 
 			String title = mWebView.getTitle();
 			if (title != null && title.length() > 0) {
 				mTitle.setText(title);
 			}
-			mSpinner.dismiss();
+
+			if (!mProviderName.toString().equalsIgnoreCase("yahoo"))
+				mSpinner.dismiss();
 		}
+
 	}
 
 	/**
