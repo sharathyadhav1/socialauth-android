@@ -64,21 +64,22 @@ import android.widget.LinearLayout;
 /**
  * 
  * Main class of the SocialAuth Android SDK. Wraps a user interface component
- * with the SocialAuth functionality of updating status, getting user profiles
- * and contacts on Facebook, Twitter, LinkedIn and MySpace. <br>
+ * with the SocialAuth functionality of updating status, getting user profiles,
+ * contacts, upload images on Facebook, Twitter, LinkedIn, MySpace, Yahoo,
+ * Google FourSquare, Runkeeper, SalesForce and Yammer. <br>
  * 
  * Currently it can be used in three different ways. First, it can be attached
  * with a Button that user may click. Clicking will open a menu with various
  * social networks listed that the user can click on. Clicking on any network
  * opens a dialog for authentication with that social network. Once the user is
  * authenticated, you can use various methods from the AuthProvider interface to
- * update status, get profile or contacts. <br>
+ * update status, get profile, contacts and upload images. <br>
  * 
  * Secondly, it can be attached to a LinearLayout for creating a Bar with
  * several buttons, one for each social network. Clicking on these icons will
  * open a dialog which will authenticate the user and one the user is
  * authenticated, you can use various methods from the AuthProvider interface to
- * update status, get profile and contacts. <br>
+ * update status, get profile, contacts and upload images. <br>
  * 
  * Lastly, you can just launch the authentication dialog directly from any event
  * you prefer. Examples for all of these ways is provided in the examples
@@ -138,14 +139,23 @@ public class SocialAuthAdapter {
 			this.callbackUri = callbackUri;
 		}
 
+		/**
+		 * returns cancel URI
+		 */
 		String getCancelUri() {
 			return this.cancelUri;
 		}
 
+		/**
+		 * returns Callback URI
+		 */
 		String getCallBackUri() {
 			return this.callbackUri;
 		}
 
+		/**
+		 * Set callback URI
+		 */
 		public void setCallBackUri(String callbackUri) {
 			this.callbackUri = callbackUri;
 		}
@@ -215,6 +225,14 @@ public class SocialAuthAdapter {
 		providerCount++;
 	}
 
+	/**
+	 * Adds callback URL
+	 * 
+	 * @param provider
+	 *            Provider to be enables
+	 * @param calBack
+	 *            CallBack URL String
+	 */
 	public void addCallBack(Provider provider, String callBack) {
 		if (provider.name() == Constants.FACEBOOK
 				|| provider.name() == Constants.TWITTER
@@ -333,7 +351,7 @@ public class SocialAuthAdapter {
 	}
 
 	/**
-	 * Method to handle configuration
+	 * Method to handle configuration , Use directly for CustomUI
 	 */
 	public void authorize(Context ctx, Provider provider) {
 		if (!Util.isNetworkAvailable(ctx)) {
