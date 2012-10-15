@@ -157,11 +157,21 @@ public final class Util {
 		return netInfo != null && netInfo.isConnected();
 	}
 
+	/**
+	 * Function to print screen resolution, screen inches and density of android
+	 * device.
+	 * 
+	 * @param ctx
+	 *            Activity Context
+	 */
+
 	public static void getDisplayDpi(Context ctx) {
+
 		DisplayMetrics dm = new DisplayMetrics();
 		WindowManager wm = (WindowManager) ctx
 				.getSystemService(Context.WINDOW_SERVICE);
 		wm.getDefaultDisplay().getMetrics(dm);
+
 		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
 		double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
 		int width = wm.getDefaultDisplay().getWidth();
@@ -174,11 +184,14 @@ public final class Util {
 		Log.d("Resolution Y", String.valueOf(height));
 		Log.d("screeninch", String.valueOf(screenInch));
 		Log.d("dapi", String.valueOf(dapi));
+
 		try {
 			switch (dm.densityDpi) {
 
 			case DisplayMetrics.DENSITY_LOW:
+
 				UI_DENSITY = 120;
+
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
 					UI_YAHOO_SCROLL = 290;
@@ -186,10 +199,15 @@ public final class Util {
 				} else {
 					UI_SIZE = 10;
 				}
+
 				break;
 			case DisplayMetrics.DENSITY_MEDIUM:
+
 				UI_DENSITY = 160;
+
 				if (screenInch <= 7) {
+
+					// For devices having width 320
 					if (width == 320) {
 						UI_YAHOO_SCROLL = 390;
 						UI_SIZE = 3;
@@ -200,15 +218,23 @@ public final class Util {
 				} else {
 					UI_SIZE = 10;
 				}
+
 				break;
+
 			case DisplayMetrics.DENSITY_HIGH:
+
 				UI_DENSITY = 240;
+
 				if (screenInch <= 7) {
+
+					// for devices having width 720
 					if (width == 720) {
 						UI_SIZE = 6;
 						UI_YAHOO_SCROLL = 700;
 
-					} else if (width == 600) {
+					}
+					// for devices having width 600
+					else if (width == 600) {
 						UI_YAHOO_SCROLL = 450;
 						UI_SIZE = 4;
 					} else {
@@ -223,6 +249,7 @@ public final class Util {
 				UI_DENSITY = 320;
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
+
 					if (width < 1000)
 						UI_YAHOO_SCROLL = 750;
 					else

@@ -205,6 +205,10 @@ public class SocialAuthDialog extends Dialog {
 		mContent.addView(mWebView);
 	}
 
+	/**
+	 * WebView Client
+	 */
+
 	private class SocialAuthWebViewClient extends WebViewClient {
 		@Override
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -389,6 +393,7 @@ public class SocialAuthDialog extends Dialog {
 
 			super.onPageFinished(view, url);
 
+			// workaround for yahoo and runkeeper
 			mWebView.setPictureListener(new PictureListener() {
 				@Override
 				public void onNewPicture(WebView view, Picture arg1) {
