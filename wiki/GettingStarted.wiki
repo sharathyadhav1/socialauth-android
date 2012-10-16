@@ -52,6 +52,13 @@ The SDK contains following directories :
  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
 }}}
 
+==Step 4 : Adding Config changes attributes==
+If your app uses both portrait and landscape modes , we recommend you to use follow settings in activity tag.
+{{{
+android:configChanges="keyboardHidden|orientation"
+}}}
+
+
 ==Step 4 : Implementation==
 
 You can use library in following three ways  :
