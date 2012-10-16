@@ -1,10 +1,15 @@
-#summary step by step guide for obtaining consumer key and secret
+#summary Step by Step Guide to Get SalesForce consumer key and secrets.
 
-Open the URL:-
-https://ap1.salesforce.com/888?setupid=RemoteAccess&retURL=%2Fui%2Fsetup%2FSetup%3Fsetupid%3DDevToolsIntegrate
+=SalesForce(SDK version 2.0)=
 
-= Step 1 =
+==Steps==
+
+*1. Go to URL - [https://ap1.salesforce.com/888?setupid=RemoteAccess&retURL=%2Fui%2Fsetup%2FSetup%3Fsetupid%3DDevToolsIntegrate] and fill username and password. Create account if you don't have one.
+
+*2. Click New.
+
 http://socialauth.googlecode.com/svn/wiki/images/slaesforce_1.jpg
 
-= Step 2 =
+*3. Enter Details. Please note Salesforce https url in callback url.
+
 http://socialauth.googlecode.com/svn/wiki/images/salesforce_2.jpg
