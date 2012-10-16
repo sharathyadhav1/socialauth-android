@@ -1,0 +1,19 @@
+#summary Step by Step Guide to Get Runkeeper consumer key and secrets.Available in Version 2.0
+
+=Runkeeper=
+
+==Steps==
+
+*1. Go to URL - [http://runkeeper.com/partner] and fill username and password. Create account if you don't have one. You can also sign using facebook*
+
+https://socialauth-android.googlecode.com/svn/wiki/images/yahoo2.png
+
+
+
+*2. Click Applications tab and choose Register new application.
+
+
+
+https://socialauth-android.googlecode.com/svn/wiki/images/yahoo1.png
+
+*3. In Register New Application, Fill your application name, app description, callback url and other details. On Submit, You will then see the details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
