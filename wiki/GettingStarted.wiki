@@ -59,7 +59,7 @@ android:configChanges="keyboardHidden|orientation"
 }}}
 
 
-==Step 4 : Implementation==
+==Step 5 : Implementation==
 
 You can use library in following three ways  :
 
