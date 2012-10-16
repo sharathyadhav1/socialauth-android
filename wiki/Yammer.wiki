@@ -1,0 +1,9 @@
+#summary Step by Step Guide to Get Yammer consumer key and secrets.Available in Version 2.0
+
+*1. Go to URL - [https://www.yammer.com/client_applications/new] and fill username and password. Create account if you don't have one.*
+
+http://socialauth.googlecode.com/svn/wiki/images/yammer_registration.jpg
+
+*2 You will then see the details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
+
+* Please Note : Yammer give oauth access to your network members only. 
