@@ -93,6 +93,13 @@ public class ShareBarActivity extends Activity {
 		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
 		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
 
+		// adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
+		// adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
+		// adapter.addProvider(Provider.FOURSQUARE, R.drawable.foursquare);
+		// adapter.addProvider(Provider.GOOGLE, R.drawable.google);
+		// adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
+		// adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
+
 		// Use addCallback method from share-button example if using
 		// your own keys for FOURSQUARE , GOOGLE , SALESFORCE , YAMMER
 
