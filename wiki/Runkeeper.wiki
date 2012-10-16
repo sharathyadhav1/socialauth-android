@@ -6,7 +6,7 @@
 
 *1. Go to URL - [http://runkeeper.com/partner] and fill username and password. Create account if you don't have one. You can also sign using facebook*
 
-https://socialauth-android.googlecode.com/svn/wiki/images/yahoo2.png
+https://socialauth-android.googlecode.com/svn/wiki/images/runkeeper1.png
 
 
 
@@ -14,6 +14,6 @@ https://socialauth-android.googlecode.com/svn/wiki/images/yahoo2.png
 
 
 
-https://socialauth-android.googlecode.com/svn/wiki/images/yahoo1.png
+https://socialauth-android.googlecode.com/svn/wiki/images/runkeeper2.png
 
 *3. In Register New Application, Fill your application name, app description, callback url and other details. On Submit, You will then see the details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
