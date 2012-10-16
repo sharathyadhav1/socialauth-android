@@ -24,4 +24,4 @@ https://socialauth-android.googlecode.com/svn/wiki/images/twitterappform.png
    * rest : none
 
 
-*4. You will then see The details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
+*4. You will then see the details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
