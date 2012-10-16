@@ -114,8 +114,7 @@ if (contactsList != null && contactsList.size() > 0)
 (Supports : V2.0 Facebook, Twitter)
 
 {{{
-	int imgStatus = adapter.uploadImage("HelloWorldTest",
-						"icon.png", bitmap, 0);
+	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
 	Log.d("ShareButton", String.valueOf(imgStatus));
 }}} 
 
