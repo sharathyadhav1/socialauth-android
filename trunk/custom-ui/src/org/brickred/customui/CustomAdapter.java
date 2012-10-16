@@ -44,6 +44,8 @@ import android.widget.TextView;
 /**
  * CustomAdapter for showing List. On clicking any item , it calls authorize()
  * method to authenticate provider
+ * 
+ * @author vineet.aggarwal@3pillarglobal.com
  */
 
 public class CustomAdapter extends BaseAdapter {
