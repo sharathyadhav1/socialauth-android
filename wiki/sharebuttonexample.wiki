@@ -44,6 +44,7 @@ In your handling code you should :
 }}}
 
 ==Share Message==
+(Supports : Facebook,Twitter, Linkedin, MySpace, Yahoo , Yammer) 
 {{{
 
 private final class ResponseListener implements DialogListener 
