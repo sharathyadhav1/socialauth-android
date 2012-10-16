@@ -24,6 +24,8 @@
 
 package org.brickred.socialshare;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.brickred.socialauth.Contact;
@@ -36,7 +38,9 @@ import org.brickred.socialauth.android.SocialAuthError;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -76,11 +80,12 @@ public class ShareButtonActivity extends Activity {
 	SocialAuthAdapter adapter;
 	Profile profileMap;
 	public static Bitmap bitmap;
+	private static final int SELECT_PHOTO = 100;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
 		setContentView(R.layout.main);
 
 		// Welcome Message
@@ -93,10 +98,10 @@ public class ShareButtonActivity extends Activity {
 		imgLoad.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
-				Intent intent = new Intent(getApplicationContext(),
-						ImageGallery.class);
-				startActivity(intent);
+				// Taking image from phone gallery
+				Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+				photoPickerIntent.setType("image/*");
+				startActivityForResult(photoPickerIntent, SELECT_PHOTO);
 			}
 		});
 
@@ -237,6 +242,28 @@ public class ShareButtonActivity extends Activity {
 			Log.d("ShareButton", "Authentication Cancelled");
 		}
 
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode,
+			Intent imageReturnedIntent) {
+		super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+
+		switch (requestCode) {
+		case SELECT_PHOTO:
+			if (resultCode == RESULT_OK) {
+				Uri selectedImage = imageReturnedIntent.getData();
+				InputStream imageStream;
+				try {
+					imageStream = getContentResolver().openInputStream(
+							selectedImage);
+					bitmap = BitmapFactory.decodeStream(imageStream);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+
+			}
+		}
 	}
 
 }
