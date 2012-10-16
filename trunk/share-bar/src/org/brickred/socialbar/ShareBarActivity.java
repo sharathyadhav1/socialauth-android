@@ -90,8 +90,11 @@ public class ShareBarActivity extends Activity {
 		// Add providers
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-		adapter.addProvider(Provider.LINKEDIN, R.drawable.foursquare);
-		adapter.addProvider(Provider.MYSPACE, R.drawable.foursquare);
+		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+
+		// Use addCallback method from share-button example if using
+		// your own keys for FOURSQUARE , GOOGLE , SALESFORCE , YAMMER
 
 		adapter.enable(bar);
 
