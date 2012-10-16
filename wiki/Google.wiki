@@ -4,19 +4,17 @@
 
 ==Steps==
 
-*1. Go to URL - [http://code.google.com/apis/accounts/docs/RegistrationForWebAppsAuto.html] and fill username and password. Create account if you don't have one.*
+*1. Go to URL - [http://code.google.com/apis/accounts/docs/RegistrationForWebAppsAuto.html] and fill username and password if not already login. Create account if you don't have one.*
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twittersign.png
 
 
-
-*2. You will see Yahoo Developer Network page. Press My Projects button on right most side to open My Projects page. Click New Project Button. You will see the dialog below. Choose standard.
-
-
+*2. Click manage your domains in Register your Domain section.In add domain section enter your real domain. Google requires real domain address. On adding you find your domain in Manage Registration section. On clicking it follow to procedure to verify the domain.
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterappform.png
 
-*3. Fill your application name, app description, callback url and app domain. Write any dummmy url as callback url and app domain. Next in Access Scopes -> Choose app requires access to private user data. On choosing you will get list of Yahoo Services. Here are the settings -> 
+*3. After verification
+
 
    * Contacts : read
    * Social Directory(Profiles) : read public 
