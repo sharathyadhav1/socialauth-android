@@ -1,0 +1,20 @@
+#summary Step by Step Guide to Get Foursquare consumer key and secrets.Available in Version 2.0
+
+=Foursqaure=
+
+==Steps==
+
+*1. Go to URL - [https://developer.foursquare.com/] and click My Apps. You will get authentication screen.Fill username and password. Create account if you don't have one.*
+
+https://socialauth-android.googlecode.com/svn/wiki/images/foursquare1.png
+
+
+
+*2. Craete new application and fill application name and other details. Entry of callback url is necessary.
+
+
+
+https://socialauth-android.googlecode.com/svn/wiki/images/foursquare2.png
+
+
+*3. You will then see the details page contains info about consumer key and secret. Note down key and secret and copy them in oauth_consumers.properties.
