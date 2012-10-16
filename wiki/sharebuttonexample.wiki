@@ -113,6 +113,11 @@ if (contactsList != null && contactsList.size() > 0)
 ==Upload Photo==
 (Supports : V2.0 Facebook, Twitter)
 
+Now you can upload photo to Facebook and Twitter. We have given two examples to get images
+
+ * Get Image from gallery and create bitmap to post (share-button example)
+ * Get Image from drawables and create bitmap to post ( share-bar and custom-ui example) 
+
 {{{
 	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
 	Log.d("ShareButton", String.valueOf(imgStatus));
