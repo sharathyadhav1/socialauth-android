@@ -44,7 +44,7 @@ In your handling code you should :
 }}}
 
 ==Share Message==
-(Supports : Facebook,Twitter, Linkedin, MySpace, Yahoo , Yammer) 
+(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer) 
 {{{
 
 private final class ResponseListener implements DialogListener 
@@ -68,6 +68,8 @@ private final class ResponseListener implements DialogListener
 }}}
 
 ==Get Profile==
+(Supports : All)
+ 
 {{{
 profileMap =  adapter.getUserProfile();
 				
@@ -84,6 +86,8 @@ Log.d("ShareButton",  "Profile Image URL  = " + profileMap.getProfileImageURL())
   
 
 ==Get Contacts==
+(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer , !FourSqaure , Google) 
+
 {{{
 List<Contact> contactsList = adapter.getContactList();		
 		
