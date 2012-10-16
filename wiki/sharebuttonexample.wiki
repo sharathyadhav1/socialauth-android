@@ -111,6 +111,12 @@ if (contactsList != null && contactsList.size() > 0)
 }}}
 
 ==Upload Photo==
-(Supports : V2.0 Facebook, Twitter) 
+(Supports : V2.0 Facebook, Twitter)
+
+{{{
+	int imgStatus = adapter.uploadImage("HelloWorldTest",
+						"icon.png", bitmap, 0);
+	Log.d("ShareButton", String.valueOf(imgStatus));
+}}} 
 
   To see the full functionality, view *share-button example* from socialauth-android.zip on Downloads page.
