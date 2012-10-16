@@ -4,7 +4,12 @@
 
 The example used Android Application class used to set global settings. the idea here is to use socialauth adapter object across activities. We are extending share-bar example for usecase.
 
-*ShareBar Activity*
+Copy files below in your project.
+
+*!ShareBarActivity.java*
+
+ShareBar activity create bar and on clicking any provider launches webview. The webview on successful authentication launches ProviderActivity.
+
 {{{
 
 public class ShareBarActivity extends Activity {
@@ -81,9 +86,62 @@ public class ShareBarActivity extends Activity {
 }}}
 
 
-= Details =
+*!ProviderActivity.java*
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+The activity performs all event to post message , get profile , contacts etc.
+
+{{{
+
+public class ProviderActivity extends Activity {
+
+	// SocialAuth Component
+	SocialAuthAdapter adapter;
+	boolean status;
+	Profile profileMap;
+	MyApplication myApp;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.message);
+
+		myApp = (MyApplication) getApplication();
+		adapter = myApp.getSocialAuthAdapter();
+
+		String providerName = getIntent().getStringExtra("ProviderName");
+		Log.d("Provider Activity", "Provider Name = " + providerName);
+
+		// Please avoid sending duplicate message. Social Media Providers
+		// block duplicate messages.
+
+		adapter.updateStatus("Hello World SocialAuth"
+				+ System.currentTimeMillis());
+
+		// Welcome Message
+		TextView textview = (TextView) findViewById(R.id.message);
+		textview.setText("Message posted on" + providerName);
+
+	}
+}
+
+}}}
+
+
+!MyApplication.java 
+
+{{{
+public class MyApplication extends Application {
+
+	// SocialAuth Component
+	private SocialAuthAdapter socialAuthAdpater;
+
+	public SocialAuthAdapter getSocialAuthAdapter() {
+		return socialAuthAdpater;
+	}
+
+	public void setSocialAuthAdapter(SocialAuthAdapter socialAuthAdapter) {
+		this.socialAuthAdpater = socialAuthAdapter;
+	}
+}
+
+}}}
