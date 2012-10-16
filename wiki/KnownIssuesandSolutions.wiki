@@ -26,3 +26,7 @@
  *  Runkeeper oAuth Screen is partially optimized. We have done optimization at our end.
 
  *  Runkeeper and Yahoo took time to open in emulater due to low rendering speed of emulater. 
+
+ *  Google, Foursquare, Yammer , Salesforce requires user callback url defined in account. use addCallback method for this.
+
+ * Yammer provides oAuth access to network members only. 
