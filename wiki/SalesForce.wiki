@@ -1,6 +1,6 @@
 #summary Step by Step Guide to Get SalesForce consumer key and secrets. Available in Verion 2.0
 
-=SalesForce=
+=Salesforce=
 
 ==Steps==
 
