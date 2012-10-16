@@ -16,8 +16,12 @@ https://socialauth-android.googlecode.com/svn/wiki/images/twittersign.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterappform.png
 
-*3. Fill your application name, app description, callback url and app domain. Write any dummmy url as callback url and app domain. Next in Acces Scopes -> Choose app requires access to private user data. On choosing you will get list of Yahoo Services. Here are the settings -> Contacts : read,
-Social Directory(Profiles) : read public, Status : read/write ,rest : none
+*3. Fill your application name, app description, callback url and app domain. Write any dummmy url as callback url and app domain. Next in Acces Scopes -> Choose app requires access to private user data. On choosing you will get list of Yahoo Services. Here are the settings -> 
+
+   * Contacts : read
+   * Social Directory(Profiles) : read public 
+   * Status : read/write 
+   * rest : none
 
 
 *4. You will then see The details page contains info about consumer key and secret.Note down key and secret and copy them in oauth_consumers.properties.
