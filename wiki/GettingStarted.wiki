@@ -5,10 +5,17 @@
 ==Step 1 : Prerequisites==
   *   Get Latest Android SDK and ADT plugin installed from [http://developer.android.com] in your eclipse.
   *	Get the API Keys and secrets for providers you want to integrate in app. You can take help from following URLs :
-   *  Twitter  - [Twitter (Show Screenshot)] 
-   *  Facebook - [Facebook (Show Screenshot)] 
-   * !MySpace  - [MySpace (Show Screenshot)]
-   *  Linkedin - [Linkedin (Show Screenshot)]
+   *  Twitter    - [Twitter (Show Screenshot)] 
+   *  Facebook   - [Facebook (Show Screenshot)] 
+   * !MySpace    - [MySpace (Show Screenshot)]
+   *  Linkedin   - [Linkedin (Show Screenshot)]
+   *  Yahoo      - [Yahoo (Show Screenshot)]
+   *  Google     - [Google (Show Screenshot)]
+   *  Salesforce - [Salesforce (Show Screenshot)]
+   *  Foursquare - [Foursquare (Show Screenshot)]
+   *  Yammer     - [Yammer (Show Screenshot)]
+   *  Runkeeper  - [Runkeeper (Show Screenshot)]
+
 
   * Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
