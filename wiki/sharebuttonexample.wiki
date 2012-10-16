@@ -118,6 +118,8 @@ Now you can upload photo to Facebook and Twitter. We have given two examples to 
  * Get Image from gallery and create bitmap to post (share-button example)
  * Get Image from drawables and create bitmap to post ( share-bar and custom-ui example) 
 
+Then use below code to post image with description or status.
+
 {{{
 	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
 	Log.d("ShareButton", String.valueOf(imgStatus));
