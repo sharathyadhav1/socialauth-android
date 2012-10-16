@@ -20,3 +20,9 @@
    * For device , check your internet connection. Is it on?
    * For emulator , close it. Relaunch the emulator.
    * If relaunching the emulator not solves the issue, then create new      avd and launch it.
+
+*  Yahoo and Yammer oAuth screen are not mobile optimized.
+
+*  Runkeeper oAuth Screen is partially optimized. We have done optimization at our end.
+
+*  Runkeeper and Yahoo took time to open in emulater due to low rendering speed of emulater. 
