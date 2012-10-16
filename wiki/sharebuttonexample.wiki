@@ -86,7 +86,7 @@ Log.d("ShareButton",  "Profile Image URL  = " + profileMap.getProfileImageURL())
   
 
 ==Get Contacts==
-(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer , !FourSqaure , Google) 
+(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer , !FourSqaure, Google) 
 
 {{{
 List<Contact> contactsList = adapter.getContactList();		
@@ -109,5 +109,8 @@ if (contactsList != null && contactsList.size() > 0)
    }	
 }
 }}}
+
+==Upload Photo==
+(Supports : V2.0 Facebook, Twitter) 
 
   To see the full functionality, view *share-button example* from socialauth-android.zip on Downloads page.
