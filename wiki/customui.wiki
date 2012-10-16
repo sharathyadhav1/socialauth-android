@@ -5,7 +5,7 @@
 This option lets you implement providers in your way. You can show them either in !ListView , !GridView , Context Menu , Dialog or any way you want. 
 Here is example of how to use library with own List View:
 
-https://socialauth-android.googlecode.com/svn/wiki/images/socialauthmsg.png
+https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
 
 
 *Here is the code snippet :*
