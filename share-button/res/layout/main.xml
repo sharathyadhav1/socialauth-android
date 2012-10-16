@@ -37,6 +37,19 @@
 		android:layout_margin="10dp"
 		android:textColor="#ffffff"
 	/> 
+	 <Button 
+		android:id="@+id/loadImageButton"
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:layout_below="@+id/text"
+		android:padding="5dp"
+		android:layout_centerInParent="true"
+		android:text="Load Image"
+		android:textColor="#ffffff"
+		android:background="@drawable/button_gradient"
+		android:layout_margin="20dp"
+	/>     
+    
 	<RelativeLayout 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
