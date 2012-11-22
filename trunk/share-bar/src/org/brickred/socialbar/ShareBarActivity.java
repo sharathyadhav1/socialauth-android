@@ -118,11 +118,11 @@ public class ShareBarActivity extends Activity {
 
 			// Variable to receive message status
 
-			Log.d("ShareBar", "Authentication Successful");
+			Log.d("Share-Bar", "Authentication Successful");
 
 			// Get name of provider after authentication
 			String providerName = values.getString(SocialAuthAdapter.PROVIDER);
-			Log.d("ShareBar", "Provider Name = " + providerName);
+			Log.d("Share-Bar", "Provider Name = " + providerName);
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
@@ -139,16 +139,16 @@ public class ShareBarActivity extends Activity {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Log.d("Share-Button",
+			Log.d("Share-Bar",
 					"Validate ID = " + profileMap.getValidatedId());
-			Log.d("Share-Button", "First Name  = " + profileMap.getFirstName());
-			Log.d("Share-Button", "Last Name   = " + profileMap.getLastName());
-			Log.d("Share-Button",
+			Log.d("Share-Bar", "First Name  = " + profileMap.getFirstName());
+			Log.d("Share-Bar", "Last Name   = " + profileMap.getLastName());
+			Log.d("Share-Bar",
 					"Display Name   = " + profileMap.getDisplayName());
-			Log.d("Share-Button", "Email       = " + profileMap.getEmail());
-			Log.d("Share-Button", "Country  	 = " + profileMap.getCountry());
-			Log.d("Share-Button", "Language  	 = " + profileMap.getLanguage());
-			Log.d("Share-Button",
+			Log.d("Share-Bar", "Email       = " + profileMap.getEmail());
+			Log.d("Share-Bar", "Country  	 = " + profileMap.getCountry());
+			Log.d("Share-Bar", "Language  	 = " + profileMap.getLanguage());
+			Log.d("Share-Bar",
 					"Profile Image URL  = " + profileMap.getProfileImageURL());
 
 			Toast.makeText(ShareBarActivity.this,
@@ -185,7 +185,7 @@ public class ShareBarActivity extends Activity {
 
 			int imgStatus = adapter.uploadImage("HelloWorldTest", "icon.png",
 					bmp, 0);
-			Log.d("ShareButton", String.valueOf(imgStatus));
+			Log.d("Share-Bar", String.valueOf(imgStatus));
 
 			Toast.makeText(ShareBarActivity.this,
 					"View Logcat for Image Upload Information",
@@ -196,12 +196,12 @@ public class ShareBarActivity extends Activity {
 		@Override
 		public void onError(SocialAuthError error) {
 			error.printStackTrace();
-			Log.d("ShareBar", error.getMessage());
+			Log.d("Share-Bar", error.getMessage());
 		}
 
 		@Override
 		public void onCancel() {
-			Log.d("ShareBar", "Authentication Cancelled");
+			Log.d("Share-Bar", "Authentication Cancelled");
 		}
 
 	}
