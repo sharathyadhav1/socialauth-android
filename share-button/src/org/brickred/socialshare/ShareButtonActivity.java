@@ -28,7 +28,10 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.brickred.socialauth.Album;
 import org.brickred.socialauth.Contact;
+import org.brickred.socialauth.Feed;
+import org.brickred.socialauth.Photo;
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
@@ -68,7 +71,8 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then automatically update status by updatestatus()
- * method , get user profile , get contacts and upload image<br>
+ * method , get user profile , get contacts , upload image , get feeds and
+ * get albums <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -79,6 +83,7 @@ public class ShareButtonActivity extends Activity {
 	// SocialAuth Component
 	SocialAuthAdapter adapter;
 	Profile profileMap;
+	List<Photo> photosList;
 	public static Bitmap bitmap;
 	private static final int SELECT_PHOTO = 100;
 
@@ -230,6 +235,48 @@ public class ShareButtonActivity extends Activity {
 						"View Logcat for Image Upload Information",
 						Toast.LENGTH_SHORT).show();
 			}
+			
+			// Get Feeds : For Facebook , Twitter and Linkedin Only
+			List<Feed> feedList = adapter.getFeeds();
+			if (feedList != null && feedList.size() > 0) {
+				for (Feed f : feedList) {
+
+				Log.d("Share-Button", "Feed ID = " + f.getId());
+				Log.d("Share-Button", "Screen Name = " + f.getScreenName());
+				Log.d("Share-Button", "Message = " + f.getMessage());
+				Log.d("Share-Button", "Get From = " + f.getFrom());
+				Log.d("Share-Button", "Created at = " + f.getCreatedAt());
+			}
+		  }
+			
+		  // Get Albums and Photos : For FaceBook Only
+		  List<Album> albumList = adapter.getAlbums();
+						
+		  if (albumList != null && albumList.size() > 0) {
+						
+		  // Get Photos inside Album	
+		  for (Album a : albumList) {
+							
+		  Log.d("Share-Button", "Album ID = " +  a.getId());
+		  Log.d("Share-Button", "Album Name = " +  a.getName());
+		  Log.d("Share-Button", "Cover Photo = " + a.getCoverPhoto());
+		  Log.d("Share-Button", "Photos Count = " + a.getPhotosCount());
+											
+		  photosList = a.getPhotos();
+							
+		  if (photosList != null && photosList.size() > 0) {
+							
+		  for (Photo p : photosList) {
+			  Log.d("Share-Button", "Photo ID = " +  p.getId());
+			  Log.d("Share-Button", "Name     = " + p.getName());
+			  Log.d("Share-Button", "Thumb Image = " + p.getThumbImage());
+			  Log.d("Share-Button", "Small Image = " + p.getSmallImage());
+			  Log.d("Share-Button", "Medium Image = " + p.getMediumImage());
+			  Log.d("Share-Button", "Large Image = " +  p.getLargeImage());
+		   }
+		 }
+		 }
+		 }
 		}
 
 		@Override
