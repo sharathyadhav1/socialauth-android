@@ -26,7 +26,10 @@ package org.brickred.socialbar;
 
 import java.util.List;
 
+import org.brickred.socialauth.Album;
 import org.brickred.socialauth.Contact;
+import org.brickred.socialauth.Feed;
+import org.brickred.socialauth.Photo;
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
@@ -61,6 +64,8 @@ import android.widget.Toast;
  * responseListener and then automatically update status by updatestatus()
  * method , get user profile , get contact details and upload image<br>
  * 
+ * This example also shows implementation how to get feeds and albums from providers.
+ * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
  */
@@ -71,6 +76,7 @@ public class ShareBarActivity extends Activity {
 	SocialAuthAdapter adapter;
 	boolean status;
 	Profile profileMap;
+	List<Photo> photosList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -154,6 +160,21 @@ public class ShareBarActivity extends Activity {
 			Toast.makeText(ShareBarActivity.this,
 					"View Logcat for Profile Information", Toast.LENGTH_SHORT)
 					.show();
+			
+			// Get Feeds : For Facebook , Twitter and Linkedin Only
+			List<Feed> feedList = adapter.getFeeds();
+			if (feedList != null && feedList.size() > 0) {
+				for (Feed f : feedList) {
+
+					Log.d("Share-Bar", "Feed ID = " + f.getId());
+					Log.d("Share-Bar", "Screen Name = " + f.getScreenName());
+					Log.d("Share-Bar", "Message = " + f.getMessage());
+					Log.d("Share-Bar", "Get From = " + f.getFrom());
+					Log.d("Share-Bar", "Created at = " + f.getCreatedAt());
+				}
+			}
+			
+			
 
 			// Get List of contacts
 			List<Contact> contactsList = adapter.getContactList();
@@ -178,8 +199,7 @@ public class ShareBarActivity extends Activity {
 					"View Logcat for Contacts Information", Toast.LENGTH_SHORT)
 					.show();
 
-			// Upload Photo
-
+			// Upload Photo : For Facebook and Twitter Only
 			Bitmap bmp = BitmapFactory.decodeResource(getResources(),
 					R.drawable.icon);
 
@@ -190,8 +210,36 @@ public class ShareBarActivity extends Activity {
 			Toast.makeText(ShareBarActivity.this,
 					"View Logcat for Image Upload Information",
 					Toast.LENGTH_SHORT).show();
-
+			
+			// Get Albums and Photos : For FaceBook Only
+			List<Album> albumList = adapter.getAlbums();
+			
+			if (albumList != null && albumList.size() > 0) {
+			
+			// Get Photos inside Album	
+			for (Album a : albumList) {
+				
+				Log.d("Share-Bar", "Album ID = " +  a.getId());
+				Log.d("Share-Bar", "Album Name = " +  a.getName());
+				Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
+				Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
+								
+				photosList = a.getPhotos();
+				
+				if (photosList != null && photosList.size() > 0) {
+				
+				for (Photo p : photosList) {
+					Log.d("Share-Bar", "Photo ID = " +  p.getId());
+					Log.d("Share-Bar", "Name     = " + p.getName());
+					Log.d("Share-Bar", "Thumb Image = " + p.getThumbImage());
+					Log.d("Share-Bar", "Small Image = " + p.getSmallImage());
+					Log.d("Share-Bar", "Medium Image = " + p.getMediumImage());
+					Log.d("Share-Bar", "Large Image = " +  p.getLargeImage());
+				}
+			}	
 		}
+	}
+}
 
 		@Override
 		public void onError(SocialAuthError error) {
