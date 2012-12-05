@@ -26,7 +26,10 @@ package org.brickred.customui;
 
 import java.util.List;
 
+import org.brickred.socialauth.Album;
 import org.brickred.socialauth.Contact;
+import org.brickred.socialauth.Feed;
+import org.brickred.socialauth.Photo;
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
@@ -61,7 +64,8 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then shows a dialog containing options for getting user
- * profile , for updating status and to get contact list.<br>
+ * profile, for updating status, to get contact list, to get feeds , to upload image
+ * and to get albums <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -74,6 +78,7 @@ public class CustomUI extends Activity {
 	// SocialAuth Components
 	SocialAuthAdapter adapter;
 	Profile profileMap;
+	List<Photo> photosList;
 
 	// Android Components
 	ListView listview;
@@ -185,16 +190,18 @@ public class CustomUI extends Activity {
 			break;
 		}
 
-		case 1: {
-
+		case 1: 
+		{
 			if (provider.equalsIgnoreCase("foursquare")
 					|| provider.equalsIgnoreCase("google")) {
+				// Get Contacts for FourSquare and Google
 				getContacts();
 			} else if (provider.equalsIgnoreCase("runkeeper")
 					|| provider.equalsIgnoreCase("salesforce")) {
+				// Close Dialog 
 				dialog.dismiss();
-			} else // Code to Post Message for all providers
-			{
+			} else {
+				// Code to Post Message for all providers
 				adapter.updateStatus("SocialAuth Android"
 						+ System.currentTimeMillis());
 				Toast.makeText(CustomUI.this, "Message posted on " + provider,
@@ -203,46 +210,107 @@ public class CustomUI extends Activity {
 			break;
 		}
 
-		case 2: {
-
+		case 2: 
+		{
 			if (provider.equalsIgnoreCase("foursquare")
 					|| provider.equalsIgnoreCase("google")) {
+				// Close Dialog 
 				dialog.dismiss();
 			} else {
+				// Get Contacts for Remaining Providers
 				getContacts();
 			}
-
 			break;
 		}
 
-		case 3: {
-			if (provider.equalsIgnoreCase("facebook")
-					|| provider.equalsIgnoreCase("twitter")) {
+		case 3: 
+		{	
+			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter") 
+				|| provider.equalsIgnoreCase("linkedin")) {
+			
+				// Get Feeds : For Facebook , Twitter and Linkedin Only
+				List<Feed> feedList = adapter.getFeeds();
+				if (feedList != null && feedList.size() > 0) {
+				for (Feed f : feedList) {
+						Log.d("Custom-UI", "Feed ID = " + f.getId());
+						Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
+						Log.d("Custom-UI", "Message = " + f.getMessage());
+						Log.d("Custom-UI", "Get From = " + f.getFrom());
+						Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
+					}
+				}
+			}		
+			else
+			{
+				dialog.dismiss();
+			}
+			break;	
+		}
 
+		case 4: 
+		{
+			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) 
+			{
 				// Upload Photo
-
 				Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-						R.drawable.icon);
+					R.drawable.icon);
 
 				int imgStatus = adapter.uploadImage("HelloWorldTest",
-						"icon.png", bmp, 0);
+					"icon.png", bmp, 0);
 				Log.d("Custom-UI", String.valueOf(imgStatus));
 
 				Toast.makeText(CustomUI.this,
-						"View Logcat for Image Upload Information",
-						Toast.LENGTH_SHORT).show();
+					"View Logcat for Image Upload Information",
+					Toast.LENGTH_SHORT).show();
 			} else {
 				dialog.dismiss();
 			}
-
 			break;
 		}
-
-		case 4: // Back to Activity
+			
+		case 5: 
+		{
+			if (provider.equalsIgnoreCase("facebook")) 
+			{
+				List<Album> albumList = adapter.getAlbums();
+				
+				if (albumList != null && albumList.size() > 0) {
+				
+				// Get Photos inside Album	
+				for (Album a : albumList) {
+					
+					Log.d("Custom-UI", "Album ID = " +  a.getId());
+					Log.d("Custom-UI", "Album Name = " +  a.getName());
+					Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
+					Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
+									
+					photosList = a.getPhotos();
+					
+					if (photosList != null && photosList.size() > 0) {
+					
+					for (Photo p : photosList) {
+						Log.d("Custom-UI", "Photo ID = " +  p.getId());
+						Log.d("Custom-UI", "Name     = " + p.getName());
+						Log.d("Custom-UI", "Thumb Image = " + p.getThumbImage());
+						Log.d("Custom-UI", "Small Image = " + p.getSmallImage());
+						Log.d("Custom-UI", "Medium Image = " + p.getMediumImage());
+						Log.d("Custom-UI", "Large Image = " +  p.getLargeImage());
+					}
+				}
+				}
+				}
+			} else {
+				dialog.dismiss();
+			}
+			break;
+		}
+		
+		case 6:
 		{
 			dialog.dismiss();
 			break;
 		}
+		
 		}
 
 	}
