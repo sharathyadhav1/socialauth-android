@@ -184,10 +184,11 @@ public class SocialAuthAdapter {
 	private List<Contact> contactsList;
 	private List<Feed> feedList;
 	private List<Album> albumList;
-	
+
 	// Variables
 	private DialogListener dialogListener;
 	private Provider currentProvider;
+	private Context context;
 
 	private String url;
 	private int providerCount = 0;
@@ -260,7 +261,7 @@ public class SocialAuthAdapter {
 
 		Log.d("SocialAuthAdapter", "Enabling button with SocialAuth");
 		final Context ctx = sharebtn.getContext();
-
+		context = ctx;
 		// Click Listener For Share Button
 		sharebtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -307,7 +308,7 @@ public class SocialAuthAdapter {
 
 		Log.d("SocialAuthAdapter", "Enabling bar with SocialAuth");
 		final Context ctx = linearbar.getContext();
-
+		context = ctx;
 		// Handles Clicking Events for Buttons
 		View.OnClickListener viewlistener = new View.OnClickListener() {
 			@Override
@@ -368,6 +369,7 @@ public class SocialAuthAdapter {
 							new Exception("")));
 			return;
 		}
+		context = ctx;
 		currentProvider = provider;
 		Log.d("SocialAuthAdapter", "Selected provider is " + currentProvider);
 
@@ -408,10 +410,29 @@ public class SocialAuthAdapter {
 	 * @return Status of signing out
 	 */
 	public boolean signOut() {
-		boolean signedin = socialAuthManager.disconnectProvider(currentProvider
-				.toString());
-		Log.d("SocialAuthAdapter", "Disconnecting " + String.valueOf(signedin));
-		return signedin;
+
+		AccessGrant accessGrant = getCurrentProvider().getAccessGrant();
+
+		if (accessGrant != null) {
+			try {
+				getCurrentProvider().setAccessGrant(null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		// file deletion code
+
+		String filePath = context.getFilesDir().getAbsolutePath()
+				+ File.separatorChar + currentProvider.toString()
+				+ "_accessGrant.ser";
+		File tokenFile = new File(filePath);
+		tokenFile.delete();
+
+		socialAuthManager.disconnectProvider(currentProvider.toString());
+
+		Log.d("SocialAuthAdapter", "Disconnecting Provider");
+		return true;
 	}
 
 	/**
@@ -484,25 +505,21 @@ public class SocialAuthAdapter {
 
 		return contactsList;
 	}
-	
-	
+
 	/**
 	 * Method to get feeds from provider
 	 * 
 	 * @return List containing Feeds .
-	 *  
-	 *  feed List Contains    
-	 *  
-	 *   Screen Name - For Twitter Only
-	 *   ID          - Feed Id 
-	 *   Message     - Feed
-	 *   Created at  - Date of creation of feed
-	 *   Get From    - Sender of feed        
+	 * 
+	 *         feed List Contains
+	 * 
+	 *         Screen Name - For Twitter Only ID - Feed Id Message - Feed
+	 *         Created at - Date of creation of feed Get From - Sender of feed
 	 */
 
 	public List<Feed> getFeeds() {
 		try {
-			    feedList = new feedTask().execute().get();
+			feedList = new feedTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -511,25 +528,22 @@ public class SocialAuthAdapter {
 
 		return feedList;
 	}
-	
-	
+
 	/**
 	 * Method to get albums from provider
 	 * 
-	 * @return List containing Albums and Photos  .
-	 *  
-	 *  feed List Contains    
-	 *  
-	 *   ID            - Album ID
-	 *   Name          - Album Name 
-	 *   CoverPhoto    - Album CoverPhoto
-	 *   Photo Count   - Number of photos in album
-	 *   Photos Array  - Array containing list of photos of album        
+	 * @return List containing Albums and Photos .
+	 * 
+	 *         feed List Contains
+	 * 
+	 *         ID - Album ID Name - Album Name CoverPhoto - Album CoverPhoto
+	 *         Photo Count - Number of photos in album Photos Array - Array
+	 *         containing list of photos of album
 	 */
 
 	public List<Album> getAlbums() {
 		try {
-			    albumList = new albumTask().execute().get();
+			albumList = new albumTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -538,8 +552,6 @@ public class SocialAuthAdapter {
 
 		return albumList;
 	}
-	
-	
 
 	/**
 	 * Method to upload image on provider
@@ -789,7 +801,7 @@ public class SocialAuthAdapter {
 			}
 		}
 	}
-	
+
 	/**
 	 * AsyncTask to retrieve albums
 	 */
@@ -799,17 +811,18 @@ public class SocialAuthAdapter {
 		@Override
 		protected List<Album> doInBackground(Void... params) {
 			try {
-					List<Album> albumMap = null;
-					if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.AlbumsPlugin.class)) 
-					{
-						AlbumsPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.AlbumsPlugin.class);
-						albumMap = p.getAlbums();
-						Log.d("SocialAuthAdapter", "Received Albums");
-					}
-					else
-						Log.d("SocialAuthAdapter", "Albums not Supported from Provider");
-					
-					return albumMap;
+				List<Album> albumMap = null;
+				if (getCurrentProvider().isSupportedPlugin(
+						org.brickred.socialauth.plugin.AlbumsPlugin.class)) {
+					AlbumsPlugin p = getCurrentProvider().getPlugin(
+							org.brickred.socialauth.plugin.AlbumsPlugin.class);
+					albumMap = p.getAlbums();
+					Log.d("SocialAuthAdapter", "Received Albums");
+				} else
+					Log.d("SocialAuthAdapter",
+							"Albums not Supported from Provider");
+
+				return albumMap;
 			} catch (Exception e) {
 				e.printStackTrace();
 				dialogListener.onError(new SocialAuthError(
@@ -818,7 +831,7 @@ public class SocialAuthAdapter {
 			}
 		}
 	}
-	
+
 	/**
 	 * AsyncTask to retrieve feeds
 	 */
@@ -828,17 +841,18 @@ public class SocialAuthAdapter {
 		@Override
 		protected List<Feed> doInBackground(Void... params) {
 			try {
-					List<Feed> feedMap = null;
-					if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.FeedPlugin.class)) 
-					{
-						FeedPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.FeedPlugin.class);
-						feedMap = p.getFeeds();
-						Log.d("SocialAuthAdapter", "Received Feeds");
-					}
-					else
-						Log.d("SocialAuthAdapter", "Feeds not Supported from Provider");
-					
-					return feedMap;		
+				List<Feed> feedMap = null;
+				if (getCurrentProvider().isSupportedPlugin(
+						org.brickred.socialauth.plugin.FeedPlugin.class)) {
+					FeedPlugin p = getCurrentProvider().getPlugin(
+							org.brickred.socialauth.plugin.FeedPlugin.class);
+					feedMap = p.getFeeds();
+					Log.d("SocialAuthAdapter", "Received Feeds");
+				} else
+					Log.d("SocialAuthAdapter",
+							"Feeds not Supported from Provider");
+
+				return feedMap;
 			} catch (Exception e) {
 				e.printStackTrace();
 				dialogListener.onError(new SocialAuthError(
@@ -862,12 +876,11 @@ public class SocialAuthAdapter {
 						(String) params[1], (InputStream) params[2]);
 				Log.d("SocialAuthAdapter", "Image Uploaded");
 				return res.getStatus();
-			} 
-			catch (SocialAuthException se) {
-				Log.d("SocialAuthAdapter", "Image Upload not implemented for Provider");
+			} catch (SocialAuthException se) {
+				Log.d("SocialAuthAdapter",
+						"Image Upload not implemented for Provider");
 				return null;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				dialogListener.onError(new SocialAuthError(
 						"Image Upload Error", e));
 				return null;
