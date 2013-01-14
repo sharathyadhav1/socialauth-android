@@ -56,4 +56,10 @@ public interface DialogListener {
 	 */
 	public void onCancel();
 
+	/**
+	 * Called when a dialog is closed by user by pressing back key
+	 * 
+	 */
+	public void onBack();
+
 }

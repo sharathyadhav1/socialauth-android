@@ -37,6 +37,7 @@ import org.brickred.socialauth.util.AccessGrant;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -49,6 +50,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebSettings.ZoomDensity;
@@ -153,6 +155,16 @@ public class SocialAuthDialog extends Dialog {
 				new LinearLayout.LayoutParams(display.getWidth()
 						- ((int) (dimensions[0] * scale + 0.5f)), display
 						.getHeight() - ((int) (dimensions[1] * scale + 0.5f))));
+
+		this.setOnKeyListener(new DialogInterface.OnKeyListener() {
+			@Override
+			public boolean onKey(DialogInterface dialog, int keyCode,
+					KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK)
+					mListener.onBack();
+				return false;
+			}
+		});
 
 	}
 
