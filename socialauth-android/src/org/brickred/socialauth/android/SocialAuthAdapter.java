@@ -61,6 +61,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -70,21 +71,24 @@ import android.widget.LinearLayout;
  * 
  * Main class of the SocialAuth Android SDK. Wraps a user interface component
  * with the SocialAuth functionality of updating status, getting user profiles,
- * contacts, upload images on Facebook, Twitter, LinkedIn, MySpace, Yahoo,
- * Google FourSquare, Runkeeper, SalesForce and Yammer. <br>
+ * contacts, upload images, get user feeds, get user albums on Facebook,
+ * Twitter, LinkedIn, MySpace, Yahoo, Google FourSquare, Runkeeper, SalesForce
+ * and Yammer. <br>
  * 
  * Currently it can be used in three different ways. First, it can be attached
  * with a Button that user may click. Clicking will open a menu with various
  * social networks listed that the user can click on. Clicking on any network
  * opens a dialog for authentication with that social network. Once the user is
  * authenticated, you can use various methods from the AuthProvider interface to
- * update status, get profile, contacts and upload images. <br>
+ * update status, get profile, contacts, user feeds, album feeds and upload
+ * images. <br>
  * 
  * Secondly, it can be attached to a LinearLayout for creating a Bar with
  * several buttons, one for each social network. Clicking on these icons will
  * open a dialog which will authenticate the user and one the user is
  * authenticated, you can use various methods from the AuthProvider interface to
- * update status, get profile, contacts and upload images. <br>
+ * update status, get profile, contacts, user feeds, album feeds and upload
+ * images. <br>
  * 
  * Lastly, you can just launch the authentication dialog directly from any event
  * you prefer. Examples for all of these ways is provided in the examples
@@ -100,7 +104,6 @@ public class SocialAuthAdapter {
 	/**
 	 * Enum of all supported providers
 	 * 
-	 * @author abhinavm@brickred.com
 	 */
 	public enum Provider {
 		FACEBOOK(Constants.FACEBOOK, "fbconnect://success",
@@ -184,17 +187,17 @@ public class SocialAuthAdapter {
 	private List<Contact> contactsList;
 	private List<Feed> feedList;
 	private List<Album> albumList;
-
-	// Variables
 	private DialogListener dialogListener;
 	private Provider currentProvider;
-	private Context context;
 
+	// Variables and Arrays
 	private String url;
 	private int providerCount = 0;
 	private final Provider authProviders[];
 	private final int authProviderLogos[];
 
+	// Android Components
+	private Context context;
 	private final Handler handler = new Handler();
 
 	/**
@@ -410,18 +413,19 @@ public class SocialAuthAdapter {
 	 * @return Status of signing out
 	 */
 	public boolean signOut() {
+		CookieSyncManager cookieSyncMngr = CookieSyncManager
+				.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		cookieManager.removeAllCookie();
 
 		AccessGrant accessGrant = getCurrentProvider().getAccessGrant();
-
-		if (accessGrant != null) {
+		if (accessGrant != null)
 			try {
 				getCurrentProvider().setAccessGrant(null);
 			} catch (Exception e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-
-		// file deletion code
 
 		String filePath = context.getFilesDir().getAbsolutePath()
 				+ File.separatorChar + currentProvider.toString()
@@ -430,6 +434,7 @@ public class SocialAuthAdapter {
 		tokenFile.delete();
 
 		socialAuthManager.disconnectProvider(currentProvider.toString());
+		socialAuthManager = null;
 
 		Log.d("SocialAuthAdapter", "Disconnecting Provider");
 		return true;
