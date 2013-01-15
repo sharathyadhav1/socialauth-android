@@ -341,6 +341,7 @@ public class SocialAuthAdapter {
 	public AuthProvider getCurrentProvider() {
 		if (currentProvider != null) {
 			return socialAuthManager.getProvider(currentProvider.toString());
+
 		} else {
 			return null;
 		}
@@ -412,29 +413,32 @@ public class SocialAuthAdapter {
 	 * 
 	 * @return Status of signing out
 	 */
-	public boolean signOut() {
+	public boolean signOut(String providerName) {
 		CookieSyncManager cookieSyncMngr = CookieSyncManager
 				.createInstance(context);
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.removeAllCookie();
 
-		AccessGrant accessGrant = getCurrentProvider().getAccessGrant();
+		AccessGrant accessGrant = socialAuthManager.getProvider(providerName)
+				.getAccessGrant();
 		if (accessGrant != null)
 			try {
-				getCurrentProvider().setAccessGrant(null);
+				socialAuthManager.getProvider(providerName)
+						.setAccessGrant(null);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		String filePath = context.getFilesDir().getAbsolutePath()
-				+ File.separatorChar + currentProvider.toString()
-				+ "_accessGrant.ser";
+				+ File.separatorChar + providerName + "_accessGrant.ser";
 		File tokenFile = new File(filePath);
 		tokenFile.delete();
 
-		socialAuthManager.disconnectProvider(currentProvider.toString());
-		socialAuthManager = null;
+		socialAuthManager.disconnectProvider(providerName);
+
+		if (socialAuthManager.getConnectedProvidersIds().contains(providerName))
+			Log.d("SocialAuth", " Provider Still Connected");
 
 		Log.d("SocialAuthAdapter", "Disconnecting Provider");
 		return true;
