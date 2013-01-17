@@ -34,11 +34,38 @@ In your handling code you should :
         // Add it to Library
         adapter = new SocialAuthAdapter(new ResponseListener());
              	 
-        // Add providers and enable button
-        adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
-        adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-        adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
-        adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+       // supports profile , friends , message status , upload image , get albums , get feeds
+       adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+       adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+		
+      // supports profile , friends , message status , get feeds
+       adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+		
+      // supports profile , friends , message status
+       adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+       adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
+       adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
+
+      // Supports only profile and contacts
+	adapter.addProvider(Provider.FOURSQUARE, R.drawable.foursquare);
+	adapter.addProvider(Provider.GOOGLE, R.drawable.google);
+
+      // Supports only profile
+	adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
+	adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
+
+      // Providers require setting user call Back url
+	 adapter.addCallBack(Provider.FOURSQUARE, "http://recfit.sayantam.in/");
+
+	adapter.addCallBack(Provider.GOOGLE,
+				"http://socialauth.in/socialauthdemo");
+
+	adapter.addCallBack(Provider.SALESFORCE,
+				"https://recfit.sayantam.in:8443/");
+
+	adapter.addCallBack(Provider.YAMMER,
+				"http://socialauth.in/socialauthdemo");
+
         adapter.enable(share);
     }
 }}}
