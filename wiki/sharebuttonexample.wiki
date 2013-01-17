@@ -128,6 +128,38 @@ for (Feed f : feedList) {
 }
 }}}
 
+==Get Albums==
+(Supports : V2.0 Facebook, Twitter)
+
+Get Albums from your Facebook , Twitter Account.
+
+{{{
+List<Album> albumList = adapter.getAlbums();
+if (albumList != null && albumList.size() > 0) {
+
+   // Get Photos inside Album
+   for (Album a : albumList) {
+
+   Log.d("Custom-UI", "Album ID = " + a.getId());
+   Log.d("Custom-UI", "Album Name = " + a.getName());
+   Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
+   Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
+
+   photosList = a.getPhotos();
+   if (photosList != null && photosList.size() > 0) {
+
+       for (Photo p : photosList) {
+	Log.d("Custom-UI", "Photo ID = " + p.getId());
+	Log.d("Custom-UI", "Name     = " + p.getTitle());
+	Log.d("Custom-UI", "Thumb Image = " + p.getThumbImage());
+	Log.d("Custom-UI", "Small Image = " + p.getSmallImage());
+	Log.d("Custom-UI", "Medium Image = " + p.getMediumImage());
+	Log.d("Custom-UI", "Large Image = " + p.getLargeImage());
+       }
+     }
+  }
+}
+}}}
 
 
 ==Upload Photo==
