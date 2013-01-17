@@ -71,6 +71,8 @@ You can use library in following three ways  :
 == Please Note==
 !SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
 
+!SocialAuth Android 2.0 supports only Facebook , Twitter , !MySpace , Linkedin , Google , !FourSquare ,!SalesForce , Yahoo, Yammer
+
 !SocialAuth Android 1.0 not supports below SDK 2.3 !GingerBread
 
  
