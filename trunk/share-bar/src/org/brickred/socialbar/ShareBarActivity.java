@@ -64,7 +64,8 @@ import android.widget.Toast;
  * responseListener and then automatically update status by updatestatus()
  * method , get user profile , get contact details and upload image<br>
  * 
- * This example also shows implementation how to get feeds and albums from providers.
+ * This example also shows implementation how to get feeds and albums from
+ * providers.
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -145,8 +146,7 @@ public class ShareBarActivity extends Activity {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			Log.d("Share-Bar",
-					"Validate ID = " + profileMap.getValidatedId());
+			Log.d("Share-Bar", "Validate ID = " + profileMap.getValidatedId());
 			Log.d("Share-Bar", "First Name  = " + profileMap.getFirstName());
 			Log.d("Share-Bar", "Last Name   = " + profileMap.getLastName());
 			Log.d("Share-Bar",
@@ -160,7 +160,7 @@ public class ShareBarActivity extends Activity {
 			Toast.makeText(ShareBarActivity.this,
 					"View Logcat for Profile Information", Toast.LENGTH_SHORT)
 					.show();
-			
+
 			// Get Feeds : For Facebook , Twitter and Linkedin Only
 			List<Feed> feedList = adapter.getFeeds();
 			if (feedList != null && feedList.size() > 0) {
@@ -173,8 +173,6 @@ public class ShareBarActivity extends Activity {
 					Log.d("Share-Bar", "Created at = " + f.getCreatedAt());
 				}
 			}
-			
-			
 
 			// Get List of contacts
 			List<Contact> contactsList = adapter.getContactList();
@@ -210,36 +208,40 @@ public class ShareBarActivity extends Activity {
 			Toast.makeText(ShareBarActivity.this,
 					"View Logcat for Image Upload Information",
 					Toast.LENGTH_SHORT).show();
-			
-			// Get Albums and Photos : For FaceBook Only
+
+			// Get Albums and Photos : For FaceBook and Twitter Only
 			List<Album> albumList = adapter.getAlbums();
-			
+
 			if (albumList != null && albumList.size() > 0) {
-			
-			// Get Photos inside Album	
-			for (Album a : albumList) {
-				
-				Log.d("Share-Bar", "Album ID = " +  a.getId());
-				Log.d("Share-Bar", "Album Name = " +  a.getName());
-				Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
-				Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
-								
-				photosList = a.getPhotos();
-				
-				if (photosList != null && photosList.size() > 0) {
-				
-				for (Photo p : photosList) {
-					Log.d("Share-Bar", "Photo ID = " +  p.getId());
-					Log.d("Share-Bar", "Name     = " + p.getName());
-					Log.d("Share-Bar", "Thumb Image = " + p.getThumbImage());
-					Log.d("Share-Bar", "Small Image = " + p.getSmallImage());
-					Log.d("Share-Bar", "Medium Image = " + p.getMediumImage());
-					Log.d("Share-Bar", "Large Image = " +  p.getLargeImage());
+
+				// Get Photos inside Album
+				for (Album a : albumList) {
+
+					Log.d("Share-Bar", "Album ID = " + a.getId());
+					Log.d("Share-Bar", "Album Name = " + a.getName());
+					Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
+					Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
+
+					photosList = a.getPhotos();
+
+					if (photosList != null && photosList.size() > 0) {
+
+						for (Photo p : photosList) {
+							Log.d("Share-Bar", "Photo ID = " + p.getId());
+							Log.d("Share-Bar", "Name     = " + p.getTitle());
+							Log.d("Share-Bar",
+									"Thumb Image = " + p.getThumbImage());
+							Log.d("Share-Bar",
+									"Small Image = " + p.getSmallImage());
+							Log.d("Share-Bar",
+									"Medium Image = " + p.getMediumImage());
+							Log.d("Share-Bar",
+									"Large Image = " + p.getLargeImage());
+						}
+					}
 				}
-			}	
+			}
 		}
-	}
-}
 
 		@Override
 		public void onError(SocialAuthError error) {
@@ -250,6 +252,12 @@ public class ShareBarActivity extends Activity {
 		@Override
 		public void onCancel() {
 			Log.d("Share-Bar", "Authentication Cancelled");
+		}
+
+		@Override
+		public void onBack() {
+			Log.d("Share-Bar", "Dialog Closed by pressing Back Key");
+
 		}
 
 	}
