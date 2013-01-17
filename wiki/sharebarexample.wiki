@@ -109,4 +109,71 @@ if (contactsList != null && contactsList.size() > 0)
 }
 }}}
 
+==Get Feeds==
+(Supports : V2.0 Facebook, Twitter, Linkedin)
+
+Get Feeds from your Facebook , Twitter or Linkedin Account.
+
+{{{
+List<Feed> feedList = adapter.getFeeds();
+if (feedList != null && feedList.size() > 0) {
+for (Feed f : feedList) {
+    Log.d("Share-Bar", "Feed ID = " + f.getId());
+    Log.d("Share-Bar", "Screen Name = " + f.getScreenName());
+    Log.d("Share-Bar", "Message = " + f.getMessage());
+    Log.d("Share-Bar", "Get From = " + f.getFrom());
+    Log.d("Share-Bar", "Created at = " + f.getCreatedAt());
+    }
+}
+}}}
+
+==Get Albums==
+(Supports : V2.0 Facebook, Twitter)
+
+Get Albums from your Facebook , Twitter Account.
+
+{{{
+List<Album> albumList = adapter.getAlbums();
+if (albumList != null && albumList.size() > 0) {
+
+   // Get Photos inside Album
+   for (Album a : albumList) {
+
+   Log.d("Share-Bar", "Album ID = " + a.getId());
+   Log.d("Share-Bar", "Album Name = " + a.getName());
+   Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
+   Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
+
+   photosList = a.getPhotos();
+   if (photosList != null && photosList.size() > 0) {
+
+       for (Photo p : photosList) {
+	Log.d("Share-Bar", "Photo ID = " + p.getId());
+	Log.d("Share-Bar", "Name     = " + p.getTitle());
+	Log.d("Share-Bar", "Thumb Image = " + p.getThumbImage());
+	Log.d("Share-Bar", "Small Image = " + p.getSmallImage());
+	Log.d("Share-Bar", "Medium Image = " + p.getMediumImage());
+	Log.d("Share-Bar", "Large Image = " + p.getLargeImage());
+       }
+     }
+  }
+}
+}}}
+
+
+==Upload Photo==
+(Supports : V2.0 Facebook, Twitter)
+
+Now you can upload photo to Facebook and Twitter. We have given two examples to get images
+
+ * Get Image from gallery and create bitmap to post (share-button example)
+ * Get Image from drawables and create bitmap to post ( share-bar and custom-ui example) 
+
+Then use below code to post image with description or status.
+
+{{{
+	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
+	Log.d("Share-Bar", String.valueOf(imgStatus));
+}}} 
+
 To see the functionality, view *share-bar example* from socialauth-android zip on Download Page. 
