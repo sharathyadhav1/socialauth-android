@@ -71,8 +71,8 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then automatically update status by updatestatus()
- * method , get user profile , get contacts , upload image , get feeds and
- * get albums <br>
+ * method , get user profile , get contacts , upload image , get feeds and get
+ * albums <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -121,10 +121,15 @@ public class ShareButtonActivity extends Activity {
 
 		// Add providers
 
-		// supports profile , friends , message status
+		// supports profile , friends , message status , upload image , get
+		// albums , get feeds
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+
+		// supports profile , friends , message status , get feeds
 		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+
+		// supports profile , friends , message status
 		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
 		adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
 		adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
@@ -137,19 +142,17 @@ public class ShareButtonActivity extends Activity {
 		adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
 		adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
 
-		// Providers require user call Back
+		// Providers require setting user call Back url
+		adapter.addCallBack(Provider.FOURSQUARE, "http://recfit.sayantam.in/");
 
-		// adapter.addCallBack(Provider.FOURSQUARE,
-		// "http://recfit.sayantam.in/");
+		adapter.addCallBack(Provider.GOOGLE,
+				"http://socialauth.in/socialauthdemo");
 
-		// adapter.addCallBack(Provider.GOOGLE,
-		// "http://socialauth.in/socialauthdemo");
+		adapter.addCallBack(Provider.SALESFORCE,
+				"https://recfit.sayantam.in:8443/");
 
-		// adapter.addCallBack(Provider.SALESFORCE,
-		// "https://recfit.sayantam.in:8443/");
-
-		// adapter.addCallBack(Provider.YAMMER,
-		// "http://socialauth.in/socialauthdemo");
+		adapter.addCallBack(Provider.YAMMER,
+				"http://socialauth.in/socialauthdemo");
 
 		// Enable Provider
 		adapter.enable(share);
@@ -235,48 +238,53 @@ public class ShareButtonActivity extends Activity {
 						"View Logcat for Image Upload Information",
 						Toast.LENGTH_SHORT).show();
 			}
-			
+
 			// Get Feeds : For Facebook , Twitter and Linkedin Only
 			List<Feed> feedList = adapter.getFeeds();
 			if (feedList != null && feedList.size() > 0) {
 				for (Feed f : feedList) {
 
-				Log.d("Share-Button", "Feed ID = " + f.getId());
-				Log.d("Share-Button", "Screen Name = " + f.getScreenName());
-				Log.d("Share-Button", "Message = " + f.getMessage());
-				Log.d("Share-Button", "Get From = " + f.getFrom());
-				Log.d("Share-Button", "Created at = " + f.getCreatedAt());
+					Log.d("Share-Button", "Feed ID = " + f.getId());
+					Log.d("Share-Button", "Screen Name = " + f.getScreenName());
+					Log.d("Share-Button", "Message = " + f.getMessage());
+					Log.d("Share-Button", "Get From = " + f.getFrom());
+					Log.d("Share-Button", "Created at = " + f.getCreatedAt());
+				}
 			}
-		  }
-			
-		  // Get Albums and Photos : For FaceBook Only
-		  List<Album> albumList = adapter.getAlbums();
-						
-		  if (albumList != null && albumList.size() > 0) {
-						
-		  // Get Photos inside Album	
-		  for (Album a : albumList) {
-							
-		  Log.d("Share-Button", "Album ID = " +  a.getId());
-		  Log.d("Share-Button", "Album Name = " +  a.getName());
-		  Log.d("Share-Button", "Cover Photo = " + a.getCoverPhoto());
-		  Log.d("Share-Button", "Photos Count = " + a.getPhotosCount());
-											
-		  photosList = a.getPhotos();
-							
-		  if (photosList != null && photosList.size() > 0) {
-							
-		  for (Photo p : photosList) {
-			  Log.d("Share-Button", "Photo ID = " +  p.getId());
-			  Log.d("Share-Button", "Name     = " + p.getName());
-			  Log.d("Share-Button", "Thumb Image = " + p.getThumbImage());
-			  Log.d("Share-Button", "Small Image = " + p.getSmallImage());
-			  Log.d("Share-Button", "Medium Image = " + p.getMediumImage());
-			  Log.d("Share-Button", "Large Image = " +  p.getLargeImage());
-		   }
-		 }
-		 }
-		 }
+
+			// Get Albums and Photos : For FaceBook and Twitter Only
+			List<Album> albumList = adapter.getAlbums();
+
+			if (albumList != null && albumList.size() > 0) {
+
+				// Get Photos inside Album
+				for (Album a : albumList) {
+
+					Log.d("Share-Button", "Album ID = " + a.getId());
+					Log.d("Share-Button", "Album Name = " + a.getName());
+					Log.d("Share-Button", "Cover Photo = " + a.getCoverPhoto());
+					Log.d("Share-Button",
+							"Photos Count = " + a.getPhotosCount());
+
+					photosList = a.getPhotos();
+
+					if (photosList != null && photosList.size() > 0) {
+
+						for (Photo p : photosList) {
+							Log.d("Share-Button", "Photo ID = " + p.getId());
+							Log.d("Share-Button", "Name     = " + p.getTitle());
+							Log.d("Share-Button",
+									"Thumb Image = " + p.getThumbImage());
+							Log.d("Share-Button",
+									"Small Image = " + p.getSmallImage());
+							Log.d("Share-Button",
+									"Medium Image = " + p.getMediumImage());
+							Log.d("Share-Button",
+									"Large Image = " + p.getLargeImage());
+						}
+					}
+				}
+			}
 		}
 
 		@Override
@@ -287,6 +295,11 @@ public class ShareButtonActivity extends Activity {
 		@Override
 		public void onCancel() {
 			Log.d("ShareButton", "Authentication Cancelled");
+		}
+
+		@Override
+		public void onBack() {
+			Log.d("Share-Button", "Dialog Closed by pressing Back Key");
 		}
 
 	}
