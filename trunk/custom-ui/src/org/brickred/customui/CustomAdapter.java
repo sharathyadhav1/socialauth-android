@@ -108,15 +108,12 @@ public class CustomAdapter extends BaseAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		// A ViewHolder keeps references to children views to avoid unneccessary
-		// calls
-		// to findViewById() on each row.
+		// calls to findViewById() on each row.
 		ViewHolder holder;
 
 		// When convertView is not null, we can reuse it directly, there is no
-		// need
-		// to reinflate it. We only inflate a new View when the convertView
-		// supplied
-		// by ListView is null.
+		// need to reinflate it. We only inflate a new View when the convertView
+		// supplied by ListView is null.
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.providers_list, null);
 
@@ -148,13 +145,6 @@ public class CustomAdapter extends BaseAdapter {
 
 		holder.icon.setImageBitmap(mIcon);
 
-		holder.signText.setText("Sign In");
-		holder.signText.setTextColor(Color.WHITE);
-		holder.signText.setPadding(0, 5, 0, 5);
-		holder.signText.setGravity(Gravity.CENTER_VERTICAL);
-		holder.signText.setTag(1);
-
-		// Click Events
 		holder.text.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -162,13 +152,16 @@ public class CustomAdapter extends BaseAdapter {
 
 				CustomUI.pos = position;
 
-				// Use addCallback method from share-button example if using
-				// your own keys for FOURSQUARE , GOOGLE , SALESFORCE , YAMMER
-
 				// This method will enable the selected provider
 				adapter.authorize(ctx, providers[position]);
 			}
 		});
+
+		holder.signText.setText("Sign In");
+		holder.signText.setTextColor(Color.WHITE);
+		holder.signText.setPadding(0, 5, 0, 5);
+		holder.signText.setGravity(Gravity.CENTER_VERTICAL);
+		holder.signText.setTag(1);
 
 		holder.signText.setOnClickListener(new OnClickListener() {
 
@@ -180,12 +173,17 @@ public class CustomAdapter extends BaseAdapter {
 				if (text.equalsIgnoreCase("sign in")) {
 					CustomUI.pos = position;
 
+					// Use addCallback method from share-button example if using
+					// your own keys for FOURSQUARE , GOOGLE , SALESFORCE ,
+					// YAMMER
+
 					// This method will enable the selected provider
 					adapter.authorize(ctx, providers[position]);
 
 				} else if (text.equalsIgnoreCase("sign out")) {
 					// Sign Out
-					boolean status = adapter.signOut();
+					boolean status = adapter.signOut(providers[position]
+							.toString());
 					Log.d("status", String.valueOf(status));
 					if (status) {
 						((TextView) v).setText("Sign In");

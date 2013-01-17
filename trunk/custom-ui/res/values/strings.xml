@@ -16,6 +16,7 @@
     	<item>Friends</item>
     	<item>Get Feeds</item>
     	<item>Upload Image</item>
+    	<item>Get Albums</item>
     	<item>Close Dialog</item>
     </string-array>		
     <string-array name="linkedin_array">
