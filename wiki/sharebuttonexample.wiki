@@ -110,6 +110,26 @@ if (contactsList != null && contactsList.size() > 0)
 }
 }}}
 
+==Get Feeds==
+(Supports : V2.0 Facebook, Twitter, Linkedin)
+
+Get Feeds from your Facebook , Twitter or Linkedin Account.
+
+{{{
+List<Feed> feedList = adapter.getFeeds();
+				if (feedList != null && feedList.size() > 0) {
+					for (Feed f : feedList) {
+						Log.d("Custom-UI", "Feed ID = " + f.getId());
+						Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
+						Log.d("Custom-UI", "Message = " + f.getMessage());
+						Log.d("Custom-UI", "Get From = " + f.getFrom());
+						Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
+					}
+				}
+}}}
+
+
+
 ==Upload Photo==
 (Supports : V2.0 Facebook, Twitter)
 
