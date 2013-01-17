@@ -1,4 +1,4 @@
-#summary Step by Step Guide to Get Facebook consumer key and secrets.
+#summary This guide tell you steps to get Facebook secrets..
 
 =Facebook=
 
