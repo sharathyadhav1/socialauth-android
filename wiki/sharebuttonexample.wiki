@@ -156,11 +156,11 @@ Get Feeds from your Facebook , Twitter or Linkedin Account.
 List<Feed> feedList = adapter.getFeeds();
 if (feedList != null && feedList.size() > 0) {
 for (Feed f : feedList) {
-    Log.d("Custom-UI", "Feed ID = " + f.getId());
-    Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
-    Log.d("Custom-UI", "Message = " + f.getMessage());
-    Log.d("Custom-UI", "Get From = " + f.getFrom());
-    Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
+    Log.d("ShareButton", "Feed ID = " + f.getId());
+    Log.d("ShareButton", "Screen Name = " + f.getScreenName());
+    Log.d("ShareButton", "Message = " + f.getMessage());
+    Log.d("ShareButton", "Get From = " + f.getFrom());
+    Log.d("ShareButton", "Created at = " + f.getCreatedAt());
     }
 }
 }}}
@@ -177,21 +177,21 @@ if (albumList != null && albumList.size() > 0) {
    // Get Photos inside Album
    for (Album a : albumList) {
 
-   Log.d("Custom-UI", "Album ID = " + a.getId());
-   Log.d("Custom-UI", "Album Name = " + a.getName());
-   Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
-   Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
+   Log.d("ShareButton", "Album ID = " + a.getId());
+   Log.d("ShareButton", "Album Name = " + a.getName());
+   Log.d("ShareButton", "Cover Photo = " + a.getCoverPhoto());
+   Log.d("ShareButton", "Photos Count = " + a.getPhotosCount());
 
    photosList = a.getPhotos();
    if (photosList != null && photosList.size() > 0) {
 
        for (Photo p : photosList) {
-	Log.d("Custom-UI", "Photo ID = " + p.getId());
-	Log.d("Custom-UI", "Name     = " + p.getTitle());
-	Log.d("Custom-UI", "Thumb Image = " + p.getThumbImage());
-	Log.d("Custom-UI", "Small Image = " + p.getSmallImage());
-	Log.d("Custom-UI", "Medium Image = " + p.getMediumImage());
-	Log.d("Custom-UI", "Large Image = " + p.getLargeImage());
+	Log.d("ShareButton", "Photo ID = " + p.getId());
+	Log.d("ShareButton", "Name     = " + p.getTitle());
+	Log.d("ShareButton", "Thumb Image = " + p.getThumbImage());
+	Log.d("ShareButton", "Small Image = " + p.getSmallImage());
+	Log.d("ShareButton", "Medium Image = " + p.getMediumImage());
+	Log.d("ShareButton", "Large Image = " + p.getLargeImage());
        }
      }
   }
