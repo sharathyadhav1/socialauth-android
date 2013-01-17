@@ -64,8 +64,8 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then shows a dialog containing options for getting user
- * profile, for updating status, to get contact list, to get feeds , to upload image
- * and to get albums <br>
+ * profile, for updating status, to get contact list, to get feeds , to upload
+ * image and to get albums <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -155,11 +155,18 @@ public class CustomUI extends Activity {
 		@Override
 		public void onError(SocialAuthError error) {
 			Log.d("Custom-UI", "Error");
+			error.printStackTrace();
 		}
 
 		@Override
 		public void onCancel() {
 			Log.d("Custom-UI", "Cancelled");
+		}
+
+		@Override
+		public void onBack() {
+			Log.d("Custom-UI", "Dialog Closed by pressing Back Key");
+
 		}
 	}
 
@@ -190,15 +197,18 @@ public class CustomUI extends Activity {
 			break;
 		}
 
-		case 1: 
-		{
+		case 1: {
+			// Get Contacts for FourSquare , Google
+			// Dismiss Dialog for Runkeeper and SalesForce
+			// Update Status for rest of providers
+
 			if (provider.equalsIgnoreCase("foursquare")
 					|| provider.equalsIgnoreCase("google")) {
 				// Get Contacts for FourSquare and Google
 				getContacts();
 			} else if (provider.equalsIgnoreCase("runkeeper")
 					|| provider.equalsIgnoreCase("salesforce")) {
-				// Close Dialog 
+				// Close Dialog
 				dialog.dismiss();
 			} else {
 				// Code to Post Message for all providers
@@ -210,11 +220,14 @@ public class CustomUI extends Activity {
 			break;
 		}
 
-		case 2: 
-		{
+		case 2: {
+
+			// Dismiss Dialog for FourSquare , Google
+			// Get Contacts for rest of providers
+
 			if (provider.equalsIgnoreCase("foursquare")
 					|| provider.equalsIgnoreCase("google")) {
-				// Close Dialog 
+				// Close Dialog
 				dialog.dismiss();
 			} else {
 				// Get Contacts for Remaining Providers
@@ -223,15 +236,17 @@ public class CustomUI extends Activity {
 			break;
 		}
 
-		case 3: 
-		{	
-			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter") 
-				|| provider.equalsIgnoreCase("linkedin")) {
-			
-				// Get Feeds : For Facebook , Twitter and Linkedin Only
+		case 3: {
+			// Get Feeds : For Facebook , Twitter and Linkedin Only
+			// Dismiss Dialog for rest of providers
+
+			if (provider.equalsIgnoreCase("facebook")
+					|| provider.equalsIgnoreCase("twitter")
+					|| provider.equalsIgnoreCase("linkedin")) {
+
 				List<Feed> feedList = adapter.getFeeds();
 				if (feedList != null && feedList.size() > 0) {
-				for (Feed f : feedList) {
+					for (Feed f : feedList) {
 						Log.d("Custom-UI", "Feed ID = " + f.getId());
 						Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
 						Log.d("Custom-UI", "Message = " + f.getMessage());
@@ -239,78 +254,84 @@ public class CustomUI extends Activity {
 						Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
 					}
 				}
-			}		
-			else
-			{
+			} else {
 				dialog.dismiss();
 			}
-			break;	
+			break;
 		}
 
-		case 4: 
-		{
-			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) 
-			{
+		case 4: {
+			// Upload Image for Facebook and Twitter
+
+			if (provider.equalsIgnoreCase("facebook")
+					|| provider.equalsIgnoreCase("twitter")) {
 				// Upload Photo
 				Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-					R.drawable.icon);
+						R.drawable.icon);
 
 				int imgStatus = adapter.uploadImage("HelloWorldTest",
-					"icon.png", bmp, 0);
+						"icon.png", bmp, 0);
 				Log.d("Custom-UI", String.valueOf(imgStatus));
 
 				Toast.makeText(CustomUI.this,
-					"View Logcat for Image Upload Information",
-					Toast.LENGTH_SHORT).show();
+						"View Logcat for Image Upload Information",
+						Toast.LENGTH_SHORT).show();
 			} else {
 				dialog.dismiss();
 			}
 			break;
 		}
-			
-		case 5: 
-		{
-			if (provider.equalsIgnoreCase("facebook")) 
-			{
+
+		case 5: {
+			// Get Albums for Facebook and Twitter
+
+			if (provider.equalsIgnoreCase("facebook")
+					|| provider.equalsIgnoreCase("twitter")) {
 				List<Album> albumList = adapter.getAlbums();
-				
+
 				if (albumList != null && albumList.size() > 0) {
-				
-				// Get Photos inside Album	
-				for (Album a : albumList) {
-					
-					Log.d("Custom-UI", "Album ID = " +  a.getId());
-					Log.d("Custom-UI", "Album Name = " +  a.getName());
-					Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
-					Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
-									
-					photosList = a.getPhotos();
-					
-					if (photosList != null && photosList.size() > 0) {
-					
-					for (Photo p : photosList) {
-						Log.d("Custom-UI", "Photo ID = " +  p.getId());
-						Log.d("Custom-UI", "Name     = " + p.getName());
-						Log.d("Custom-UI", "Thumb Image = " + p.getThumbImage());
-						Log.d("Custom-UI", "Small Image = " + p.getSmallImage());
-						Log.d("Custom-UI", "Medium Image = " + p.getMediumImage());
-						Log.d("Custom-UI", "Large Image = " +  p.getLargeImage());
+
+					// Get Photos inside Album
+					for (Album a : albumList) {
+
+						Log.d("Custom-UI", "Album ID = " + a.getId());
+						Log.d("Custom-UI", "Album Name = " + a.getName());
+						Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
+						Log.d("Custom-UI",
+								"Photos Count = " + a.getPhotosCount());
+
+						photosList = a.getPhotos();
+
+						if (photosList != null && photosList.size() > 0) {
+
+							for (Photo p : photosList) {
+								Log.d("Custom-UI", "Photo ID = " + p.getId());
+								Log.d("Custom-UI", "Name     = " + p.getTitle());
+								Log.d("Custom-UI",
+										"Thumb Image = " + p.getThumbImage());
+								Log.d("Custom-UI",
+										"Small Image = " + p.getSmallImage());
+								Log.d("Custom-UI",
+										"Medium Image = " + p.getMediumImage());
+								Log.d("Custom-UI",
+										"Large Image = " + p.getLargeImage());
+							}
+						}
 					}
 				}
-				}
-				}
 			} else {
 				dialog.dismiss();
 			}
 			break;
 		}
-		
-		case 6:
-		{
+
+		case 6: {
+			// Dismiss Dialog
+
 			dialog.dismiss();
 			break;
 		}
-		
+
 		}
 
 	}
