@@ -1,4 +1,4 @@
-#summary This class lets you create your own UI and Share your messages,links, Get Profile Details , Get User Contacts.
+#summary This class lets you create your own UI and Share your messages,links, Get Profile Details , Get User Contacts, User Feeds , get Albums, Upload Albums.
 
 =Custom UI=
 
