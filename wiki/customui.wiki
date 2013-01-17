@@ -153,7 +153,7 @@ Then use below code to post image with description or status.
 
 {{{
 	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
-	Log.d("ShareButton", String.valueOf(imgStatus));
+	Log.d("Custom-UI", String.valueOf(imgStatus));
 }}} 
 
 
