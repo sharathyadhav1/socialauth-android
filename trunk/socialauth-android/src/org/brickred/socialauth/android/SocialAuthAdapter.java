@@ -112,22 +112,21 @@ public class SocialAuthAdapter {
 				Constants.LINKEDIN,
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), MYSPACE(
-				Constants.MYSPACE, "http://socialauth.brickred.com",
-				"http://socialauth.brickred.com/?oauth_problem"), RUNKEEPER(
+				Constants.MYSPACE, "http://socialauth.in/",
+				"http://socialauth.in/?oauth_problem"), RUNKEEPER(
 				Constants.RUNKEEPER,
 				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do/?error"), YAHOO(
-				Constants.YAHOO,
-				"http://opensource.brickred.com/socialauthdemo",
-				"http://opensource.brickred.com/socialauthdemo/?oauth_problem"), FOURSQUARE(
+				Constants.YAHOO, "http://socialauth.in/socialauthdemo",
+				"http://socialauth.in/socialauthdemo/?oauth_problem"), FOURSQUARE(
 				Constants.FOURSQUARE,
-				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do",
-				"http://opensource.brickred.com/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), GOOGLE(
-				Constants.GOOGLE, "http://opensource.brickred.com",
-				"http://opensource.brickred.com/?oauth_problem"), YAMMER(
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), GOOGLE(
+				Constants.GOOGLE, "http://socialauth.in/socialauthdemo",
+				"http://socialauth.in/socialauthdemo/?oauth_problem"), YAMMER(
 				Constants.YAMMER,
-				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do",
-				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
 				Constants.SALESFORCE,
 				"https://opensource.brickred.com:8443/socialauthdemo/socialAuthSuccessAction.do",
 				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem");
@@ -578,8 +577,8 @@ public class SocialAuthAdapter {
 	 */
 	public int uploadImage(String message, String fileName, Bitmap bitmap,
 			int quality) {
-
 		Integer uploadStatus = 0;
+
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
@@ -596,7 +595,6 @@ public class SocialAuthAdapter {
 
 			uploadStatus = new uploadImageTask().execute(message, fileName,
 					inputStream).get();
-
 			return uploadStatus.intValue();
 
 		} catch (InterruptedException e) {
@@ -609,7 +607,6 @@ public class SocialAuthAdapter {
 		} catch (Exception e) {
 			return 0;
 		}
-
 	}
 
 	// ******************* Private Utility Methods**********************//
