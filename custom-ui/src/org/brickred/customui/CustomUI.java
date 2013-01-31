@@ -237,12 +237,11 @@ public class CustomUI extends Activity {
 		}
 
 		case 3: {
-			// Get Feeds : For Facebook , Twitter and Linkedin Only
+			// Get Feeds : For Facebook , Twitter Only
 			// Dismiss Dialog for rest of providers
 
 			if (provider.equalsIgnoreCase("facebook")
-					|| provider.equalsIgnoreCase("twitter")
-					|| provider.equalsIgnoreCase("linkedin")) {
+					|| provider.equalsIgnoreCase("twitter")) {
 
 				List<Feed> feedList = adapter.getFeeds();
 				if (feedList != null && feedList.size() > 0) {
@@ -253,6 +252,9 @@ public class CustomUI extends Activity {
 						Log.d("Custom-UI", "Get From = " + f.getFrom());
 						Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
 					}
+					Toast.makeText(CustomUI.this,
+							"View Logcat for Feeds Information",
+							Toast.LENGTH_SHORT).show();
 				}
 			} else {
 				dialog.dismiss();
@@ -318,6 +320,9 @@ public class CustomUI extends Activity {
 							}
 						}
 					}
+					Toast.makeText(CustomUI.this,
+							"View Logcat for Album Information",
+							Toast.LENGTH_SHORT).show();
 				}
 			} else {
 				dialog.dismiss();
