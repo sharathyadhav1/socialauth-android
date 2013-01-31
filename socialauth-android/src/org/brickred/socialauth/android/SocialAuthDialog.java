@@ -378,11 +378,8 @@ public class SocialAuthDialog extends Dialog {
 								ZoomDensity.MEDIUM);
 					}
 				} else if (Util.UI_DENSITY == 240) {
-					if (Util.UI_SIZE == 4)
-						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-					else
-						mWebView.getSettings().setDefaultZoom(
-								ZoomDensity.MEDIUM);
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(90);
 				} else if (Util.UI_DENSITY == 320) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 				}
