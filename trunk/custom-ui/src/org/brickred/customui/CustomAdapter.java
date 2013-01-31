@@ -163,7 +163,7 @@ public class CustomAdapter extends BaseAdapter {
 							"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
 				else if (providers[position].equals(Provider.YAMMER))
 					adapter.addCallBack(Provider.YAMMER,
-							"http://socialauth.in/socialauthdemo");
+							"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 				// This method will enable the selected provider
 				adapter.authorize(ctx, providers[position]);
@@ -202,7 +202,7 @@ public class CustomAdapter extends BaseAdapter {
 								"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
 					else if (providers[position].equals(Provider.YAMMER))
 						adapter.addCallBack(Provider.YAMMER,
-								"http://socialauth.in/socialauthdemo");
+								"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 					// This method will enable the selected provider
 					adapter.authorize(ctx, providers[position]);
