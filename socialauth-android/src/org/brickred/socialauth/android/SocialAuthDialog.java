@@ -211,7 +211,8 @@ public class SocialAuthDialog extends Dialog {
 		mWebView.loadUrl(mUrl);
 		mWebView.setLayoutParams(FILL);
 
-		if (mProviderName.toString().equalsIgnoreCase("yahoo"))
+		if (mProviderName.toString().equalsIgnoreCase("yahoo")
+				|| mProviderName.toString().equalsIgnoreCase("yammer"))
 			mWebView.getSettings().setUseWideViewPort(true);
 
 		mContent.addView(mWebView);
@@ -355,6 +356,36 @@ public class SocialAuthDialog extends Dialog {
 								ZoomDensity.MEDIUM);
 				} else
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+			}
+
+			if (mProviderName.toString().equalsIgnoreCase("linkedin")) {
+				if (Util.UI_DENSITY == 120)
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+				mWebView.setInitialScale(60);
+			}
+
+			// To set zoom density of yammer dialog
+			if (mProviderName.toString().equalsIgnoreCase("yammer")) {
+				if (Util.UI_DENSITY == 120) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					mWebView.setInitialScale(55);
+				} else if (Util.UI_DENSITY == 160) {
+					if (Util.UI_SIZE == 3) {
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+						mWebView.setInitialScale(65);
+					} else if (Util.UI_SIZE == 10) {
+						mWebView.getSettings().setDefaultZoom(
+								ZoomDensity.MEDIUM);
+					}
+				} else if (Util.UI_DENSITY == 240) {
+					if (Util.UI_SIZE == 4)
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					else
+						mWebView.getSettings().setDefaultZoom(
+								ZoomDensity.MEDIUM);
+				} else if (Util.UI_DENSITY == 320) {
+					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+				}
 			}
 
 			Log.d("SocialAuth-WebView", "onPageStart:" + url);

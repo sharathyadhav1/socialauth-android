@@ -112,7 +112,7 @@ public class SocialAuthAdapter {
 				Constants.LINKEDIN,
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), MYSPACE(
-				Constants.MYSPACE, "http://socialauth.in/",
+				Constants.MYSPACE, "http://socialauth.in",
 				"http://socialauth.in/?oauth_problem"), RUNKEEPER(
 				Constants.RUNKEEPER,
 				"http://socialauth.in/socialauthdemo/socialauthSuccessAction.do",
@@ -128,8 +128,8 @@ public class SocialAuthAdapter {
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
 				Constants.SALESFORCE,
-				"https://opensource.brickred.com:8443/socialauthdemo/socialAuthSuccessAction.do",
-				"http://opensource.brickred.com/SocialAutho/socialAuthSuccessAction.do/?oauth_problem");
+				"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem");
 
 		private String name;
 		private String cancelUri;
