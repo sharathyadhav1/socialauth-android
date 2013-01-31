@@ -152,8 +152,22 @@ public class CustomAdapter extends BaseAdapter {
 
 				CustomUI.pos = position;
 
+				if (providers[position].equals(Provider.GOOGLE))
+					adapter.addCallBack(Provider.GOOGLE,
+							"http://socialauth.in/socialauthdemo");
+				else if (providers[position].equals(Provider.FOURSQUARE))
+					adapter.addCallBack(Provider.FOURSQUARE,
+							"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+				else if (providers[position].equals(Provider.SALESFORCE))
+					adapter.addCallBack(Provider.SALESFORCE,
+							"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
+				else if (providers[position].equals(Provider.YAMMER))
+					adapter.addCallBack(Provider.YAMMER,
+							"http://socialauth.in/socialauthdemo");
+
 				// This method will enable the selected provider
 				adapter.authorize(ctx, providers[position]);
+
 			}
 		});
 
@@ -173,13 +187,25 @@ public class CustomAdapter extends BaseAdapter {
 				if (text.equalsIgnoreCase("sign in")) {
 					CustomUI.pos = position;
 
-					// Use addCallback method from share-button example if using
+					// Use addCallback method if using
 					// your own keys for FOURSQUARE , GOOGLE , SALESFORCE ,
 					// YAMMER
 
+					if (providers[position].equals(Provider.GOOGLE))
+						adapter.addCallBack(Provider.GOOGLE,
+								"http://socialauth.in/socialauthdemo");
+					else if (providers[position].equals(Provider.FOURSQUARE))
+						adapter.addCallBack(Provider.FOURSQUARE,
+								"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+					else if (providers[position].equals(Provider.SALESFORCE))
+						adapter.addCallBack(Provider.SALESFORCE,
+								"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
+					else if (providers[position].equals(Provider.YAMMER))
+						adapter.addCallBack(Provider.YAMMER,
+								"http://socialauth.in/socialauthdemo");
+
 					// This method will enable the selected provider
 					adapter.authorize(ctx, providers[position]);
-
 				} else if (text.equalsIgnoreCase("sign out")) {
 					// Sign Out
 					boolean status = adapter.signOut(providers[position]
