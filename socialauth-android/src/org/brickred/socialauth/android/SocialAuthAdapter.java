@@ -413,34 +413,42 @@ public class SocialAuthAdapter {
 	 * @return Status of signing out
 	 */
 	public boolean signOut(String providerName) {
+		AccessGrant accessGrant = null;
 		CookieSyncManager cookieSyncMngr = CookieSyncManager
 				.createInstance(context);
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.removeAllCookie();
 
-		AccessGrant accessGrant = socialAuthManager.getProvider(providerName)
-				.getAccessGrant();
-		if (accessGrant != null)
-			try {
-				socialAuthManager.getProvider(providerName)
-						.setAccessGrant(null);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		if (providerName != null) {
+			accessGrant = socialAuthManager.getProvider(providerName)
+					.getAccessGrant();
 
-		String filePath = context.getFilesDir().getAbsolutePath()
-				+ File.separatorChar + providerName + "_accessGrant.ser";
-		File tokenFile = new File(filePath);
-		tokenFile.delete();
+			if (accessGrant != null)
+				try {
+					socialAuthManager.getProvider(providerName).setAccessGrant(
+							null);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-		socialAuthManager.disconnectProvider(providerName);
+			String filePath = context.getFilesDir().getAbsolutePath()
+					+ File.separatorChar + providerName + "_accessGrant.ser";
+			File tokenFile = new File(filePath);
+			tokenFile.delete();
 
-		if (socialAuthManager.getConnectedProvidersIds().contains(providerName))
-			Log.d("SocialAuth", " Provider Still Connected");
+			socialAuthManager.disconnectProvider(providerName);
 
-		Log.d("SocialAuthAdapter", "Disconnecting Provider");
-		return true;
+			if (socialAuthManager.getConnectedProvidersIds().contains(
+					providerName))
+				Log.d("SocialAuth", " Provider Still Connected");
+
+			Log.d("SocialAuthAdapter", "Disconnecting Provider");
+			return true;
+		} else {
+			Log.d("SocialAuthAdapter", "The provider name should be same");
+			return false;
+		}
 	}
 
 	/**
