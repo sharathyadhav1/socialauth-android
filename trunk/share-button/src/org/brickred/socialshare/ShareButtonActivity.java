@@ -143,16 +143,17 @@ public class ShareButtonActivity extends Activity {
 		adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
 
 		// Providers require setting user call Back url
-		adapter.addCallBack(Provider.FOURSQUARE, "http://recfit.sayantam.in/");
+		adapter.addCallBack(Provider.FOURSQUARE,
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 		adapter.addCallBack(Provider.GOOGLE,
 				"http://socialauth.in/socialauthdemo");
 
 		adapter.addCallBack(Provider.SALESFORCE,
-				"https://recfit.sayantam.in:8443/");
+				"https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
 
 		adapter.addCallBack(Provider.YAMMER,
-				"http://socialauth.in/socialauthdemo");
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 		// Enable Provider
 		adapter.enable(share);
