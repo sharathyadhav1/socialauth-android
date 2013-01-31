@@ -161,7 +161,7 @@ public class ShareBarActivity extends Activity {
 					"View Logcat for Profile Information", Toast.LENGTH_SHORT)
 					.show();
 
-			// Get Feeds : For Facebook , Twitter and Linkedin Only
+			// Get Feeds : For Facebook , Twitter Only
 			List<Feed> feedList = adapter.getFeeds();
 			if (feedList != null && feedList.size() > 0) {
 				for (Feed f : feedList) {
