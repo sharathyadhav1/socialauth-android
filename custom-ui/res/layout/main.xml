@@ -61,6 +61,7 @@
 		android:layout_width="wrap_content"
 		android:layout_margin="10dp"
 		android:background="@drawable/list_gradient"
+		android:scrollingCache="false"
 		android:divider="#e4e4e4"
 		android:dividerHeight="2px"
 	/>    

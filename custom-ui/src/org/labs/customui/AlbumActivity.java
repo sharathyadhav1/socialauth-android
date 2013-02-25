@@ -30,7 +30,7 @@ import java.util.List;
 import org.brickred.socialauth.Album;
 import org.brickred.socialauth.Photo;
 import org.labs.customui.adapter.AlbumsAdapter;
-import org.labs.customui.adapter.ImageDownloader;
+import org.labs.customui.adapter.ImageLoader;
 import org.labs.customui.adapter.PhotoAdapter;
 
 import android.app.Activity;
@@ -67,7 +67,6 @@ public class AlbumActivity extends Activity {
 
 	// Other Components
 	String providerName;
-	private final ImageDownloader imageDownloader = new ImageDownloader();
 	boolean photoListFlag = false;
 	boolean photoFlag = false;
 
@@ -125,6 +124,8 @@ public class AlbumActivity extends Activity {
 		gridView.setAdapter(photoAdapter);
 		textView.setText(bean.getName());
 
+		final ImageLoader imageLoader = new ImageLoader(AlbumActivity.this);
+
 		gridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -139,7 +140,8 @@ public class AlbumActivity extends Activity {
 				ImageView picture = (ImageView) AlbumActivity.this.findViewById(R.id.picture);
 				TextView pictureTitle = (TextView) AlbumActivity.this.findViewById(R.id.pictureTitle);
 				frameView.setVisibility(View.VISIBLE);
-				imageDownloader.download(photoBean.getLargeImage(), picture);
+				imageLoader.DisplayImage(photoBean.getLargeImage(), picture);
+
 				pictureTitle.setText(photoBean.getTitle());
 
 			}

@@ -56,13 +56,14 @@ public class PhotoAdapter extends ArrayAdapter<Photo> {
 
 	// Other Components
 	PhotoHolder photoHolder;
-	private final ImageDownloader imageDownloader = new ImageDownloader();
+	ImageLoader imageLoader;
 
 	public PhotoAdapter(Context context, int textViewResourceId, List<Photo> photos) {
 		super(context, textViewResourceId);
 		this.photos = photos;
 		this.context = context;
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader(context);
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class PhotoAdapter extends ArrayAdapter<Photo> {
 		if (bean.getTitle() != null)
 			Log.d("LifeView", "Photo Title = " + bean.getTitle());
 
-		imageDownloader.download(bean.getSmallImage(), photoHolder.photoThumbnail);
+		imageLoader.DisplayImage(bean.getSmallImage(), photoHolder.photoThumbnail);
 
 		return row;
 	}

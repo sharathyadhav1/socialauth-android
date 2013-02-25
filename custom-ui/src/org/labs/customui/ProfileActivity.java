@@ -26,7 +26,7 @@ package org.labs.customui;
 
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.SocialAuthAdapter;
-import org.labs.customui.adapter.ImageDownloader;
+import org.labs.customui.adapter.ImageLoader;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -74,7 +74,7 @@ public class ProfileActivity extends Activity {
 
 	// Variables
 	String provider_name;
-	private final ImageDownloader imageDownloader = new ImageDownloader();
+	ImageLoader imageLoader;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,6 +82,17 @@ public class ProfileActivity extends Activity {
 		setContentView(R.layout.profile);
 
 		profileMap = (Profile) getIntent().getSerializableExtra("profile");
+		// Log.d("Custom-UI", "Validate ID = " + profileMap.getValidatedId());
+		// Log.d("Custom-UI", "First Name  = " + profileMap.getFirstName());
+		// Log.d("Custom-UI", "Last Name   = " + profileMap.getLastName());
+		// Log.d("Custom-UI", "Email       = " + profileMap.getEmail());
+		// Log.d("Custom-UI", "Gender  	 = " + profileMap.getGender());
+		// Log.d("Custom-UI", "Country  	 = " + profileMap.getCountry());
+		// Log.d("Custom-UI", "Language  	 = " + profileMap.getLanguage());
+		// Log.d("Custom-UI", "Location 	 = " + profileMap.getLocation());
+		// Log.d("Custom-UI", "Profile Image URL  = " +
+		// profileMap.getProfileImageURL());
+
 		provider_name = getIntent().getStringExtra("provider");
 
 		// Set title
@@ -94,7 +105,9 @@ public class ProfileActivity extends Activity {
 		country = (TextView) findViewById(R.id.country);
 		image = (ImageView) findViewById(R.id.imgView);
 
-		imageDownloader.download(profileMap.getProfileImageURL(), image);
+		imageLoader = new ImageLoader(ProfileActivity.this);
+
+		imageLoader.DisplayImage(profileMap.getProfileImageURL(), image);
 
 		// Name:
 		// Facebook returns : FullName,FirstName,Last Name
