@@ -410,7 +410,7 @@ public class SocialAuthAdapter {
 				socialAuthManager.disconnectProvider(providerName);
 
 			Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
-			edit.clear();
+			edit.remove(providerName.toString() + " key");
 			edit.commit();
 
 			Log.d("SocialAuthAdapter", "Disconnecting Provider");
