@@ -453,7 +453,7 @@ public class SocialAuthAdapter {
 	 *            default false , Set true to disable dialog titlebar
 	 * 
 	 */
-	public void disableTitle(boolean titleStatus) {
+	public void setTitleVisible(boolean titleStatus) {
 		SocialAuthDialog.titleStatus = titleStatus;
 	}
 
@@ -465,7 +465,7 @@ public class SocialAuthAdapter {
 
 	public Profile getUserProfile() {
 		try {
-			profileMap = new profileTask().execute().get();
+			profileMap = new ProfileTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -482,7 +482,7 @@ public class SocialAuthAdapter {
 
 	public List<Contact> getContactList() {
 		try {
-			contactsList = new contactTask().execute().get();
+			contactsList = new ContactTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -505,7 +505,7 @@ public class SocialAuthAdapter {
 
 	public List<Feed> getFeeds() {
 		try {
-			feedList = new feedTask().execute().get();
+			feedList = new FeedTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -529,7 +529,7 @@ public class SocialAuthAdapter {
 
 	public List<Album> getAlbums() {
 		try {
-			albumList = new albumTask().execute().get();
+			albumList = new AlbumTask().execute().get();
 		} catch (InterruptedException e) {
 			dialogListener.onError(new SocialAuthError("Unknown Error", e));
 		} catch (ExecutionException e) {
@@ -569,7 +569,7 @@ public class SocialAuthAdapter {
 
 			InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
 
-			uploadStatus = new uploadImageTask().execute(message, fileName, inputStream).get();
+			uploadStatus = new UploadImageTask().execute(message, fileName, inputStream).get();
 			return uploadStatus.intValue();
 
 		} catch (InterruptedException e) {
@@ -752,7 +752,7 @@ public class SocialAuthAdapter {
 	 * AsyncTask to get user profile
 	 */
 
-	private class profileTask extends AsyncTask<Void, Void, Profile> {
+	private class ProfileTask extends AsyncTask<Void, Void, Profile> {
 
 		@Override
 		protected Profile doInBackground(Void... params) {
@@ -772,7 +772,7 @@ public class SocialAuthAdapter {
 	 * AsyncTask to retrieve contacts
 	 */
 
-	private class contactTask extends AsyncTask<Void, Void, List<Contact>> {
+	private class ContactTask extends AsyncTask<Void, Void, List<Contact>> {
 
 		@Override
 		protected List<Contact> doInBackground(Void... params) {
@@ -792,7 +792,7 @@ public class SocialAuthAdapter {
 	 * AsyncTask to retrieve albums
 	 */
 
-	private class albumTask extends AsyncTask<Void, Void, List<Album>> {
+	private class AlbumTask extends AsyncTask<Void, Void, List<Album>> {
 
 		@Override
 		protected List<Album> doInBackground(Void... params) {
@@ -819,7 +819,7 @@ public class SocialAuthAdapter {
 	 * AsyncTask to retrieve feeds
 	 */
 
-	private class feedTask extends AsyncTask<Void, Void, List<Feed>> {
+	private class FeedTask extends AsyncTask<Void, Void, List<Feed>> {
 
 		@Override
 		protected List<Feed> doInBackground(Void... params) {
@@ -845,7 +845,7 @@ public class SocialAuthAdapter {
 	 * AsyncTask to uploadImage
 	 */
 
-	private class uploadImageTask extends AsyncTask<Object, Void, Integer> {
+	private class UploadImageTask extends AsyncTask<Object, Void, Integer> {
 
 		@Override
 		protected Integer doInBackground(Object... params) {
