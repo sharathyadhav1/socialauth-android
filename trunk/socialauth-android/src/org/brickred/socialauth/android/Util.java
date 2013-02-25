@@ -55,6 +55,7 @@ public final class Util {
 	public static int UI_DENSITY;
 	public static int UI_SIZE;
 	public static int UI_YAHOO_SCROLL;
+	public static int UI_YAHOO_ALLOW;
 	public static int UI_RESOLUTION;
 
 	/**
@@ -195,6 +196,7 @@ public final class Util {
 				if (screenInch <= 7) {
 					UI_SIZE = 4;
 					UI_YAHOO_SCROLL = 290;
+					UI_YAHOO_ALLOW = 125;
 
 				} else {
 					UI_SIZE = 10;
@@ -210,13 +212,21 @@ public final class Util {
 					// For devices having width 320
 					if (width == 320) {
 						UI_YAHOO_SCROLL = 390;
+						UI_YAHOO_ALLOW = 105;
 						UI_SIZE = 3;
-					} else {
-						UI_YAHOO_SCROLL = 500;
+					} else if (width == 480) {
+						UI_YAHOO_SCROLL = 600;
+						UI_YAHOO_ALLOW = 200;
 						UI_SIZE = 4;
+					} else {
+						UI_YAHOO_SCROLL = 1;
+						UI_YAHOO_ALLOW = 1;
+						UI_SIZE = 6;
 					}
 				} else {
 					UI_SIZE = 10;
+					UI_YAHOO_SCROLL = 1;
+					UI_YAHOO_ALLOW = 1;
 				}
 
 				break;
@@ -224,41 +234,26 @@ public final class Util {
 			case DisplayMetrics.DENSITY_HIGH:
 
 				UI_DENSITY = 240;
+				UI_YAHOO_SCROLL = 715;
+				UI_YAHOO_ALLOW = 375;
 
-				if (screenInch <= 7) {
-
-					// for devices having width 720
-					if (width == 720) {
-						UI_SIZE = 6;
-						UI_YAHOO_SCROLL = 700;
-
-					}
-					// for devices having width 600
-					else if (width == 600) {
-						UI_YAHOO_SCROLL = 450;
-						UI_SIZE = 4;
-					} else {
-						UI_SIZE = 4;
-						UI_YAHOO_SCROLL = 720;
-					}
-				} else {
-					UI_SIZE = 10;
-				}
 				break;
 			case DisplayMetrics.DENSITY_XHIGH:
 				UI_DENSITY = 320;
-				if (screenInch <= 7) {
-					UI_SIZE = 4;
-
-					if (width < 1000)
-						UI_YAHOO_SCROLL = 750;
-					else
-						UI_YAHOO_SCROLL = 250;
-				} else {
+				if (width == 720) {
+					UI_SIZE = 7;
+					UI_YAHOO_SCROLL = 715;
+					UI_YAHOO_ALLOW = 350;
+				} else if (width == 1280) {
 					UI_SIZE = 10;
+					UI_YAHOO_SCROLL = 1;
+					UI_YAHOO_ALLOW = 1;
+				} else {
+					UI_YAHOO_SCROLL = 1;
+					UI_YAHOO_ALLOW = 1;
 				}
-				break;
 
+				break;
 			default:
 				break;
 			}
