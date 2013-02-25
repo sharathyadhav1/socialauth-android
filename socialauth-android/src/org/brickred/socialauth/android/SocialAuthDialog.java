@@ -24,9 +24,6 @@
 
 package org.brickred.socialauth.android;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.Map;
 
 import org.brickred.socialauth.AuthProvider;
@@ -38,6 +35,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -46,6 +44,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -243,11 +242,15 @@ public class SocialAuthDialog extends Dialog {
 
 								AuthProvider auth = mSocialAuthManager
 										.connect(params);
-								writeTokentoFile(auth);
+								writeToken(auth);
 
 								handler.post(new Runnable() {
 									@Override
 									public void run() {
+										if (mSpinner != null
+												&& mSpinner.isShowing())
+											mSpinner.dismiss();
+
 										Bundle bundle = new Bundle();
 										bundle.putString(
 												SocialAuthAdapter.PROVIDER,
@@ -327,9 +330,8 @@ public class SocialAuthDialog extends Dialog {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 					mWebView.setInitialScale(70);
 					count = 1;
-				} else if (Util.UI_SIZE == 6 && Util.UI_DENSITY == 240) {
+				} else if (Util.UI_DENSITY == 240) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-					mWebView.setInitialScale(160);
 					count = 1;
 				} else {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
@@ -340,24 +342,21 @@ public class SocialAuthDialog extends Dialog {
 
 			// To set zoom density of yahoo dialog
 			if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
-				if (Util.UI_DENSITY == 160) {
-					if (Util.UI_SIZE == 3)
-						mWebView.getSettings().setDefaultZoom(
-								ZoomDensity.MEDIUM);
-					else
+				if (url.startsWith("https://login.yahoo.com/config/login")) {
+					if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 4) {
 						mWebView.getSettings()
 								.setDefaultZoom(ZoomDensity.CLOSE);
-				} else if (Util.UI_DENSITY == 240) {
-					if (Util.UI_SIZE == 6)
-						mWebView.getSettings()
-								.setDefaultZoom(ZoomDensity.CLOSE);
-					else
+						mWebView.setInitialScale(155);
+					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 10) {
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+						mWebView.setInitialScale(120);
+					} else
 						mWebView.getSettings().setDefaultZoom(
 								ZoomDensity.MEDIUM);
-				} else
-					mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+				}
 			}
 
+			// To set zoom density of linkedin dialog for ldpi
 			if (mProviderName.toString().equalsIgnoreCase("linkedin")) {
 				if (Util.UI_DENSITY == 120)
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
@@ -379,7 +378,6 @@ public class SocialAuthDialog extends Dialog {
 					}
 				} else if (Util.UI_DENSITY == 240) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-					mWebView.setInitialScale(90);
 				} else if (Util.UI_DENSITY == 320) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 				}
@@ -401,11 +399,25 @@ public class SocialAuthDialog extends Dialog {
 							try {
 								AuthProvider auth = mSocialAuthManager
 										.connect(params);
-								writeTokentoFile(auth);
+
+								// Don't save token for yahoo, yammer,
+								// salesforce
+								if (!mProviderName.toString().equalsIgnoreCase(
+										"yahoo")
+										|| !mProviderName.toString()
+												.equalsIgnoreCase("yammer")
+										|| !mProviderName.toString()
+												.equalsIgnoreCase("salesforce"))
+									writeToken(auth);
 
 								handler.post(new Runnable() {
 									@Override
 									public void run() {
+
+										if (mSpinner != null
+												&& mSpinner.isShowing())
+											mSpinner.dismiss();
+
 										Bundle bundle = new Bundle();
 										bundle.putString(
 												SocialAuthAdapter.PROVIDER,
@@ -439,8 +451,26 @@ public class SocialAuthDialog extends Dialog {
 				public void onNewPicture(WebView view, Picture arg1) {
 					// To set zoom density of yahoo dialog
 					if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
-						mWebView.scrollTo(Util.UI_YAHOO_SCROLL, 0);
+						if (url.startsWith("https://login.yahoo.com/config/login"))
+							mWebView.scrollTo(Util.UI_YAHOO_SCROLL, 0);
+						else if (url
+								.startsWith("https://api.login.yahoo.com//oauth/v2")) {
+							if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 3)
+								mWebView.getSettings().setDefaultZoom(
+										ZoomDensity.FAR);
+							else
+								mWebView.getSettings().setDefaultZoom(
+										ZoomDensity.MEDIUM);
+
+							mWebView.scrollTo(Util.UI_YAHOO_ALLOW, 0);
+						}
 						mSpinner.dismiss();
+					}
+
+					if (mProviderName.toString().equalsIgnoreCase("yammer")) {
+						if (Util.UI_DENSITY == 240)
+							if (url.startsWith("https://www.yammer.com/dialog/authenticate"))
+								mWebView.scrollTo(115, 0);
 					}
 
 					if (mProviderName.toString().equalsIgnoreCase("runkeeper")
@@ -472,25 +502,37 @@ public class SocialAuthDialog extends Dialog {
 	 *            AuthProvider
 	 */
 
-	private void writeTokentoFile(AuthProvider auth) {
-		try {
+	private void writeToken(AuthProvider auth) {
 
-			AccessGrant accessGrant = auth.getAccessGrant();
+		AccessGrant accessGrant = auth.getAccessGrant();
+		String key = accessGrant.getKey();
+		String secret = accessGrant.getSecret();
 
-			String filePath = getContext().getFilesDir().getAbsolutePath()
-					+ File.separatorChar + mProviderName.toString()
-					+ "_accessGrant.ser";
+		String providerid = accessGrant.getProviderId();
 
-			FileOutputStream fs = new FileOutputStream(new File(filePath));
-			ObjectOutputStream os = new ObjectOutputStream(fs);
-			os.writeObject(accessGrant);
+		Map<String, Object> attributes = accessGrant.getAttributes();
 
-			os.flush();
-			os.close();
-			fs.close();
-		} catch (Exception e) {
-			e.printStackTrace();
+		Editor edit = PreferenceManager.getDefaultSharedPreferences(
+				getContext()).edit();
+
+		edit.putString(mProviderName.toString() + " key", key);
+		edit.putString(mProviderName.toString() + " secret", secret);
+		edit.putString(mProviderName.toString() + " providerid", providerid);
+
+		if (attributes != null) {
+			for (Map.Entry entry : attributes.entrySet()) {
+				System.out.println(entry.getKey() + ", " + entry.getValue());
+			}
+
+			for (String s : attributes.keySet()) {
+				edit.putString(mProviderName.toString() + "attribute " + s,
+						String.valueOf(attributes.get(s)));
+			}
+
 		}
+
+		edit.commit();
+
 	}
 
 	/**
