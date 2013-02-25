@@ -59,13 +59,14 @@ public class AlbumsAdapter extends ArrayAdapter<Album> {
 
 	// Other Components
 	AlbumHolder albumHolder;
-	private final ImageDownloader imageDownloader = new ImageDownloader();
+	ImageLoader imageLoader;
 
 	public AlbumsAdapter(Context context, int textViewResourceId, List<Album> albums) {
 		super(context, textViewResourceId);
 		this.albums = albums;
 		this.context = context;
 		mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		imageLoader = new ImageLoader(context);
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class AlbumsAdapter extends ArrayAdapter<Album> {
 		}
 		Log.d("LifeView ", "Cover Photo = " + bean.getCoverPhoto());
 
-		imageDownloader.download(bean.getCoverPhoto(), albumHolder.coverImage);
+		imageLoader.DisplayImage(bean.getCoverPhoto(), albumHolder.coverImage);
 
 		Log.d("LifeView ", "Album Name = " + bean.getName());
 		albumHolder.albumName.setText(bean.getName());
