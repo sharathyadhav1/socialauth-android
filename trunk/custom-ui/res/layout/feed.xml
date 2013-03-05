@@ -28,41 +28,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f1eee9"
     android:orientation="vertical"
-    >         
+    android:background="#f1eee9"
+    >    
     <LinearLayout 
     android:orientation="horizontal"
-    android:id="@+id/topbar"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:padding="7dp"
     android:background="@drawable/blue_gradient"
     >   
 	    <TextView 
-			android:id="@+id/textview"
+			android:id="@+id/feedTitle"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_gravity="center_vertical"
 			android:textColor="#ffffff"
+			android:text="Feeds"
 			android:textSize="14sp"
 			android:layout_marginLeft="5dp"
 			android:textStyle="bold"
 		/>
-	</LinearLayout>
+	</LinearLayout>     
 	<View
         android:id="@+id/view01"
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="#313437" />
-    <ListView 
-		android:id="@+id/listview"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_margin="10dp"
-		android:background="@drawable/list_gradient"
-		android:scrollingCache="false"
-		android:divider="#e4e4e4"
+        android:background="#313437" />  
+    <ListView
+        android:id="@+id/feedList"
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:background="@drawable/list_gradient"
+    	android:layout_marginTop="10dp"
+    	android:layout_marginLeft="2dp"
+    	android:layout_marginRight="2dp"
+    	android:layout_marginBottom="2dp"   	
+    	android:divider="#e4e4e4"
+    	android:scrollingCache="false"
 		android:dividerHeight="2px"
-	/>    
-</LinearLayout>
+        />
+</LinearLayout>  
