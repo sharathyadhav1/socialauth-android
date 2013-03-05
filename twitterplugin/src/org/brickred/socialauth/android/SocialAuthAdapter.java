@@ -26,10 +26,8 @@ package org.brickred.socialauth.android;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +50,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -168,26 +167,12 @@ public class SocialAuthAdapter {
 		}
 	}
 
-	public enum RequestType {
-		CONTACTS, FEEDS, ALBUMS, UPLOAD
-	}
-
 	// Constants
 	public static final String PROVIDER = "provider";
-	public static final String ALBUM = "album";
-	public static final String FEED = "feed";
-	public static final String CONTACT = "contact";
-	public static final String UPLOAD_IMAGE = "upload_iamge";
-	public static final String PROFILE = "profile";
-
 	public static final String ACCESS_GRANT = "access_grant";
 
 	// SocialAuth Components
 	private SocialAuthManager socialAuthManager;
-	private Profile profileMap;
-	private List<Contact> contactsList;
-	private List<Feed> feedList;
-	private List<Album> albumList, friendAlbumList;
 
 	// Variables
 	private DialogListener dialogListener;
@@ -403,165 +388,6 @@ public class SocialAuthAdapter {
 	}
 
 	/**
-	 * Signs out the user out of current provider
-	 * 
-	 * @return Status of signing out
-	 */
-	public boolean signOut(String providerName) {
-		AccessGrant accessGrant = null;
-		CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
-		CookieManager cookieManager = CookieManager.getInstance();
-		cookieManager.removeAllCookie();
-
-		if (providerName != null) {
-			accessGrant = socialAuthManager.getProvider(providerName).getAccessGrant();
-
-			if (accessGrant != null)
-				try {
-					socialAuthManager.getProvider(providerName).setAccessGrant(null);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			String filePath = context.getFilesDir().getAbsolutePath() + File.separatorChar + providerName
-					+ "_accessGrant.ser";
-			File tokenFile = new File(filePath);
-			tokenFile.delete();
-
-			socialAuthManager.disconnectProvider(providerName);
-
-			if (socialAuthManager.getConnectedProvidersIds().contains(providerName))
-				Log.d("SocialAuth", " Provider Still Connected");
-
-			Log.d("SocialAuthAdapter", "Disconnecting Provider");
-			return true;
-		} else {
-			Log.d("SocialAuthAdapter", "The provider name should be same");
-			return false;
-		}
-	}
-
-	/**
-	 * Method to update status of user
-	 * 
-	 * @param message
-	 *            The message to be send.
-	 */
-
-	public void updateStatus(final String message) {
-		Runnable runnable = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					getCurrentProvider().updateStatus(message);
-					Log.d("SocialAuthAdapter", "Message Posted");
-
-				} catch (Exception e) {
-					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
-				}
-			}
-		};
-
-		new Thread(runnable).start();
-	}
-
-	/**
-	 * Disable title of dialog.
-	 * 
-	 * @param titleStatus
-	 *            default false , Set true to disable dialog titlebar
-	 * 
-	 */
-	public void setTitleVisible(boolean titleStatus) {
-		SocialAuthDialog.titleStatus = titleStatus;
-	}
-
-	/**
-	 * Method to get Profile of User
-	 * 
-	 * Returns result in onReceive()
-	 */
-
-	public void getUserProfile() {
-		new ProfileTask().execute();
-	}
-
-	/**
-	 * Method to get List of Contacts
-	 * 
-	 * Returns result in onReceive()
-	 */
-
-	public void getContactList() {
-		new ContactTask().execute();
-	}
-
-	/**
-	 * Method to get feeds from provider
-	 * 
-	 * Returns result in onReceive()
-	 */
-
-	public void getFeeds() {
-		new FeedTask().execute();
-	}
-
-	/**
-	 * Method to get albums from provider
-	 * 
-	 * Returns result in onReceive()
-	 */
-
-	public void getAlbums() {
-		new AlbumTask().execute();
-	}
-
-	// public List<Album> getFriendAlbums(String id) {
-	// try {
-	// friendAlbumList = new friendAlbumTask().execute(id).get();
-	// } catch (InterruptedException e) {
-	// dialogListener.onError(new SocialAuthError("Unknown Error", e));
-	// } catch (ExecutionException e) {
-	// dialogListener.onError(new SocialAuthError("Unknown Error", e));
-	// }
-	//
-	// return albumList;
-	// }
-
-	/**
-	 * Method to upload image on provider
-	 * 
-	 * @param message
-	 *            message to be attached with image
-	 * @param fileName
-	 *            image file name
-	 * @param bitmap
-	 *            image bitmap to be uploaded
-	 * @param quality
-	 *            image quality for jpeg , enter 0 for png
-	 * 
-	 *            Returns result in onReceive()
-	 */
-	public void uploadImage(String message, String fileName, Bitmap bitmap, int quality) {
-
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
-			bitmap.compress(CompressFormat.PNG, 0, bos);
-		} else if (fileName.endsWith("JPEG") || fileName.endsWith("JPG") || fileName.endsWith("jpg")
-				|| fileName.endsWith("jpeg")) {
-			bitmap.compress(CompressFormat.JPEG, quality, bos);
-		} else {
-			Log.d("SocialAuthAdapter", "Image Format not supported");
-		}
-
-		InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
-		new UploadImageTask().execute(message, fileName, inputStream);
-	}
-
-	// ******************* Private Utility Methods**********************//
-
-	/**
 	 * Internal method to handle dialog-based authentication backend for
 	 * authorize().
 	 * 
@@ -725,31 +551,155 @@ public class SocialAuthAdapter {
 	}
 
 	/**
+	 * Signs out the user out of current provider
+	 * 
+	 * @return Status of signing out
+	 */
+	public boolean signOut(String providerName) {
+
+		CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
+		CookieManager cookieManager = CookieManager.getInstance();
+		cookieManager.removeAllCookie();
+
+		if (providerName != null) {
+
+			if (socialAuthManager.getConnectedProvidersIds().contains(providerName))
+				socialAuthManager.disconnectProvider(providerName);
+
+			Editor edit = PreferenceManager.getDefaultSharedPreferences(context).edit();
+			edit.remove(providerName.toString() + " key");
+			edit.commit();
+
+			Log.d("SocialAuthAdapter", "Disconnecting Provider");
+
+			return true;
+		} else {
+			Log.d("SocialAuthAdapter", "The provider name should be same");
+			return false;
+		}
+	}
+
+	/**
+	 * Disable title of dialog.
+	 * 
+	 * @param titleStatus
+	 *            default false , Set true to disable dialog titlebar
+	 * 
+	 */
+	public void setTitleVisible(boolean titleStatus) {
+		SocialAuthDialog.titleStatus = titleStatus;
+	}
+
+	/**
+	 * Method to update status of user
+	 * 
+	 * @param message
+	 *            The message to be send.
+	 */
+
+	public void updateStatus(final String message) {
+		Runnable runnable = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					getCurrentProvider().updateStatus(message);
+					Log.d("SocialAuthAdapter", "Message Posted");
+
+				} catch (Exception e) {
+					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
+				}
+			}
+		};
+
+		new Thread(runnable).start();
+	}
+
+	/**
+	 * Synchronous Method to get Profile of User Use this method inside
+	 * AsyncTask else you will get NetworkOSThreadException
+	 */
+
+	public Profile getUserProfile() {
+		Profile profileList = null;
+		try {
+			profileList = getCurrentProvider().getUserProfile();
+			Log.d("SocialAuthAdapter", "Received Profile Details");
+			return profileList;
+
+		} catch (Exception e) {
+			Log.d("SocialAuthAdapter", "Profile Details not Received");
+			return null;
+		}
+	}
+
+	/**
+	 * Asynchronous Method to get User Profile.Returns result in onExecute() of
+	 * AsyncTaskListener.
+	 */
+
+	public void getUserProfileAsync(SocialAuthListener<Profile> listener) {
+		new ProfileTask(listener).execute();
+	}
+
+	/**
 	 * AsyncTask to get user profile
 	 */
 
 	private class ProfileTask extends AsyncTask<Void, Void, Profile> {
 
+		SocialAuthListener<Profile> listener;
+
+		private ProfileTask(SocialAuthListener<Profile> listener) {
+			this.listener = listener;
+		}
+
 		@Override
 		protected Profile doInBackground(Void... params) {
-			try {
 
-				Profile profileList = getCurrentProvider().getUserProfile();
+			Profile profileList = null;
+			try {
+				profileList = getCurrentProvider().getUserProfile();
 				Log.d("SocialAuthAdapter", "Received Profile Details");
 				return profileList;
+
 			} catch (Exception e) {
-				dialogListener.onError(new SocialAuthError("Profile Details not Received", e));
+				e.printStackTrace();
+				listener.onError(new SocialAuthError("Profile Details not Received", e));
 				return null;
 			}
 		}
 
 		@Override
-		protected void onPostExecute(Profile profileList) {
-
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(SocialAuthAdapter.PROFILE, profileList);
-			dialogListener.onReceive(bundle);
+		protected void onPostExecute(Profile profile) {
+			listener.onExecute(profile);
 		}
+	}
+
+	/**
+	 * Synchronous Method to User Contacts. Use this method inside AsyncTask
+	 * else you will get NetworkOSThreadException
+	 */
+
+	public List<Contact> getContactList() {
+		List<Contact> contactsMap = null;
+		try {
+			contactsMap = getCurrentProvider().getContactList();
+			Log.d("SocialAuthAdapter", "Received Contact list");
+			return contactsMap;
+		} catch (Exception e) {
+			Log.d("SocialAuthAdapter", "Contact list not Received");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	/**
+	 * Asynchronous Method to get User Contacts.Returns result in onExecute() of
+	 * AsyncTaskListener.
+	 */
+
+	public void getContactListAsync(SocialAuthListener<List<Contact>> listener) {
+		new ContactTask(listener).execute();
 	}
 
 	/**
@@ -758,26 +708,136 @@ public class SocialAuthAdapter {
 
 	private class ContactTask extends AsyncTask<Void, Void, List<Contact>> {
 
+		SocialAuthListener<List<Contact>> listener;
+
+		private ContactTask(SocialAuthListener<List<Contact>> listener) {
+			this.listener = listener;
+		}
+
 		@Override
 		protected List<Contact> doInBackground(Void... params) {
+			List<Contact> contactsMap = null;
 			try {
-				List<Contact> contactsMap = getCurrentProvider().getContactList();
+				contactsMap = getCurrentProvider().getContactList();
 				Log.d("SocialAuthAdapter", "Received Contact list");
 				return contactsMap;
 			} catch (Exception e) {
 				e.printStackTrace();
-				dialogListener.onError(new SocialAuthError("Contact List not Received", e));
+				listener.onError(new SocialAuthError("Contact List not Received", e));
 				return null;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(List<Contact> contactsMap) {
-
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(SocialAuthAdapter.CONTACT, (Serializable) contactsMap);
-			dialogListener.onReceive(bundle);
+			listener.onExecute(contactsMap);
 		}
+	}
+
+	/**
+	 * Synchronous Method to get Feeds of User Use this method inside AsyncTask
+	 * else you will get NetworkOSThreadException
+	 */
+
+	public List<Feed> getFeeds() {
+		try {
+			List<Feed> feedMap = null;
+			if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.FeedPlugin.class)) {
+				FeedPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.FeedPlugin.class);
+				feedMap = p.getFeeds();
+				Log.d("SocialAuthAdapter", "Received Feeds");
+			} else
+				Log.d("SocialAuthAdapter", "Feeds not Supported from Provider");
+
+			return feedMap;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.d("SocialAuthAdapter", "Feeds not Available from Provider");
+			return null;
+		}
+	}
+
+	/**
+	 * Asynchronous Method to get User Feeds.Returns result in onExecute() of
+	 * AsyncTaskListener.Currently supports Facebook and Twitter
+	 */
+
+	public void getFeedsAsync(SocialAuthListener<List<Feed>> listener) {
+		new FeedTask(listener).execute();
+	}
+
+	/**
+	 * AsyncTask to retrieve feeds
+	 */
+	private class FeedTask extends AsyncTask<Void, Void, List<Feed>> {
+
+		SocialAuthListener<List<Feed>> listener;
+
+		private FeedTask(SocialAuthListener<List<Feed>> listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		protected List<Feed> doInBackground(Void... params) {
+
+			try {
+				List<Feed> feedMap = null;
+				if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.FeedPlugin.class)) {
+					FeedPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.FeedPlugin.class);
+					feedMap = p.getFeeds();
+					Log.d("SocialAuthAdapter", "Received Feeds");
+				} else
+					Log.d("SocialAuthAdapter", "Feeds not Supported from Provider");
+
+				return feedMap;
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				listener.onError(new SocialAuthError("Feed not Available from Provider", e));
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<Feed> feedMap) {
+			listener.onExecute(feedMap);
+		}
+	}
+
+	/**
+	 * Synchronous Method to get Albums of User Use this method inside AsyncTask
+	 * else you will get NetworkOSThreadException
+	 */
+
+	public List<Album> getAlbums() {
+
+		try {
+			List<Album> albumMap = null;
+
+			if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.AlbumsPlugin.class)) {
+				AlbumsPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.AlbumsPlugin.class);
+				albumMap = p.getAlbums();
+
+				Log.d("SocialAuthAdapter", "Received Albums");
+			} else
+				Log.d("SocialAuthAdapter", "Albums not Supported from Provider");
+
+			return albumMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+			Log.d("SocialAuthAdapter", "Albums not Available from Provider");
+			return null;
+		}
+	}
+
+	/**
+	 * Asynchronous Method to get User Albums.Returns result in onExecute() of
+	 * AsyncTaskListener.Currently supports Facebook and Twitter
+	 */
+
+	public void getAlbumsAsync(SocialAuthListener<List<Album>> listener) {
+		new AlbumTask(listener).execute();
 	}
 
 	/**
@@ -785,6 +845,12 @@ public class SocialAuthAdapter {
 	 */
 
 	private class AlbumTask extends AsyncTask<Void, Void, List<Album>> {
+
+		SocialAuthListener<List<Album>> listener;
+
+		private AlbumTask(SocialAuthListener<List<Album>> listener) {
+			this.listener = listener;
+		}
 
 		@Override
 		protected List<Album> doInBackground(Void... params) {
@@ -802,6 +868,7 @@ public class SocialAuthAdapter {
 				return albumMap;
 			} catch (Exception e) {
 				e.printStackTrace();
+				listener.onError(new SocialAuthError("Albums not Available from Provider", e));
 				return null;
 			}
 		}
@@ -809,11 +876,129 @@ public class SocialAuthAdapter {
 		@Override
 		protected void onPostExecute(List<Album> albumMap) {
 
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(SocialAuthAdapter.ALBUM, (Serializable) albumMap);
-			dialogListener.onReceive(bundle);
+			listener.onExecute(albumMap);
 		}
 	}
+
+	/**
+	 * Synchronous Method to upload image on provider
+	 * 
+	 * @param message
+	 *            message to be attached with image
+	 * @param fileName
+	 *            image file name
+	 * @param bitmap
+	 *            image bitmap to be uploaded
+	 * @param quality
+	 *            image quality for jpeg , enter 0 for png
+	 * 
+	 *            Returns result in onReceive()
+	 */
+	public Integer uploadImage(String message, String fileName, Bitmap bitmap, int quality) {
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
+			bitmap.compress(CompressFormat.PNG, 0, bos);
+		} else if (fileName.endsWith("JPEG") || fileName.endsWith("JPG") || fileName.endsWith("jpg")
+				|| fileName.endsWith("jpeg")) {
+			bitmap.compress(CompressFormat.JPEG, quality, bos);
+		} else {
+			Log.d("SocialAuthAdapter", "Image Format not supported");
+		}
+
+		InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
+
+		Response res = null;
+		try {
+			res = getCurrentProvider().uploadImage(message, fileName, inputStream);
+			Log.d("SocialAuthAdapter", "Image Uploaded");
+			return Integer.valueOf(res.getStatus());
+		} catch (SocialAuthException se) {
+			Log.d("SocialAuthAdapter", "Image Upload not implemented for Provider");
+			return null;
+		} catch (Exception e) {
+			Log.d("SocialAuthAdapter", "Image Upload Error");
+			return null;
+		}
+	}
+
+	/**
+	 * Asynchronous Method to upload image on provider.Returns result in
+	 * onExecute() of AsyncTaskListener.Currently supports Facebook and Twitter
+	 * 
+	 * @param message
+	 *            message to be attached with image
+	 * @param fileName
+	 *            image file name
+	 * @param bitmap
+	 *            image bitmap to be uploaded
+	 * @param quality
+	 *            image quality for jpeg , enter 0 for png
+	 */
+
+	public void uploadImageAsync(String message, String fileName, Bitmap bitmap, int quality,
+			SocialAuthListener<Integer> listener) {
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
+			bitmap.compress(CompressFormat.PNG, 0, bos);
+		} else if (fileName.endsWith("JPEG") || fileName.endsWith("JPG") || fileName.endsWith("jpg")
+				|| fileName.endsWith("jpeg")) {
+			bitmap.compress(CompressFormat.JPEG, quality, bos);
+		} else {
+			Log.d("SocialAuthAdapter", "Image Format not supported");
+		}
+
+		InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
+		new UploadImageTask(listener).execute(message, fileName, inputStream);
+	}
+
+	/**
+	 * AsyncTask to uploadImage
+	 */
+
+	private class UploadImageTask extends AsyncTask<Object, Void, Integer> {
+
+		SocialAuthListener<Integer> listener;
+
+		private UploadImageTask(SocialAuthListener<Integer> listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		protected Integer doInBackground(Object... params) {
+			Response res = null;
+			try {
+				res = getCurrentProvider().uploadImage((String) params[0], (String) params[1], (InputStream) params[2]);
+				Log.d("SocialAuthAdapter", "Image Uploaded");
+				return Integer.valueOf(res.getStatus());
+			} catch (SocialAuthException se) {
+				listener.onError(new SocialAuthError("Image Upload not implemented for Provider", se));
+				return null;
+			} catch (Exception e) {
+				listener.onError(new SocialAuthError("Image Upload Error", e));
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Integer status) {
+
+			listener.onExecute(status);
+		}
+	}
+
+	// public List<Album> getFriendAlbums(String id) {
+	// try {
+	// friendAlbumList = new friendAlbumTask().execute(id).get();
+	// } catch (InterruptedException e) {
+	// dialogListener.onError(new SocialAuthError("Unknown Error", e));
+	// } catch (ExecutionException e) {
+	// dialogListener.onError(new SocialAuthError("Unknown Error", e));
+	// }
+	//
+	// return albumList;
+	// }
 
 	// private class friendAlbumTask extends AsyncTask<String, Void,
 	// List<Album>> {
@@ -835,71 +1020,4 @@ public class SocialAuthAdapter {
 	// }
 	// }
 	// }
-
-	/**
-	 * AsyncTask to retrieve feeds
-	 */
-
-	private class FeedTask extends AsyncTask<Void, Void, List<Feed>> {
-
-		@Override
-		protected List<Feed> doInBackground(Void... params) {
-			try {
-				List<Feed> feedMap = null;
-				if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.FeedPlugin.class)) {
-					FeedPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.FeedPlugin.class);
-					feedMap = p.getFeeds();
-					Log.d("SocialAuthAdapter", "Received Feeds");
-				} else
-					Log.d("SocialAuthAdapter", "Feeds not Supported from Provider");
-
-				return feedMap;
-			} catch (Exception e) {
-				e.printStackTrace();
-				dialogListener.onError(new SocialAuthError("Feed not Available from Provider", e));
-				return null;
-			}
-		}
-
-		@Override
-		protected void onPostExecute(List<Feed> feedMap) {
-
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(SocialAuthAdapter.FEED, (Serializable) feedMap);
-			dialogListener.onReceive(bundle);
-		}
-	}
-
-	/**
-	 * AsyncTask to uploadImage
-	 */
-
-	private class UploadImageTask extends AsyncTask<Object, Void, Integer> {
-
-		@Override
-		protected Integer doInBackground(Object... params) {
-			Response res = null;
-			try {
-				res = getCurrentProvider().uploadImage((String) params[0], (String) params[1], (InputStream) params[2]);
-				Log.d("SocialAuthAdapter", "Image Uploaded");
-				return Integer.valueOf(res.getStatus());
-			} catch (SocialAuthException se) {
-				Log.d("SocialAuthAdapter", "Image Upload not implemented for Provider");
-				return null;
-			} catch (Exception e) {
-				dialogListener.onError(new SocialAuthError("Image Upload Error", e));
-				return null;
-			}
-
-		}
-
-		@Override
-		protected void onPostExecute(Integer status) {
-
-			Bundle bundle = new Bundle();
-			bundle.putInt(SocialAuthAdapter.UPLOAD_IMAGE, status.intValue());
-			dialogListener.onReceive(bundle);
-		}
-	}
-
 }
