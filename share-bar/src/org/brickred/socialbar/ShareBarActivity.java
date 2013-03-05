@@ -26,9 +26,6 @@ package org.brickred.socialbar;
 
 import java.util.List;
 
-import org.brickred.socialauth.Album;
-import org.brickred.socialauth.Contact;
-import org.brickred.socialauth.Feed;
 import org.brickred.socialauth.Photo;
 import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
@@ -37,11 +34,12 @@ import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 import org.brickred.socialauth.android.SocialAuthError;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +77,10 @@ public class ShareBarActivity extends Activity {
 	Profile profileMap;
 	List<Photo> photosList;
 
+	// Android Components
+	Button update;
+	EditText edit;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -86,7 +88,7 @@ public class ShareBarActivity extends Activity {
 
 		// Welcome Message
 		TextView textview = (TextView) findViewById(R.id.text);
-		textview.setText("Welcome to SocialAuth Demo. We are sharing text SocialAuth Android by Share Bar.");
+		textview.setText("Welcome to SocialAuth Demo. Connect any provider and Share Update.");
 
 		LinearLayout bar = (LinearLayout) findViewById(R.id.linearbar);
 		bar.setBackgroundResource(R.drawable.bar_gradient);
@@ -124,123 +126,28 @@ public class ShareBarActivity extends Activity {
 		public void onComplete(Bundle values) {
 
 			// Variable to receive message status
-
 			Log.d("Share-Bar", "Authentication Successful");
 
 			// Get name of provider after authentication
-			String providerName = values.getString(SocialAuthAdapter.PROVIDER);
+			final String providerName = values.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("Share-Bar", "Provider Name = " + providerName);
+			Toast.makeText(ShareBarActivity.this, providerName + " connected", Toast.LENGTH_SHORT).show();
+
+			update = (Button) findViewById(R.id.update);
+			edit = (EditText) findViewById(R.id.editTxt);
 
 			// Please avoid sending duplicate message. Social Media Providers
 			// block duplicate messages.
-			adapter.updateStatus("SocialAuth Android"
-					+ System.currentTimeMillis());
 
-			Toast.makeText(ShareBarActivity.this,
-					"View Logcat for Message Information", Toast.LENGTH_SHORT)
-					.show();
+			update.setOnClickListener(new OnClickListener() {
 
-			// Get User Profile
-			try {
-				profileMap = adapter.getUserProfile();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			Log.d("Share-Bar", "Validate ID = " + profileMap.getValidatedId());
-			Log.d("Share-Bar", "First Name  = " + profileMap.getFirstName());
-			Log.d("Share-Bar", "Last Name   = " + profileMap.getLastName());
-			Log.d("Share-Bar",
-					"Display Name   = " + profileMap.getDisplayName());
-			Log.d("Share-Bar", "Email       = " + profileMap.getEmail());
-			Log.d("Share-Bar", "Country  	 = " + profileMap.getCountry());
-			Log.d("Share-Bar", "Language  	 = " + profileMap.getLanguage());
-			Log.d("Share-Bar",
-					"Profile Image URL  = " + profileMap.getProfileImageURL());
-
-			Toast.makeText(ShareBarActivity.this,
-					"View Logcat for Profile Information", Toast.LENGTH_SHORT)
-					.show();
-
-			// Get Feeds : For Facebook , Twitter Only
-			List<Feed> feedList = adapter.getFeeds();
-			if (feedList != null && feedList.size() > 0) {
-				for (Feed f : feedList) {
-
-					Log.d("Share-Bar", "Feed ID = " + f.getId());
-					Log.d("Share-Bar", "Screen Name = " + f.getScreenName());
-					Log.d("Share-Bar", "Message = " + f.getMessage());
-					Log.d("Share-Bar", "Get From = " + f.getFrom());
-					Log.d("Share-Bar", "Created at = " + f.getCreatedAt());
+				@Override
+				public void onClick(View v) {
+					adapter.updateStatus(edit.getText().toString());
+					Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT)
+							.show();
 				}
-			}
-
-			// Get List of contacts
-			List<Contact> contactsList = adapter.getContactList();
-
-			if (contactsList != null && contactsList.size() > 0) {
-				for (Contact p : contactsList) {
-
-					if (TextUtils.isEmpty(p.getFirstName())
-							&& TextUtils.isEmpty(p.getLastName())) {
-						p.setFirstName(p.getDisplayName());
-					}
-
-					Log.d("Share-Bar", "Display Name = " + p.getDisplayName());
-					Log.d("Share-Bar", "First Name = " + p.getFirstName());
-					Log.d("Share-Bar", "Last Name = " + p.getLastName());
-					Log.d("Share-Bar", "Contact ID = " + p.getId());
-					Log.d("Share-Bar", "Profile URL = " + p.getProfileUrl());
-				}
-			}
-
-			Toast.makeText(ShareBarActivity.this,
-					"View Logcat for Contacts Information", Toast.LENGTH_SHORT)
-					.show();
-
-			// Upload Photo : For Facebook and Twitter Only
-			Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-					R.drawable.icon);
-
-			int imgStatus = adapter.uploadImage("HelloWorldTest", "icon.png",
-					bmp, 0);
-			Log.d("Share-Bar", String.valueOf(imgStatus));
-
-			Toast.makeText(ShareBarActivity.this,
-					"View Logcat for Image Upload Information",
-					Toast.LENGTH_SHORT).show();
-
-			// Get Albums and Photos : For FaceBook and Twitter Only
-			List<Album> albumList = adapter.getAlbums();
-
-			if (albumList != null && albumList.size() > 0) {
-
-				// Get Photos inside Album
-				for (Album a : albumList) {
-
-					Log.d("Share-Bar", "Album ID = " + a.getId());
-					Log.d("Share-Bar", "Album Name = " + a.getName());
-					Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
-					Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
-
-					photosList = a.getPhotos();
-
-					if (photosList != null && photosList.size() > 0) {
-
-						for (Photo p : photosList) {
-							Log.d("Share-Bar", "Photo ID = " + p.getId());
-							Log.d("Share-Bar", "Name     = " + p.getTitle());
-							Log.d("Share-Bar",
-									"Thumb Image = " + p.getThumbImage());
-							Log.d("Share-Bar",
-									"Small Image = " + p.getSmallImage());
-							Log.d("Share-Bar",
-									"Medium Image = " + p.getMediumImage());
-							Log.d("Share-Bar",
-									"Large Image = " + p.getLargeImage());
-						}
-					}
-				}
-			}
+			});
 		}
 
 		@Override
@@ -259,7 +166,5 @@ public class ShareBarActivity extends Activity {
 			Log.d("Share-Bar", "Dialog Closed by pressing Back Key");
 
 		}
-
 	}
-
 }
