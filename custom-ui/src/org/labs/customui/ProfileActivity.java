@@ -30,6 +30,7 @@ import org.labs.customui.adapter.ImageLoader;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -82,16 +83,15 @@ public class ProfileActivity extends Activity {
 		setContentView(R.layout.profile);
 
 		profileMap = (Profile) getIntent().getSerializableExtra("profile");
-		// Log.d("Custom-UI", "Validate ID = " + profileMap.getValidatedId());
-		// Log.d("Custom-UI", "First Name  = " + profileMap.getFirstName());
-		// Log.d("Custom-UI", "Last Name   = " + profileMap.getLastName());
-		// Log.d("Custom-UI", "Email       = " + profileMap.getEmail());
-		// Log.d("Custom-UI", "Gender  	 = " + profileMap.getGender());
-		// Log.d("Custom-UI", "Country  	 = " + profileMap.getCountry());
-		// Log.d("Custom-UI", "Language  	 = " + profileMap.getLanguage());
-		// Log.d("Custom-UI", "Location 	 = " + profileMap.getLocation());
-		// Log.d("Custom-UI", "Profile Image URL  = " +
-		// profileMap.getProfileImageURL());
+		Log.d("Custom-UI", "Validate ID = " + profileMap.getValidatedId());
+		Log.d("Custom-UI", "First Name  = " + profileMap.getFirstName());
+		Log.d("Custom-UI", "Last Name   = " + profileMap.getLastName());
+		Log.d("Custom-UI", "Email       = " + profileMap.getEmail());
+		Log.d("Custom-UI", "Gender  	 = " + profileMap.getGender());
+		Log.d("Custom-UI", "Country  	 = " + profileMap.getCountry());
+		Log.d("Custom-UI", "Language  	 = " + profileMap.getLanguage());
+		Log.d("Custom-UI", "Location 	 = " + profileMap.getLocation());
+		Log.d("Custom-UI", "Profile Image URL  = " + profileMap.getProfileImageURL());
 
 		provider_name = getIntent().getStringExtra("provider");
 

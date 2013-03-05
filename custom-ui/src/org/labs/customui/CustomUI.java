@@ -37,6 +37,7 @@ import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 import org.labs.customui.adapter.CustomAdapter;
 
 import android.app.Activity;
@@ -100,7 +101,7 @@ public class CustomUI extends Activity {
 
 	// Variables
 	boolean status;
-	public static String provider_name;
+	String providerName;
 	public static int pos;
 	private static final int SELECT_PHOTO = 100;
 	public static Bitmap bitmap;
@@ -135,7 +136,7 @@ public class CustomUI extends Activity {
 			pText.setText("Sign Out");
 
 			// Get the provider
-			final String providerName = values.getString(SocialAuthAdapter.PROVIDER);
+			providerName = values.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("Custom-UI", "providername = " + providerName);
 
 			Toast.makeText(CustomUI.this, providerName + " connected", Toast.LENGTH_SHORT).show();
@@ -186,11 +187,7 @@ public class CustomUI extends Activity {
 		case 0: // Code to print user profile details for all providers
 		{
 
-			profileMap = adapter.getUserProfile();
-			Intent intent = new Intent(this, ProfileActivity.class);
-			intent.putExtra("provider", provider);
-			intent.putExtra("profile", profileMap);
-			startActivity(intent);
+			adapter.getUserProfileAsync(new ProfileDataListener());
 			break;
 		}
 
@@ -201,11 +198,7 @@ public class CustomUI extends Activity {
 
 			if (provider.equalsIgnoreCase("foursquare") || provider.equalsIgnoreCase("google")) {
 
-				List<Contact> contactsList = adapter.getContactList();
-				Intent intent = new Intent(this, ContactActivity.class);
-				intent.putExtra("provider", provider);
-				intent.putExtra("contact", (Serializable) contactsList);
-				startActivity(intent);
+				adapter.getContactListAsync(new ContactDataListener());
 
 			} else if (provider.equalsIgnoreCase("runkeeper") || provider.equalsIgnoreCase("salesforce")) {
 				dialog.dismiss();
@@ -247,11 +240,7 @@ public class CustomUI extends Activity {
 				dialog.dismiss();
 			} else {
 				// Get Contacts for Remaining Providers
-				List<Contact> contactsList = adapter.getContactList();
-				Intent intent = new Intent(this, ContactActivity.class);
-				intent.putExtra("provider", provider);
-				intent.putExtra("contact", (Serializable) contactsList);
-				startActivity(intent);
+				adapter.getContactListAsync(new ContactDataListener());
 			}
 			break;
 		}
@@ -261,12 +250,7 @@ public class CustomUI extends Activity {
 			// Dismiss Dialog for rest of providers
 
 			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) {
-
-				List<Feed> feedList = adapter.getFeeds();
-				Intent intent = new Intent(this, FeedActivity.class);
-				intent.putExtra("feed", (Serializable) feedList);
-				startActivity(intent);
-
+				adapter.getFeedsAsync(new FeedDataListener());
 			} else {
 				dialog.dismiss();
 			}
@@ -287,8 +271,8 @@ public class CustomUI extends Activity {
 				TextView dialogTitle = (TextView) imgDialog.findViewById(R.id.dialogTitle);
 				dialogTitle.setText("Share Image");
 				final EditText edit = (EditText) imgDialog.findViewById(R.id.editTxt);
-				final Button update = (Button) imgDialog.findViewById(R.id.update);
-				update.setEnabled(false);
+				Button update = (Button) imgDialog.findViewById(R.id.update);
+				update.setVisibility(View.INVISIBLE);
 				Button getImage = (Button) imgDialog.findViewById(R.id.loadImage);
 				getImage.setVisibility(View.VISIBLE);
 				imgDialog.show();
@@ -302,23 +286,15 @@ public class CustomUI extends Activity {
 						Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
 						photoPickerIntent.setType("image/*");
 						startActivityForResult(photoPickerIntent, SELECT_PHOTO);
-						update.setEnabled(true);
-					}
-				});
-
-				update.setOnClickListener(new OnClickListener() {
-
-					@Override
-					public void onClick(View v) {
-						imgDialog.dismiss();
 
 						if (bitmap != null) {
-							adapter.uploadImage(edit.getText().toString(), "icon.png", bitmap, 0);
-							Toast.makeText(CustomUI.this, "View Logcat for Image Upload Information",
-									Toast.LENGTH_SHORT).show();
+							adapter.uploadImageAsync(edit.getText().toString(), "icon.png", bitmap, 0,
+									new UploadImageListener());
 						}
+						imgDialog.dismiss();
 					}
 				});
+
 			} else {
 				dialog.dismiss();
 			}
@@ -329,11 +305,7 @@ public class CustomUI extends Activity {
 			// Get Albums for Facebook and Twitter
 
 			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) {
-				List<Album> albumList = adapter.getAlbums();
-				Intent intent = new Intent(this, AlbumActivity.class);
-				intent.putExtra("album", (Serializable) albumList);
-				startActivity(intent);
-
+				adapter.getAlbumsAsync(new AlbumDataListener());
 			} else {
 				dialog.dismiss();
 			}
@@ -348,6 +320,107 @@ public class CustomUI extends Activity {
 
 		}
 
+	}
+
+	// To receive the profile response after authentication
+	private final class ProfileDataListener implements SocialAuthListener<Profile> {
+
+		@Override
+		public void onExecute(Profile t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+
+			Profile profileMap = t;
+
+			Intent intent = new Intent(CustomUI.this, ProfileActivity.class);
+			intent.putExtra("provider", providerName);
+			intent.putExtra("profile", profileMap);
+			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
+
+		@Override
+		public void onExecute(List<Album> t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+			List<Album> albumList = t;
+
+			Intent intent = new Intent(CustomUI.this, AlbumActivity.class);
+			intent.putExtra("album", (Serializable) albumList);
+			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+		}
+
+	}
+
+	// To receive the response after authentication
+	private final class ContactDataListener implements SocialAuthListener<List<Contact>> {
+
+		@Override
+		public void onExecute(List<Contact> t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+
+			List<Contact> contactsList = t;
+
+			Intent intent = new Intent(CustomUI.this, ContactActivity.class);
+			intent.putExtra("provider", providerName);
+			intent.putExtra("contact", (Serializable) contactsList);
+			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class UploadImageListener implements SocialAuthListener<Integer> {
+
+		@Override
+		public void onExecute(Integer t) {
+
+			Log.d("Custom-UI", "Uploading Data");
+			Integer status = t;
+			Log.d("Custom-UI", String.valueOf(status));
+			Toast.makeText(CustomUI.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
+
+		@Override
+		public void onExecute(List<Feed> t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+
+			List<Feed> feedList = t;
+			Intent intent = new Intent(CustomUI.this, FeedActivity.class);
+			intent.putExtra("feed", (Serializable) feedList);
+			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+		}
 	}
 
 	@Override
