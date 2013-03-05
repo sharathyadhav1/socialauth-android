@@ -32,7 +32,9 @@
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
     
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <application android:icon="@drawable/icon" 
+        		 android:theme="@android:style/Theme.NoTitleBar" 
+        		 android:label="@string/app_name">
         <activity android:name=".ShareButtonActivity"
                   android:configChanges="keyboardHidden|orientation"
                   android:label="@string/app_name">
