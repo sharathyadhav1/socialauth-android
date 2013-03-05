@@ -27,7 +27,7 @@
     android:layout_height="fill_parent"
     android:background="#000000"
     >
-    <LinearLayout 
+     <LinearLayout 
     android:orientation="horizontal"
     android:id="@+id/topbar"
     android:layout_width="fill_parent"
@@ -57,6 +57,7 @@
 		android:layout_height="wrap_content"
 		android:layout_width="wrap_content"
 		android:textSize="14sp"
+		android:text="Welcome to SocialAuth Demo. Connect any provider and Share Update."
 		android:textStyle="bold"
 		android:layout_marginLeft="10dp"
 		android:layout_marginRight="10dp"
