@@ -76,8 +76,7 @@ public final class Util {
 				first = false;
 			else
 				sb.append("&");
-			sb.append(URLEncoder.encode(key) + "="
-					+ URLEncoder.encode(parameters.getString(key)));
+			sb.append(URLEncoder.encode(key) + "=" + URLEncoder.encode(parameters.getString(key)));
 		}
 		return sb.toString();
 	}
@@ -96,8 +95,7 @@ public final class Util {
 			for (String parameter : array) {
 				String v[] = parameter.split("=");
 				if (v.length > 1) {
-					params.put(URLDecoder.decode(v[0]),
-							v.length > 1 ? URLDecoder.decode(v[1]) : null);
+					params.put(URLDecoder.decode(v[0]), v.length > 1 ? URLDecoder.decode(v[1]) : null);
 				}
 			}
 		}
@@ -151,8 +149,7 @@ public final class Util {
 			return false;
 		}
 
-		ConnectivityManager connMgr = (ConnectivityManager) context
-				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo netInfo = connMgr.getActiveNetworkInfo();
 		return netInfo != null && netInfo.isConnected();
@@ -169,8 +166,7 @@ public final class Util {
 	public static void getDisplayDpi(Context ctx) {
 
 		DisplayMetrics dm = new DisplayMetrics();
-		WindowManager wm = (WindowManager) ctx
-				.getSystemService(Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
 		wm.getDefaultDisplay().getMetrics(dm);
 
 		double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
