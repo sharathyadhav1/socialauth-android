@@ -34,6 +34,7 @@ import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -142,7 +143,7 @@ public class CustomUI extends Activity {
 					switch (item) {
 					case 0: // Call UserProfile
 					{
-						adapter.getUserProfile();
+						adapter.getUserProfileAsync(new ProfileDataListener());
 						break;
 					}
 
@@ -153,7 +154,7 @@ public class CustomUI extends Activity {
 
 						if (providerName.equalsIgnoreCase("foursquare") || providerName.equalsIgnoreCase("google")) {
 							// Get Contacts for FourSquare and Google
-							adapter.getContactList();
+							adapter.getContactListAsync(new ContactDataListener());
 						} else if (providerName.equalsIgnoreCase("runkeeper")
 								|| providerName.equalsIgnoreCase("salesforce")) {
 							// Close Dialog
@@ -176,7 +177,7 @@ public class CustomUI extends Activity {
 							dialog.dismiss();
 						else
 							// Get Contacts for Remaining Providers
-							adapter.getContactList();
+							adapter.getContactListAsync(new ContactDataListener());
 
 						break;
 					}
@@ -186,7 +187,7 @@ public class CustomUI extends Activity {
 						// Dismiss Dialog for rest of providers
 
 						if (providerName.equalsIgnoreCase("facebook") || providerName.equalsIgnoreCase("twitter"))
-							adapter.getFeeds();
+							adapter.getFeedsAsync(new FeedDataListener());
 						else
 							dialog.dismiss();
 
@@ -199,7 +200,7 @@ public class CustomUI extends Activity {
 						if (providerName.equalsIgnoreCase("facebook") || providerName.equalsIgnoreCase("twitter")) {
 							// Upload Photo
 							Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
-							adapter.uploadImage("HelloWorldTest", "icon.png", bmp, 0);
+							adapter.uploadImageAsync("HelloWorldTest", "icon.png", bmp, 0, new UploadImageListener());
 						} else {
 							dialog.dismiss();
 						}
@@ -210,7 +211,7 @@ public class CustomUI extends Activity {
 						// Get Albums for Facebook and Twitter
 
 						if (providerName.equalsIgnoreCase("facebook") || providerName.equalsIgnoreCase("twitter"))
-							adapter.getAlbums();
+							adapter.getAlbumsAsync(new AlbumDataListener());
 						else
 							dialog.dismiss();
 
@@ -230,88 +231,6 @@ public class CustomUI extends Activity {
 			});
 			dialog = builder.create();
 			dialog.show();
-
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public void onReceive(Bundle response) {
-
-			if (response.containsKey(SocialAuthAdapter.PROFILE)) {
-				Profile profileMap = (Profile) response.getSerializable(SocialAuthAdapter.PROFILE);
-
-				Log.d("Custom-UI", "Validate ID = " + profileMap.getValidatedId());
-				Log.d("Custom-UI", "First Name  = " + profileMap.getFirstName());
-				Log.d("Custom-UI", "Last Name   = " + profileMap.getLastName());
-				Log.d("Custom-UI", "Email       = " + profileMap.getEmail());
-				Log.d("Custom-UI", "Gender  	 = " + profileMap.getGender());
-				Log.d("Custom-UI", "Country  	 = " + profileMap.getCountry());
-				Log.d("Custom-UI", "Language  	 = " + profileMap.getLanguage());
-				Log.d("Custom-UI", "Location 	 = " + profileMap.getLocation());
-				Log.d("Custom-UI", "Profile Image URL  = " + profileMap.getProfileImageURL());
-
-				Toast.makeText(CustomUI.this, "View Logcat for Profile Information", Toast.LENGTH_SHORT).show();
-			} else if (response.containsKey(SocialAuthAdapter.CONTACT)) {
-				List<Contact> contactsList = (List<Contact>) response.getSerializable(SocialAuthAdapter.CONTACT);
-
-				if (contactsList != null && contactsList.size() > 0) {
-					for (Contact p : contactsList) {
-
-						if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) {
-							p.setFirstName(p.getDisplayName());
-						}
-
-						Log.d("Custom-UI", "Display Name = " + p.getDisplayName());
-						Log.d("Custom-UI", "First Name = " + p.getFirstName());
-						Log.d("Custom-UI", "Last Name = " + p.getLastName());
-						Log.d("Custom-UI", "Contact ID = " + p.getId());
-						Log.d("Custom-UI", "Profile URL = " + p.getProfileUrl());
-
-					}
-				}
-				Toast.makeText(CustomUI.this, "View Logcat for Contacts Information", Toast.LENGTH_SHORT).show();
-			} else if (response.containsKey(SocialAuthAdapter.FEED)) {
-				List<Feed> feedList = (List<Feed>) response.getSerializable(SocialAuthAdapter.FEED);
-				if (feedList != null && feedList.size() > 0) {
-					for (Feed f : feedList) {
-						Log.d("Custom-UI", "Feed ID = " + f.getId());
-						Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
-						Log.d("Custom-UI", "Message = " + f.getMessage());
-						Log.d("Custom-UI", "Get From = " + f.getFrom());
-						Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
-					}
-				}
-				Toast.makeText(CustomUI.this, "View Logcat for Feeds Information", Toast.LENGTH_SHORT).show();
-			} else if (response.containsKey(SocialAuthAdapter.UPLOAD_IMAGE)) {
-
-				int status = response.getInt(SocialAuthAdapter.UPLOAD_IMAGE);
-				Log.d("Custom-UI", String.valueOf(status));
-				Toast.makeText(CustomUI.this, "View Logcat for Image Upload Information", Toast.LENGTH_SHORT).show();
-			} else if (response.containsKey(SocialAuthAdapter.ALBUM)) {
-				List<Album> albumList = (List<Album>) response.getSerializable(SocialAuthAdapter.ALBUM);
-
-				if (albumList != null && albumList.size() > 0) {
-					for (Album p : albumList) {
-
-						Log.d("Custom-UI", "ID = " + p.getId());
-						Log.d("Custom-UI", "URL = " + p.getCoverPhoto());
-						Log.d("Custom-UI", "Name = " + p.getName());
-						Log.d("Custom-UI", "Count = " + p.getPhotosCount());
-						Log.d("Custom-UI", "Link = " + p.getLink());
-
-						List<Photo> photoList = p.getPhotos();
-
-						if (photoList != null && photoList.size() > 0) {
-							for (Photo ph : photoList) {
-								Log.d("Custom-UI", "ID = " + ph.getId());
-								Log.d("Custom-UI", "Title = " + ph.getTitle());
-								Log.d("Custom-UI", "URL = " + ph.getThumbImage());
-							}
-						}
-					}
-				}
-				Toast.makeText(CustomUI.this, "View Logcat for Album Information", Toast.LENGTH_SHORT).show();
-			}
 		}
 
 		@Override
@@ -332,4 +251,154 @@ public class CustomUI extends Activity {
 		}
 
 	}
+
+	// To receive the profile response after authentication
+	private final class ProfileDataListener implements SocialAuthListener<Profile> {
+
+		@Override
+		public void onExecute(Profile t) {
+			// TODO Auto-generated method stub
+			Log.d("Custom-UI", "Receiving Data");
+
+			Profile profileMap = t;
+
+			Log.d("Custom-UI", "Validate ID = " + profileMap.getValidatedId());
+			Log.d("Custom-UI", "First Name  = " + profileMap.getFirstName());
+			Log.d("Custom-UI", "Last Name   = " + profileMap.getLastName());
+			Log.d("Custom-UI", "Email       = " + profileMap.getEmail());
+			Log.d("Custom-UI", "Gender  	 = " + profileMap.getGender());
+			Log.d("Custom-UI", "Country  	 = " + profileMap.getCountry());
+			Log.d("Custom-UI", "Language  	 = " + profileMap.getLanguage());
+			Log.d("Custom-UI", "Location 	 = " + profileMap.getLocation());
+			Log.d("Custom-UI", "Profile Image URL  = " + profileMap.getProfileImageURL());
+
+			Toast.makeText(CustomUI.this, "View Logcat for Profile Information", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
+
+		@Override
+		public void onExecute(List<Album> t) {
+			// TODO Auto-generated method stub
+
+			Log.d("Custom-UI", "Receiving Data");
+			List<Album> albumList = t;
+
+			if (albumList != null && albumList.size() > 0) {
+				for (Album p : albumList) {
+
+					Log.d("Custom-UI", "ID = " + p.getId());
+					Log.d("Custom-UI", "URL = " + p.getCoverPhoto());
+					Log.d("Custom-UI", "Name = " + p.getName());
+					Log.d("Custom-UI", "Count = " + p.getPhotosCount());
+					Log.d("Custom-UI", "Link = " + p.getLink());
+
+					List<Photo> photoList = p.getPhotos();
+
+					if (photoList != null && photoList.size() > 0) {
+						for (Photo ph : photoList) {
+							Log.d("Custom-UI", "ID = " + ph.getId());
+							Log.d("Custom-UI", "Title = " + ph.getTitle());
+							Log.d("Custom-UI", "URL = " + ph.getThumbImage());
+						}
+					}
+				}
+			}
+			Toast.makeText(CustomUI.this, "View Logcat for Album Information", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+		}
+
+	}
+
+	// To receive the response after authentication
+	private final class ContactDataListener implements SocialAuthListener<List<Contact>> {
+
+		@Override
+		public void onExecute(List<Contact> t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+
+			List<Contact> contactsList = t;
+
+			if (contactsList != null && contactsList.size() > 0) {
+				for (Contact p : contactsList) {
+
+					if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) {
+						p.setFirstName(p.getDisplayName());
+					}
+
+					Log.d("Custom-UI", "Display Name = " + p.getDisplayName());
+					Log.d("Custom-UI", "First Name = " + p.getFirstName());
+					Log.d("Custom-UI", "Last Name = " + p.getLastName());
+					Log.d("Custom-UI", "Contact ID = " + p.getId());
+					Log.d("Custom-UI", "Profile URL = " + p.getProfileUrl());
+
+				}
+			}
+			Toast.makeText(CustomUI.this, "View Logcat for Contacts Information", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class UploadImageListener implements SocialAuthListener<Integer> {
+
+		@Override
+		public void onExecute(Integer t) {
+
+			Log.d("Custom-UI", "Uploading Data");
+			Integer status = t;
+			Log.d("Custom-UI", String.valueOf(status));
+			Toast.makeText(CustomUI.this, "View Logcat for Image Upload Information", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+			// TODO Auto-generated method stub
+
+		}
+	}
+
+	// To receive the response after authentication
+	private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
+
+		@Override
+		public void onExecute(List<Feed> t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+
+			List<Feed> feedList = t;
+			if (feedList != null && feedList.size() > 0) {
+				for (Feed f : feedList) {
+					Log.d("Custom-UI", "Feed ID = " + f.getId());
+					Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
+					Log.d("Custom-UI", "Message = " + f.getMessage());
+					Log.d("Custom-UI", "Get From = " + f.getFrom());
+					Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
+				}
+			}
+			Toast.makeText(CustomUI.this, "View Logcat for Feeds Information", Toast.LENGTH_SHORT).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+			// TODO Auto-generated method stub
+
+		}
+	}
+
 }
