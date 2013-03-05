@@ -22,17 +22,17 @@
  ===========================================================================
  */
 
-package org.brickred.customui;
+package org.brickred.customadapter;
 
+import org.brickred.customui.CustomUI;
+import org.brickred.customui.R;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -56,14 +56,12 @@ public class CustomAdapter extends BaseAdapter {
 
 	// SocialAuth Components
 	SocialAuthAdapter adapter;
-	private final Provider[] providers = new Provider[] { Provider.FACEBOOK,
-			Provider.TWITTER, Provider.LINKEDIN, Provider.MYSPACE,
-			Provider.YAHOO, Provider.GOOGLE, Provider.SALESFORCE,
-			Provider.FOURSQUARE, Provider.YAMMER, Provider.RUNKEEPER };
-	private final int[] images = new int[] { R.drawable.facebook,
-			R.drawable.twitter, R.drawable.linkedin, R.drawable.myspace,
-			R.drawable.yahoo, R.drawable.google, R.drawable.salesforce,
-			R.drawable.foursquare, R.drawable.yammer, R.drawable.runkeeper, };
+	private final Provider[] providers = new Provider[] { Provider.FACEBOOK, Provider.TWITTER, Provider.LINKEDIN,
+			Provider.MYSPACE, Provider.YAHOO, Provider.GOOGLE, Provider.SALESFORCE, Provider.FOURSQUARE,
+			Provider.YAMMER, Provider.RUNKEEPER };
+	private final int[] images = new int[] { R.drawable.facebook, R.drawable.twitter, R.drawable.linkedin,
+			R.drawable.myspace, R.drawable.yahoo, R.drawable.google, R.drawable.salesforce, R.drawable.foursquare,
+			R.drawable.yammer, R.drawable.runkeeper, };
 
 	public CustomAdapter(Context context, SocialAuthAdapter mAdapter) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
@@ -121,11 +119,9 @@ public class CustomAdapter extends BaseAdapter {
 			// views
 			// we want to bind data to.
 			holder = new ViewHolder();
-			holder.text = (TextView) convertView
-					.findViewById(R.id.providerText);
+			holder.text = (TextView) convertView.findViewById(R.id.providerText);
 			holder.icon = (ImageView) convertView.findViewById(R.id.provider);
-			holder.signText = (TextView) convertView
-					.findViewById(R.id.signstatus);
+			holder.signText = (TextView) convertView.findViewById(R.id.signstatus);
 
 			convertView.setTag(holder);
 		} else {
@@ -134,15 +130,14 @@ public class CustomAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 		}
 
-		mIcon = BitmapFactory.decodeResource(ctx.getResources(),
-				images[position]);
+		mIcon = BitmapFactory.decodeResource(ctx.getResources(), images[position]);
 
 		// Bind the data efficiently with the holder.
-		holder.text.setText(providers[position].toString());
-		holder.text.setPadding(20, 5, 0, 5);
-		holder.text.setTextColor(Color.WHITE);
-		holder.text.setGravity(Gravity.CENTER_VERTICAL);
 
+		String textCase = providers[position].toString();
+		textCase = String.valueOf(textCase.charAt(0)).toUpperCase() + textCase.substring(1, textCase.length());
+
+		holder.text.setText(textCase);
 		holder.icon.setImageBitmap(mIcon);
 
 		holder.text.setOnClickListener(new OnClickListener() {
@@ -153,8 +148,7 @@ public class CustomAdapter extends BaseAdapter {
 				CustomUI.pos = position;
 
 				if (providers[position].equals(Provider.GOOGLE))
-					adapter.addCallBack(Provider.GOOGLE,
-							"http://socialauth.in/socialauthdemo");
+					adapter.addCallBack(Provider.GOOGLE, "http://socialauth.in/socialauthdemo");
 				else if (providers[position].equals(Provider.FOURSQUARE))
 					adapter.addCallBack(Provider.FOURSQUARE,
 							"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
@@ -172,9 +166,6 @@ public class CustomAdapter extends BaseAdapter {
 		});
 
 		holder.signText.setText("Sign In");
-		holder.signText.setTextColor(Color.WHITE);
-		holder.signText.setPadding(0, 5, 0, 5);
-		holder.signText.setGravity(Gravity.CENTER_VERTICAL);
 		holder.signText.setTag(1);
 
 		holder.signText.setOnClickListener(new OnClickListener() {
@@ -192,8 +183,7 @@ public class CustomAdapter extends BaseAdapter {
 					// YAMMER
 
 					if (providers[position].equals(Provider.GOOGLE))
-						adapter.addCallBack(Provider.GOOGLE,
-								"http://socialauth.in/socialauthdemo");
+						adapter.addCallBack(Provider.GOOGLE, "http://socialauth.in/socialauthdemo");
 					else if (providers[position].equals(Provider.FOURSQUARE))
 						adapter.addCallBack(Provider.FOURSQUARE,
 								"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
@@ -208,8 +198,7 @@ public class CustomAdapter extends BaseAdapter {
 					adapter.authorize(ctx, providers[position]);
 				} else if (text.equalsIgnoreCase("sign out")) {
 					// Sign Out
-					boolean status = adapter.signOut(providers[position]
-							.toString());
+					boolean status = adapter.signOut(providers[position].toString());
 					Log.d("status", String.valueOf(status));
 					if (status) {
 						((TextView) v).setText("Sign In");

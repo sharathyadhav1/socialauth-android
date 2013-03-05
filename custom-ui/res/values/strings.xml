@@ -61,4 +61,13 @@
     	<item>User Profile</item>
     	<item>Close Dialog</item>
     </string-array>
+    <string-array name="drawable_array">
+    	<item>share</item>
+    	<item>profile</item>
+    	<item>contacts</item>
+    	<item>feeds</item>
+    	<item>image</item>
+    	<item>albums</item>
+    	<item>close</item>
+    </string-array>
 </resources>

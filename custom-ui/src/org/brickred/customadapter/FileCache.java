@@ -1,7 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<!--
-===========================================================================
+/*
+ ===========================================================================
  Copyright (c) 2012 Three Pillar Global Inc. http://threepillarglobal.com
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -22,32 +20,49 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ===========================================================================
--->
+ */
 
+package org.brickred.customadapter;
 
-<RelativeLayout 
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	>
-    <ImageView
-        android:id="@+id/provider"
-        android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:padding="9dp"
-		android:layout_marginLeft="10dp"
-		android:layout_centerVertical="true"
-        >
-    </ImageView>    	
-	<TextView
-		android:id="@+id/providerText"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_toRightOf="@+id/provider"
-		android:padding="9dp"
-    	android:textColor="#000000"
-    	android:layout_centerVertical="true"
-    	android:textSize="12sp" 
-		>
-	</TextView>
-</RelativeLayout>
+import java.io.File;
+
+import android.content.Context;
+
+/**
+ * for storing bitmap in filecache
+ * 
+ * @author Vineet Aggarwal
+ * 
+ */
+
+public class FileCache {
+
+	private File cacheDir;
+
+	public FileCache(Context context) {
+		// Find the dir to save cached images
+		if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED))
+			cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), "LifeView");
+		else
+			cacheDir = context.getCacheDir();
+
+		if (!cacheDir.exists())
+			cacheDir.mkdirs();
+	}
+
+	public File getFile(String url) {
+		String filename = String.valueOf(url.hashCode());
+		File f = new File(cacheDir, filename);
+		return f;
+
+	}
+
+	public void clear() {
+		File[] files = cacheDir.listFiles();
+		if (files == null)
+			return;
+		for (File f : files)
+			f.delete();
+	}
+
+}

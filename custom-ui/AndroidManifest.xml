@@ -26,14 +26,17 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.brickred.customui"
-      android:versionCode="1"
-      android:versionName="1.0">
+      android:versionCode="2"
+      android:versionName="2.0">
 	  
     <uses-sdk android:minSdkVersion="10" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	
-	<application android:icon="@drawable/icon" android:label="@string/app_name">
+	<application android:icon="@drawable/icon" 
+	      android:theme="@android:style/Theme.NoTitleBar"
+	      android:label="@string/app_name">
         <activity android:name=".CustomUI"
            		  android:configChanges="keyboardHidden|orientation"
                   android:label="@string/app_name">
@@ -42,7 +45,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    
+    	<activity android:name=".ProfileActivity"
+           		  android:configChanges="keyboardHidden|orientation"
+                  >
+        </activity>
+        <activity android:name=".ContactActivity"
+           		  android:configChanges="keyboardHidden|orientation"
+                  >
+        </activity>
+        <activity android:name=".FeedActivity"
+           		  android:configChanges="keyboardHidden|orientation"
+                  >
+        </activity>
+        <activity android:name=".AlbumActivity"
+           		  android:configChanges="keyboardHidden|orientation"
+                  >
+        </activity>
     </application>
         
 </manifest>

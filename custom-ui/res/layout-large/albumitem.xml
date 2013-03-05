@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <!--
 ===========================================================================
  Copyright (c) 2012 Three Pillar Global Inc. http://threepillarglobal.com
@@ -23,46 +22,36 @@
  THE SOFTWARE.
  ===========================================================================
 -->
-
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#f1eee9"
-    android:orientation="vertical"
-    >         
-    <LinearLayout 
-    android:orientation="horizontal"
-    android:id="@+id/topbar"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="7dp"
-    android:background="@drawable/blue_gradient"
-    >   
-	    <TextView 
-			android:id="@+id/textview"
-			android:layout_height="wrap_content"
-			android:layout_width="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:textColor="#ffffff"
-			android:textSize="14sp"
-			android:layout_marginLeft="5dp"
-			android:textStyle="bold"
-		/>
-	</LinearLayout>
-	<View
-        android:id="@+id/view01"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="#313437" />
-    <ListView 
-		android:id="@+id/listview"
-		android:layout_height="wrap_content"
-		android:layout_width="wrap_content"
-		android:layout_margin="10dp"
-		android:background="@drawable/list_gradient"
-		android:scrollingCache="false"
-		android:divider="#e4e4e4"
-		android:dividerHeight="2px"
-	/>    
-</LinearLayout>
+    android:padding="5dip" 
+    >
+	    <ImageView
+	        android:id="@+id/coveralbum"
+	        android:layout_width="75dp"
+	        android:layout_height="75dp"
+	        android:background="#ffffff"
+	        android:layout_centerHorizontal="true"
+	        android:scaleType="centerCrop" />
+	
+	    <TextView
+	        android:id="@+id/albumname"
+	        android:textColor="#000000"
+	        android:layout_centerHorizontal="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="12sp"
+	        android:lines="1"
+	        android:layout_below="@+id/coveralbum"
+	        />
+	    <TextView
+	        android:id="@+id/photocount"
+	        android:textColor="#333333"
+	        android:layout_below="@+id/albumname"
+	        android:layout_centerHorizontal="true"
+	        android:textSize="10sp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        />
+</RelativeLayout>
