@@ -23,8 +23,6 @@
  */
 package org.brickred.socialauth.android;
 
-import android.os.Bundle;
-
 /**
  * Callback interface for dialog requests.
  * 
@@ -32,34 +30,21 @@ import android.os.Bundle;
  * @author abhinav.maheswari@3pillarglobal.com
  */
 
-public interface DialogListener {
+public interface SocialAuthListener<T> {
 
 	/**
-	 * Called when a dialog completes. Executed by the thread that initiated the
-	 * dialog.
+	 * Called when data recived from server. Executed by the thread that
+	 * initiated the dialog.
 	 * 
-	 * @param values
-	 *            Key-value string pairs extracted from the response.
+	 * @param Bundle
+	 *            containing response.
 	 */
-	public void onComplete(Bundle values);
+	public void onExecute(T t);
 
 	/**
 	 * Called when a dialog has an error. Executed by the thread that initiated
 	 * the dialog.
 	 */
 	public void onError(SocialAuthError e);
-
-	/**
-	 * Called when a dialog is canceled by the user. Executed by the thread that
-	 * initiated the dialog.
-	 * 
-	 */
-	public void onCancel();
-
-	/**
-	 * Called when a dialog is closed by user by pressing back key
-	 * 
-	 */
-	public void onBack();
 
 }
