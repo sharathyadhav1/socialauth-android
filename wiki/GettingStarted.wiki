@@ -68,7 +68,7 @@ You can use library in following three ways  :
  * By creating Custom UI and implement providers in your own way.See [customui (customui)] page for implementation.
 
 == Demo Apps==
-CustomUI : The app demonstrates how you can access different services of providers. 
+CustomUI : The app demonstrates how you can access different functionalists of specific provider. 
 
 !LifeView : This app get albums from facebook and twitter and display in GridView. You can download app directly from
 This app is supported on GoogleTV too.
