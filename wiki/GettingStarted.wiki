@@ -78,6 +78,7 @@ This app is supported on GoogleTV too.
 
 !SocialAuth Android 2.0 supports only Facebook , Twitter , !MySpace , Linkedin , Google , !FourSquare ,!SalesForce , Yahoo, Yammer , Runkeeper
 
-!SocialAuth Android 1.0 and 2.0 not supports below SDK 2.3 !GingerBread
+!SocialAuth Android 1.0 not supports below SDK 2.3 !GingerBread
+* !SocialAuth Android 2.0 not supports below SDK 2.1 Eclairs *
 
  
