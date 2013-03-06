@@ -70,7 +70,7 @@ You can use library in following three ways  :
 == Demo Apps==
 CustomUI : The app demonstrates how you can access different functionalists of specific provider. 
 
-!LifeView : This app get albums from facebook and twitter and display in GridView. You can download app directly from
+!LifeView : This app get albums from facebook and twitter and display in !GridView. You can download app directly from
 This app is supported on GoogleTV too.
   
 == Please Note==
