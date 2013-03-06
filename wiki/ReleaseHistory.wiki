@@ -13,14 +13,14 @@
  
   * Provider support added for Yahoo, Google , !SalesForce, Yammer, Runkeeper and !FourSquare
   * Now you can access User Feeds and Photo Albums from Facebook and Twitter. You can also upload images to Facebook and Twitter. 
-  * !Linkedin new keys bug solved.
-  * !Linkedin also provides Email now.
+  * Linkedin new keys bug solved.
+  * Linkedin also provides Email now.
   * Twitter Authorization Screen not apperas second time now.
   * The library now also save user access token.
   * Sign-Out bug solved. Now you can sign out from provider.
   * The library now provides asynchronous methods to download content.
   * !SocialAuth now supports GoogleTV
-  * Two demo apps Custom-UI and LifeView included in sdk.
+  * Two demo apps Custom-UI and !LifeView included in sdk.
   * Special Character bug in status update solved.
-  * SDK supports Android ICS and JellyBean
+  * SDK supports Android ICS and !JellyBean
   
