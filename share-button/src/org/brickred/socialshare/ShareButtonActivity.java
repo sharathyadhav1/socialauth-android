@@ -51,8 +51,7 @@ import android.widget.Toast;
  * The main objective of this example is to access social media providers
  * Facebook, Twitter and others by clicking a single button "Share".On Clicking
  * the button the api will open dialog of providers. User can access the
- * provider from dialog and can update the status, get profile , get contacts
- * and upload images.
+ * provider from dialog and can update the status.
  * 
  * The class first creates a button in main.xml. It then adds button to
  * SocialAuth Android Library <br>
@@ -61,9 +60,7 @@ import android.widget.Toast;
  * addProvider method and finally enables the providers by calling enable method<br>
  * 
  * After successful authentication of provider, it receives the response in
- * responseListener and then automatically update status by updatestatus()
- * method , get user profile , get contacts , upload image , get feeds and get
- * albums <br>
+ * responseListener and then update status by updatestatus() method <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
