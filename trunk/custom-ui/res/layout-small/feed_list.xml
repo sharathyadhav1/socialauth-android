@@ -50,8 +50,8 @@
 		android:layout_height="wrap_content"
 		android:paddingLeft="5dp"
     	android:textColor="#333333"
-    	android:textSize="10sp" 
    		android:layout_below="@+id/fMsg"
+   		android:textSize="10sp" 
 		>
 	</TextView>
 	<TextView
@@ -59,9 +59,9 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
     	android:textColor="#333333"
-    	android:textSize="10sp" 
    		android:layout_below="@+id/fMsg"
     	android:layout_toRightOf="@+id/fName"
+    	android:textSize="10sp" 
 		>
 	</TextView>
 	</RelativeLayout>
