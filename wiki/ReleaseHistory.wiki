@@ -12,7 +12,8 @@
 =Whats new in Version 2.0 ?=
  
   * Provider support added for Yahoo, Google , !SalesForce, Yammer, Runkeeper and !FourSquare
-  * Now you can access User Feeds and Photo Albums from Facebook and Twitter. You can also upload images to Facebook and Twitter. 
+  * Access User Feeds and Photo Albums from Facebook and Twitter. 
+  * Upload images to Facebook and Twitter. 
   * Linkedin new keys bug solved.
   * Linkedin also provides Email now.
   * Twitter Authorization Screen not apperas second time now.
