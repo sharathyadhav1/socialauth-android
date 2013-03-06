@@ -60,10 +60,7 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then automatically update status by updatestatus()
- * method , get user profile , get contact details and upload image<br>
- * 
- * This example also shows implementation how to get feeds and albums from
- * providers.
+ * method.<br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
