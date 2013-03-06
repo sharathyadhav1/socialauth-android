@@ -47,16 +47,6 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
 }}}
 
 
-==Sign Out==
-The sign out functionality now sign out the provider.Fixed the bug in V 1.0
-
-(V2.0 Supports : All)
-{{{
-
-adapter.signout();
-
-}}}
-
 ==Share Message==
 {{{
 
@@ -79,111 +69,6 @@ private final class ResponseListener implements DialogListener
 
 }}}
 
-==Get Profile==
-{{{
-
-profileMap =  adapter.getUserProfile();
-				
-Log.d("ShareBar",  "Validate ID        = " + profileMap.getValidatedId());
-Log.d("ShareBar",  "First Name         = " + profileMap.getFirstName());
-Log.d("ShareBar",  "Last Name          = " + profileMap.getLastName());
-Log.d("ShareBar",  "Email              = " + profileMap.getEmail());
-Log.d("ShareBar",  "Gender  	       = " + profileMap.getGender());
-Log.d("ShareBar",  "Country  	       = " + profileMap.getCountry());
-Log.d("ShareBar",  "Language  	       = " + profileMap.getLanguage());
-Log.d("ShareBar",  "Location 	       = " + profileMap.getLocation());
-Log.d("ShareBar",  "Profile Image URL  = " + profileMap.getProfileImageURL());
-}}}
-  
-
-==Get Contacts==
-{{{
-List<Contact> contactsList = adapter.getContactList();	
-		
-if (contactsList != null && contactsList.size() > 0) 
-{
-   for (Contact p : contactsList) 
-   {
-	if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) 
-	{						    
-            p.setFirstName(p.getDisplayName());
-	}
-						
-	Log.d("ShareBar" , "Display Name = " +  p.getDisplayName());
-	Log.d("ShareBar" , "First Name   = " +  p.getFirstName());
-	Log.d("ShareBar" , "Last Name    = " +  p.getLastName());
-	Log.d("ShareBar" , "Contact ID   = " +  p.getId());
-	Log.d("ShareBar" , "Profile URL  = " +  p.getProfileUrl());	
-						
-   }	
-}
-}}}
-
-==Get Feeds==
-(Supports : V2.0 Facebook, Twitter, Linkedin)
-
-Get Feeds from your Facebook , Twitter or Linkedin Account.
-
-{{{
-List<Feed> feedList = adapter.getFeeds();
-if (feedList != null && feedList.size() > 0) {
-for (Feed f : feedList) {
-    Log.d("Share-Bar", "Feed ID = " + f.getId());
-    Log.d("Share-Bar", "Screen Name = " + f.getScreenName());
-    Log.d("Share-Bar", "Message = " + f.getMessage());
-    Log.d("Share-Bar", "Get From = " + f.getFrom());
-    Log.d("Share-Bar", "Created at = " + f.getCreatedAt());
-    }
-}
-}}}
-
-==Get Albums==
-(Supports : V2.0 Facebook, Twitter)
-
-Get Albums from your Facebook , Twitter Account.
-
-{{{
-List<Album> albumList = adapter.getAlbums();
-if (albumList != null && albumList.size() > 0) {
-
-   // Get Photos inside Album
-   for (Album a : albumList) {
-
-   Log.d("Share-Bar", "Album ID = " + a.getId());
-   Log.d("Share-Bar", "Album Name = " + a.getName());
-   Log.d("Share-Bar", "Cover Photo = " + a.getCoverPhoto());
-   Log.d("Share-Bar", "Photos Count = " + a.getPhotosCount());
-
-   photosList = a.getPhotos();
-   if (photosList != null && photosList.size() > 0) {
-
-       for (Photo p : photosList) {
-	Log.d("Share-Bar", "Photo ID = " + p.getId());
-	Log.d("Share-Bar", "Name     = " + p.getTitle());
-	Log.d("Share-Bar", "Thumb Image = " + p.getThumbImage());
-	Log.d("Share-Bar", "Small Image = " + p.getSmallImage());
-	Log.d("Share-Bar", "Medium Image = " + p.getMediumImage());
-	Log.d("Share-Bar", "Large Image = " + p.getLargeImage());
-       }
-     }
-  }
-}
-}}}
-
-
-==Upload Photo==
-(Supports : V2.0 Facebook, Twitter)
-
-Now you can upload photo to Facebook and Twitter. We have given two examples to get images
-
- * Get Image from gallery and create bitmap to post (share-button example)
- * Get Image from drawables and create bitmap to post ( share-bar and custom-ui example) 
-
-Then use below code to post image with description or status.
-
-{{{
-	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
-	Log.d("Share-Bar", String.valueOf(imgStatus));
-}}} 
+* You can also use share-bar to load profile , contacts , images and feeds.
 
 To see the functionality, view *share-bar example* from socialauth-android zip on Download Page. 
