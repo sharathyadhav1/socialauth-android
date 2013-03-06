@@ -1,13 +1,4 @@
 #summary Release History
-=Whats new in Version 1.0 ?=
-
-  *  Provider support for Facebook, Twitter, Linkedin, Myspace
-  *  Easy to add share button in your app. On clicking button you will get list of providers in dialog.On clicking any provider, you can share messages automatically.
-  * Easy to add bar in your app. The bar will  contain will all providers.On clicking any provider , you can share message automatically.
-  * Get user profile and contact details. 
-  * Easy to add keys and secrets through properties file.
-  * SDK support for all versions above Froyo.
-
 
 =Whats new in Version 2.0 ?=
  
@@ -23,6 +14,18 @@
   * !SocialAuth now supports GoogleTV
   * Two demo apps Custom-UI and !LifeView included in sdk.
   * Special Character bug in status update solved.
-  * SDK supports Android ICS and !JellyBean
+  * *SDK supports all android versions from SDK 2.1* 
   * Bug Fixes
+
+=Whats new in Version 1.0 ?=
+
+  *  Provider support for Facebook, Twitter, Linkedin, Myspace
+  *  Easy to add share button in your app. On clicking button you will get list of providers in dialog.On clicking any provider, you can share messages automatically.
+  * Easy to add bar in your app. The bar will  contain will all providers.On clicking any provider , you can share message automatically.
+  * Get user profile and contact details. 
+  * Easy to add keys and secrets through properties file.
+  * SDK support for all versions above Froyo.
+
+
+
   
