@@ -25,43 +25,29 @@
 -->
 
 
-<RelativeLayout 
+<LinearLayout 
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="5dp"
-	android:paddingBottom="5dp"
+	android:orientation="vertical"
 	> 	
 	<TextView
-		android:id="@+id/fMsg"
+		android:id="@+id/cName"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingTop ="5dp"
-		android:paddingLeft="5dp"
-		android:paddingBottom="5dp"
-	    android:lines="2"
+		android:padding="5dp"
     	android:textColor="#000000"
     	android:textSize="12sp" 
 		>
 	</TextView>
 	<TextView
-		android:id="@+id/fName"
+		android:id="@+id/cEmail"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingLeft="5dp"
+		android:padding="5dp"
     	android:textColor="#333333"
     	android:textSize="10sp" 
-   		android:layout_below="@+id/fMsg"
+    	android:visibility="gone"
 		>
 	</TextView>
-	<TextView
-		android:id="@+id/fDate"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-    	android:textColor="#333333"
-    	android:textSize="10sp" 
-   		android:layout_below="@+id/fMsg"
-    	android:layout_toRightOf="@+id/fName"
-		>
-	</TextView>
-	</RelativeLayout>
+</LinearLayout>
