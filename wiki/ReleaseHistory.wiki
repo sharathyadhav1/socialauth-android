@@ -24,4 +24,5 @@
   * Two demo apps Custom-UI and !LifeView included in sdk.
   * Special Character bug in status update solved.
   * SDK supports Android ICS and !JellyBean
+  * Bug Fixes
   
