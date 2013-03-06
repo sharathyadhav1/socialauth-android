@@ -23,15 +23,15 @@
 
 The SDK contains following directories :
 
- *  dist -  This contains socialauth-android.jar containing Android components.You need to include it in your app.
+ *  dist -  This contains socialauth-android-2.0.jar containing Android components.You need to include it in your app.
 
- *  libs -  This contains socialauth-2.3.jar.  The socialauth-2.3.jar is the underlying OAuth infrastructure.You need to include it in your app.
+ *  libs -  This contains socialauth-4.0.jar.  The socialauth-4.0.jar is the underlying OAuth infrastructure.You need to include it in your app.
  
- * assets - Contains the OAuth consumer keys and secrets, that you can get by registering your application with facebook, linkedin, twitter and myspace. We have bundled our keys so that you can test quickly, but it is strongly recommended that you change these keys. First, it is a security issue for your application and secondly sometimes our keys give errors  because too many developers are testing.
+ * assets - Contains the OAuth consumer keys and secrets, that you can get by registering your application with facebook, linkedin, twitter and myspace and other providers. We have bundled our keys so that you can test quickly, but it is strongly recommended that you change these keys. First, it is a security issue for your application and secondly sometimes our keys give errors  because too many developers are testing.
 
  *  src - This contains the entire socialauth-android Eclipse project if you would like to debug or you need to make some changes. 
 
- * examples - This contains three examples that we have built for you showing how the SDK can be used to build a Share button, Share bar or a completely custom UI.
+ * examples - This contains three examples that we have built for you showing how the SDK can be used to build a Share button, Share bar or a completely custom UI.It also includes a demo app !LifeView currently on Google Play.
 
  * javadoc - Documentation for !SocialAuth Android.
 
@@ -39,7 +39,7 @@ The SDK contains following directories :
 
   * Create your Android project. 
 
-  * Add socialauth-android.jar and socialauth2.3.jar from dist and libs folder of SDK zip file  to libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
+  * Add socialauth-android-2.0.jar and socialauth4.0.jar from dist and libs folder of SDK zip file  to libs folder of you app. *If you are using ADT17 or more then you need to rename the lib folder in your app to libs*. Your app will add the jar to build path automatically if you are using ADT 17.
 
   *    Add images of providers to drawables. You can also take images from apps in examples folder of SDK zip file.
 
@@ -67,6 +67,11 @@ You can use library in following three ways  :
  * By creating a Share Bar containing list of all providers that can be launch on single click. See [sharebarexample (sharebarexample)] page for implementation.
  * By creating Custom UI and implement providers in your own way.See [customui (customui)] page for implementation.
 
+== Demo Apps==
+* Custom-UI : The app demonstrates how you can access different services of providers. 
+
+* LifeView : This app get albums from facebook and twitter and display in GridView. You can download app directly from
+This app is supported on GoogleTV too.
   
 == Please Note==
 !SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
