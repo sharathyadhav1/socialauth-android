@@ -313,7 +313,7 @@ public class SocialAuthAdapter {
 			ImageView provider = new ImageView(ctx);
 			provider.setId(i);
 			provider.setImageResource(authProviderLogos[i]);
-			provider.setPadding(10, 5, 10, 5);
+			provider.setPadding(5, 5, 5, 5);
 			provider.setOnClickListener(viewlistener);
 			linearbar.addView(provider);
 		}
