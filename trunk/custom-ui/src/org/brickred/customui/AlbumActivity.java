@@ -50,7 +50,7 @@ import android.widget.Toast;
 
 /**
  * 
- * Base Activity to show Left Navigation Bar, Albums and Photos of Provider
+ * Activity to show Albums and Photos of Provider
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -70,6 +70,7 @@ public class AlbumActivity extends Activity {
 	boolean photoListFlag = false;
 	boolean photoFlag = false;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,6 +83,7 @@ public class AlbumActivity extends Activity {
 		getData(albumList);
 	}
 
+	// To set albums in gridview
 	public void getData(final List<Album> albumList) {
 		final GridView view = new GridView(this);
 		getGridProperties(view);
@@ -151,6 +153,7 @@ public class AlbumActivity extends Activity {
 	/**
 	 * collection of grid properties
 	 */
+	@SuppressWarnings("static-access")
 	public void getGridProperties(GridView view) {
 		view.setNumColumns(3);
 		view.setVerticalSpacing(5);
