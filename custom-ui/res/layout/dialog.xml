@@ -74,9 +74,9 @@
 		android:padding="5dp"
 		android:textSize="11sp"
 		android:layout_marginRight="5dp"
+		android:layout_alignRight="@+id/editTxt"
 		android:text="Load Image"
 		android:background="#147af8"
-		android:layout_toLeftOf="@+id/update"
 		android:layout_below="@+id/editTxt"
 		android:visibility="gone"
 	/>

@@ -43,6 +43,7 @@ import org.brickred.socialauth.android.SocialAuthListener;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -98,6 +99,7 @@ public class CustomUI extends Activity {
 	ListView listview;
 	AlertDialog dialog;
 	TextView title;
+	ProgressDialog mDialog;
 
 	// Variables
 	boolean status;
@@ -148,6 +150,10 @@ public class CustomUI extends Activity {
 			builder.setCancelable(true);
 			builder.setIcon(android.R.drawable.ic_menu_more);
 
+			mDialog = new ProgressDialog(CustomUI.this);
+			mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			mDialog.setMessage("Loading...");
+
 			builder.setSingleChoiceItems(new DialogAdapter(CustomUI.this, R.layout.provider_options, getResources()
 					.getStringArray(res)), 0, new DialogInterface.OnClickListener() {
 				@Override
@@ -186,7 +192,7 @@ public class CustomUI extends Activity {
 		switch (position) {
 		case 0: // Code to print user profile details for all providers
 		{
-
+			mDialog.show();
 			adapter.getUserProfileAsync(new ProfileDataListener());
 			break;
 		}
@@ -197,7 +203,7 @@ public class CustomUI extends Activity {
 			// Update Status for rest of providers
 
 			if (provider.equalsIgnoreCase("foursquare") || provider.equalsIgnoreCase("google")) {
-
+				mDialog.show();
 				adapter.getContactListAsync(new ContactDataListener());
 
 			} else if (provider.equalsIgnoreCase("runkeeper") || provider.equalsIgnoreCase("salesforce")) {
@@ -240,6 +246,7 @@ public class CustomUI extends Activity {
 				dialog.dismiss();
 			} else {
 				// Get Contacts for Remaining Providers
+				mDialog.show();
 				adapter.getContactListAsync(new ContactDataListener());
 			}
 			break;
@@ -250,6 +257,7 @@ public class CustomUI extends Activity {
 			// Dismiss Dialog for rest of providers
 
 			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) {
+				mDialog.show();
 				adapter.getFeedsAsync(new FeedDataListener());
 			} else {
 				dialog.dismiss();
@@ -288,6 +296,7 @@ public class CustomUI extends Activity {
 						startActivityForResult(photoPickerIntent, SELECT_PHOTO);
 
 						if (bitmap != null) {
+							mDialog.show();
 							adapter.uploadImageAsync(edit.getText().toString(), "icon.png", bitmap, 0,
 									new UploadImageListener());
 						}
@@ -305,6 +314,7 @@ public class CustomUI extends Activity {
 			// Get Albums for Facebook and Twitter
 
 			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) {
+				mDialog.show();
 				adapter.getAlbumsAsync(new AlbumDataListener());
 			} else {
 				dialog.dismiss();
@@ -329,7 +339,7 @@ public class CustomUI extends Activity {
 		public void onExecute(Profile t) {
 
 			Log.d("Custom-UI", "Receiving Data");
-
+			mDialog.dismiss();
 			Profile profileMap = t;
 
 			Intent intent = new Intent(CustomUI.this, ProfileActivity.class);
@@ -344,13 +354,14 @@ public class CustomUI extends Activity {
 		}
 	}
 
-	// To receive the response after authentication
+	// To receive the album response after authentication
 	private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
 
 		@Override
 		public void onExecute(List<Album> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
+			mDialog.dismiss();
 			List<Album> albumList = t;
 
 			Intent intent = new Intent(CustomUI.this, AlbumActivity.class);
@@ -364,14 +375,14 @@ public class CustomUI extends Activity {
 
 	}
 
-	// To receive the response after authentication
+	// To receive the contacts response after authentication
 	private final class ContactDataListener implements SocialAuthListener<List<Contact>> {
 
 		@Override
 		public void onExecute(List<Contact> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
-
+			mDialog.dismiss();
 			List<Contact> contactsList = t;
 
 			Intent intent = new Intent(CustomUI.this, ContactActivity.class);
@@ -386,13 +397,13 @@ public class CustomUI extends Activity {
 		}
 	}
 
-	// To receive the response after authentication
+	// To get status of image upload after authentication
 	private final class UploadImageListener implements SocialAuthListener<Integer> {
 
 		@Override
 		public void onExecute(Integer t) {
-
 			Log.d("Custom-UI", "Uploading Data");
+			mDialog.dismiss();
 			Integer status = t;
 			Log.d("Custom-UI", String.valueOf(status));
 			Toast.makeText(CustomUI.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
@@ -404,14 +415,14 @@ public class CustomUI extends Activity {
 		}
 	}
 
-	// To receive the response after authentication
+	// To receive the feed response after authentication
 	private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
 
 		@Override
 		public void onExecute(List<Feed> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
-
+			mDialog.dismiss();
 			List<Feed> feedList = t;
 			Intent intent = new Intent(CustomUI.this, FeedActivity.class);
 			intent.putExtra("feed", (Serializable) feedList);
@@ -446,8 +457,6 @@ public class CustomUI extends Activity {
 	/**
 	 * CustomAdapter for showing List. On clicking any item , it calls
 	 * authorize() method to authenticate provider
-	 * 
-	 * @author vineet.aggarwal@3pillarglobal.com
 	 */
 
 	public class DialogAdapter extends BaseAdapter {

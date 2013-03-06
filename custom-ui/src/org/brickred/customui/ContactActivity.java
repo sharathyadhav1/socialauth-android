@@ -42,19 +42,7 @@ import android.widget.TextView;
 
 /**
  * 
- * Main class of the CustomUI Example for SocialAuth Android SDK. <br>
- * 
- * The main objective of this example is to access social media providers
- * Facebook, Twitter and others by creating your own UI.
- * 
- * Here we are creating a ListView. The ListView contains list of all providers
- * On clicking any provider, it authorizes the provider by calling authorize
- * method.
- * 
- * After successful authentication of provider, it receives the response in
- * responseListener and then shows a dialog containing options for getting user
- * profile, for updating status, to get contact list, to get feeds , to upload
- * image and to get albums <br>
+ * Activity to show Contacts List Provider
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -70,6 +58,7 @@ public class ContactActivity extends Activity {
 	// Variables
 	String provider_name;
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,6 +73,7 @@ public class ContactActivity extends Activity {
 
 	}
 
+	// adapter for contact list
 	public class ContactAdapter extends ArrayAdapter<Contact> {
 		private final LayoutInflater mInflater;
 		List<Contact> contacts;
