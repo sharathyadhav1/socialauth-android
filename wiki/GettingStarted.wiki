@@ -31,7 +31,7 @@ The SDK contains following directories :
 
  *  src - This contains the entire socialauth-android Eclipse project if you would like to debug or you need to make some changes. 
 
- * examples - This contains three examples that we have built for you showing how the SDK can be used to build a Share button, Share bar or a completely custom UI.It also includes a demo app [!LifeView(https://play.google.com/store/apps/details?id=org.labs.lifeview&hl=en)] currently on Google Play.
+ * examples - This contains three examples that we have built for you showing how the SDK can be used to build a Share button, Share bar or a completely custom UI.It also includes a demo app !LifeView[https://play.google.com/store/apps/details?id=org.labs.lifeview&hl=en] currently on Google Play.
 
  * javadoc - Documentation for !SocialAuth Android.
 
