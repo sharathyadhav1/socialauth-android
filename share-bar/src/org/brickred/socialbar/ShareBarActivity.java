@@ -85,7 +85,7 @@ public class ShareBarActivity extends Activity {
 
 		// Welcome Message
 		TextView textview = (TextView) findViewById(R.id.text);
-		textview.setText("Welcome to SocialAuth Demo. Connect any provider and Share Update.");
+		textview.setText("Welcome to SocialAuth Demo. Connect any provider and then press Update button to Share Update.");
 
 		LinearLayout bar = (LinearLayout) findViewById(R.id.linearbar);
 		bar.setBackgroundResource(R.drawable.bar_gradient);
@@ -141,7 +141,7 @@ public class ShareBarActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					adapter.updateStatus(edit.getText().toString());
-					Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT)
+					Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_LONG)
 							.show();
 				}
 			});
