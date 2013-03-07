@@ -86,7 +86,6 @@ public void onExecute(Profile t) {
 
    Log.d("Custom-UI", "Receiving Data");
    Profile profileMap = t;
-   profileMap =  adapter.getUserProfile();
    Log.d("Custom-UI",  "Validate ID         = " + profileMap.getValidatedId());
    Log.d("Custom-UI",  "First Name          = " + profileMap.getFirstName());
    Log.d("Custom-UI",  "Last Name           = " + profileMap.getLastName());
