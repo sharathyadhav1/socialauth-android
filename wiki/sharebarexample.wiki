@@ -55,7 +55,8 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
      	    
-   status = adapter.update("SocialAuth Android");
+   edit = (EditText) findViewById(R.id.editTxt);
+   adapter.updateStatus(edit.getText().toString());
    }
 
    public void onError(DialogError error) {
