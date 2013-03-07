@@ -147,26 +147,27 @@ private final class ResponseListener implements DialogListener
 // To receive the feed response after authentication
 private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
 
-@Override
-public void onExecute(List<Feed> t) {
+ @Override
+ public void onExecute(List<Feed> t) {
 
-Log.d("Custom-UI", "Receiving Data");
+ Log.d("Custom-UI", "Receiving Data");
 			
-List<Feed> feedList = t;
-if (feedList != null && feedList.size() > 0) {
-for (Feed f : feedList) {
-    Log.d("Custom-UI", "Feed ID = " + f.getId());
-    Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
-    Log.d("Custom-UI", "Message = " + f.getMessage());
-    Log.d("Custom-UI", "Get From = " + f.getFrom());
-    Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
-    }
-}			
+ List<Feed> feedList = t;
+ if (feedList != null && feedList.size() > 0) {
+ for (Feed f : feedList) {
+     Log.d("Custom-UI", "Feed ID = " + f.getId());
+     Log.d("Custom-UI", "Screen Name = " + f.getScreenName());
+     Log.d("Custom-UI", "Message = " + f.getMessage());
+     Log.d("Custom-UI", "Get From = " + f.getFrom());
+     Log.d("Custom-UI", "Created at = " + f.getCreatedAt());
+     }
+ }			
 		
 
-@Override
-public void onError(SocialAuthError e) {
-}
+ @Override
+ public void onError(SocialAuthError e) {
+
+ }
 }
 
 
@@ -179,22 +180,30 @@ public void onError(SocialAuthError e) {
 Get Albums from your Facebook , Twitter Account.
 
 {{{
-List<Album> albumList = adapter.getAlbums();
-if (albumList != null && albumList.size() > 0) {
 
-   // Get Photos inside Album
-   for (Album a : albumList) {
+// To receive the album response after authentication
+private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
 
-   Log.d("Custom-UI", "Album ID = " + a.getId());
-   Log.d("Custom-UI", "Album Name = " + a.getName());
-   Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
-   Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
+@Override
+public void onExecute(List<Album> t) {
 
-   photosList = a.getPhotos();
-   if (photosList != null && photosList.size() > 0) {
+  Log.d("Custom-UI", "Receiving Data");
+  List<Album> albumList = t;
+  if (albumList != null && albumList.size() > 0) {
 
-       for (Photo p : photosList) {
-	Log.d("Custom-UI", "Photo ID = " + p.getId());
+  // Get Photos inside Album
+  for (Album a : albumList) {
+
+  Log.d("Custom-UI", "Album ID = " + a.getId());
+  Log.d("Custom-UI", "Album Name = " + a.getName());
+  Log.d("Custom-UI", "Cover Photo = " + a.getCoverPhoto());
+  Log.d("Custom-UI", "Photos Count = " + a.getPhotosCount());
+
+  photosList = a.getPhotos();
+  if (photosList != null && photosList.size() > 0) {
+
+  for (Photo p : photosList) {
+        Log.d("Custom-UI", "Photo ID = " + p.getId());
 	Log.d("Custom-UI", "Name     = " + p.getTitle());
 	Log.d("Custom-UI", "Thumb Image = " + p.getThumbImage());
 	Log.d("Custom-UI", "Small Image = " + p.getSmallImage());
@@ -204,6 +213,13 @@ if (albumList != null && albumList.size() > 0) {
      }
   }
 }
+
+  @Override
+  public void onError(SocialAuthError e) {
+  }
+}
+
+
 }}}
 
 
