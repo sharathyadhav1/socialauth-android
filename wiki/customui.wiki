@@ -47,6 +47,7 @@ adapter.signout();
 
 ==Share Message and Links==
 (Supports : Facebook, Twitter, Linkedin, MySpace, Yahoo, Yammer)
+
 https://socialauth-android.googlecode.com/svn/wiki/images/sharedata.png
 
 {{{
@@ -108,7 +109,7 @@ public void onExecute(Profile t) {
   
 
 ==Get Contacts==
-(Supports : Facebook, Twitter)
+
 https://socialauth-android.googlecode.com/svn/wiki/images/contact.png
 
 {{{
