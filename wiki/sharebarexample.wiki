@@ -48,6 +48,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
 
 
 ==Share Message==
+(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer) 
 {{{
 
 private final class ResponseListener implements DialogListener 
