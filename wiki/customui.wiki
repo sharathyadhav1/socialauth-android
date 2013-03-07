@@ -72,6 +72,7 @@ private final class ResponseListener implements DialogListener
 
 ==Get Profile==
 (Supports : All)
+
 https://socialauth-android.googlecode.com/svn/wiki/images/profile.png
 
 {{{
