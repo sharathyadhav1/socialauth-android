@@ -95,4 +95,6 @@ private final class ResponseListener implements DialogListener
 
 }}}
 
-  To see the full functionality, view *share-button example* from socialauth-android.zip on Downloads page.
+* You can also use share-bar to load profile , contacts , images and feeds.
+
+  To see the full functionality, view *share-button example* from socialauth-android-sdk-2.0.zip on Downloads page.
