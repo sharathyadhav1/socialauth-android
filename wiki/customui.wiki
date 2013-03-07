@@ -102,25 +102,32 @@ public void onExecute(Profile t) {
 
 ==Get Contacts==
 {{{
-List<Contact> contactsList = adapter.getContactList();
-						
-if (contactsList != null && contactsList.size() > 0) 
+private final class ResponseListener implements DialogListener 
 {
-   for (Contact p : contactsList) 
-   {
-	if (TextUtils.isEmpty(p.getFirstName()) && TextUtils.isEmpty(p.getLastName())) 
-	{						    
-            p.setFirstName(p.getDisplayName());
-	}
-						
-	Log.d("Custom-UI" , "Display Name = " +  p.getDisplayName());
-	Log.d("Custom-UI" , "First Name   = " +  p.getFirstName());
-	Log.d("Custom-UI" , "Last Name    = " +  p.getLastName());
-	Log.d("Custom-UI" , "Contact ID   = " +  p.getId());
-	Log.d("Custom-UI" , "Profile URL  = " +  p.getProfileUrl());	
-						
-   }	
+   public void onComplete(Bundle values) {
+   
+      adapter.getContactListAsync(new ContactDataListener());			
+   }
 }
+
+// To receive the contacts response after authentication
+private final class ContactDataListener implements SocialAuthListener<List<Contact>> {
+
+@Override
+public void onExecute(List<Contact> t) {
+
+   Log.d("Custom-UI", "Receiving Data");
+   List<Contact> contactsList = t;
+  if (contactsList != null && contactsList.size() > 0) {
+  for (Contact c : contactList) {
+    Log.d("Custom-UI", "Contact ID = " + c.getId());
+    Log.d("Custom-UI", "Display Name = " + c.getDisplayName());
+    Log.d("Custom-UI", "First Name = " + c.getFirstName());
+    Log.d("Custom-UI", "Last Name = " + c.getLastName());
+    Log.d("Custom-UI", "Email = " + c.getEmail());
+    }
+}
+
 }}}
 
 ==Get Feeds==
