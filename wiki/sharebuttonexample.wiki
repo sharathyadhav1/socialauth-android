@@ -78,7 +78,8 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
      
-    adapter.updateStatus("http://www.socialauth.in");
+   edit = (EditText) findViewById(R.id.editTxt);    
+   adapter.updateStatus(edit.getText().toString());
 			
    }
 
