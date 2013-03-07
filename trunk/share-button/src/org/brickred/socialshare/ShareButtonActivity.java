@@ -85,7 +85,7 @@ public class ShareButtonActivity extends Activity {
 
 		// Welcome Message
 		TextView textview = (TextView) findViewById(R.id.text);
-		textview.setText("Welcome to SocialAuth Demo. Connect any provider and Share Update.");
+		textview.setText("Welcome to SocialAuth Demo. Connect any provider and then press Update button to Share Update.");
 
 		// Create Your Own Share Button
 		Button share = (Button) findViewById(R.id.sharebutton);
@@ -147,7 +147,7 @@ public class ShareButtonActivity extends Activity {
 			// Get name of provider after authentication
 			final String providerName = values.getString(SocialAuthAdapter.PROVIDER);
 			Log.d("ShareButton", "Provider Name = " + providerName);
-			Toast.makeText(ShareButtonActivity.this, providerName + " connected", Toast.LENGTH_SHORT).show();
+			Toast.makeText(ShareButtonActivity.this, providerName + " connected", Toast.LENGTH_LONG).show();
 
 			update = (Button) findViewById(R.id.update);
 			edit = (EditText) findViewById(R.id.editTxt);
@@ -160,7 +160,7 @@ public class ShareButtonActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					adapter.updateStatus(edit.getText().toString());
-					Toast.makeText(ShareButtonActivity.this, "Message posted on " + providerName, Toast.LENGTH_SHORT)
+					Toast.makeText(ShareButtonActivity.this, "Message posted on " + providerName, Toast.LENGTH_LONG)
 							.show();
 				}
 			});
