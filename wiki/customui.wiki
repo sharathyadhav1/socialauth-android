@@ -8,13 +8,31 @@ Here is example of how to use library with own List View:
 https://socialauth-android.googlecode.com/svn/wiki/images/socialauthcontacts.png
 
 
-*Here is the code snippet :*
+*Here is example how to use custom-ui with listview :*
 {{{
     // Adapter initialization
     adapter = new SocialAuthAdapter(new ResponseListener());
         
     listview = (ListView)findViewById(R.id.listview);  
     listview.setAdapter(new CustomAdapter(this, adapter));   
+}}}
+
+
+{{{
+
+holder.text.setOnClickListener(new OnClickListener() {
+
+@Override
+public void onClick(View v) {
+
+    // providers array contains name of providers
+    adapter.authorize(context, providers[position]);
+
+   }
+});
+
+
+
 }}}
 
 ==Sign Out==
@@ -52,17 +70,34 @@ private final class ResponseListener implements DialogListener
 ==Get Profile==
 {{{
 
-profileMap =  adapter.getUserProfile();
-				
-Log.d("Custom-UI",  "Validate ID         = " + profileMap.getValidatedId());
-Log.d("Custom-UI",  "First Name          = " + profileMap.getFirstName());
-Log.d("Custom-UI",  "Last Name           = " + profileMap.getLastName());
-Log.d("Custom-UI",  "Email               = " + profileMap.getEmail());
-Log.d("Custom-UI",  "Gender  	         = " + profileMap.getGender());
-Log.d("Custom-UI",  "Country  	         = " + profileMap.getCountry());
-Log.d("Custom-UI",  "Language  	         = " + profileMap.getLanguage());
-Log.d("Custom-UI",  "Location 	         = " + profileMap.getLocation());
-Log.d("Custom-UI",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+   
+      adapter.getUserProfileAsync(new ProfileDataListener());			
+   }
+}
+
+// To receive the profile response after authentication
+private final class ProfileDataListener implements SocialAuthListener<Profile> {
+
+@Override
+public void onExecute(Profile t) {
+
+   Log.d("Custom-UI", "Receiving Data");
+   Profile profileMap = t;
+   profileMap =  adapter.getUserProfile();
+   Log.d("Custom-UI",  "Validate ID         = " + profileMap.getValidatedId());
+   Log.d("Custom-UI",  "First Name          = " + profileMap.getFirstName());
+   Log.d("Custom-UI",  "Last Name           = " + profileMap.getLastName());
+   Log.d("Custom-UI",  "Email               = " + profileMap.getEmail());
+   Log.d("Custom-UI",  "Gender  	         = " + profileMap.getGender());
+   Log.d("Custom-UI",  "Country  	         = " + profileMap.getCountry());
+   Log.d("Custom-UI",  "Language  	         = " + profileMap.getLanguage());
+   Log.d("Custom-UI",  "Location 	         = " + profileMap.getLocation());
+   Log.d("Custom-UI",  "Profile Image URL  = " + profileMap.getProfileImageURL());
+}
+
 }}}
   
 
