@@ -181,6 +181,14 @@ Get Albums from your Facebook , Twitter Account.
 
 {{{
 
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+   
+     adapter.getAlbumsAsync(new AlbumDataListener());	
+   }
+}
+
 // To receive the album response after authentication
 private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
 
@@ -234,8 +242,31 @@ Now you can upload photo to Facebook and Twitter. We have given two examples to 
 Then use below code to post image with description or status.
 
 {{{
-	int imgStatus = adapter.uploadImage("HelloWorldTest","icon.png", bitmap, 0);
-	Log.d("Custom-UI", String.valueOf(imgStatus));
+	
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+   
+     adapter.uploadImageAsync(edit.getText().toString(), "icon.png", bitmap, 0,new UploadImageListener());
+   }
+}
+
+// To get status of image upload after authentication
+private final class UploadImageListener implements SocialAuthListener<Integer> {
+
+@Override
+public void onExecute(Integer t) {
+  Log.d("Custom-UI", "Uploading Data");
+  Integer status = t;
+  Log.d("Custom-UI", String.valueOf(status));
+  Toast.makeText(CustomUI.this, "Image Uploaded", Toast.LENGTH_SHORT).show();
+}
+
+@Override
+public void onError(SocialAuthError e) {
+ }
+}
+
 }}} 
 
 
