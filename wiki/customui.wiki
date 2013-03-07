@@ -46,7 +46,7 @@ adapter.signout();
 }}}
 
 ==Share Message and Links==
-
+(Supports : Facebook, Twitter, Linkedin, MySpace, Yahoo, Yammer)
 https://socialauth-android.googlecode.com/svn/wiki/images/sharedata.png
 
 {{{
@@ -71,7 +71,7 @@ private final class ResponseListener implements DialogListener
 }}}
 
 ==Get Profile==
-
+(Supports : All)
 https://socialauth-android.googlecode.com/svn/wiki/images/profile.png
 
 {{{
@@ -107,7 +107,7 @@ public void onExecute(Profile t) {
   
 
 ==Get Contacts==
-
+(Supports : Facebook, Twitter)
 https://socialauth-android.googlecode.com/svn/wiki/images/contact.png
 
 {{{
@@ -140,7 +140,7 @@ public void onExecute(List<Contact> t) {
 }}}
 
 ==Get Feeds==
-(Supports : V2.0 Facebook, Twitter, Linkedin)
+(Supports : Facebook, Twitter)
 
 Get Feeds from your Facebook , Twitter Account.
 
@@ -186,7 +186,7 @@ private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
 }}}
 
 ==Get Albums==
-(Supports : V2.0 Facebook, Twitter)
+(Supports : Facebook, Twitter)
 
 Get Albums from your Facebook , Twitter Account.
 
@@ -245,7 +245,7 @@ public void onExecute(List<Album> t) {
 
 
 ==Upload Photo==
-(Supports : V2.0 Facebook, Twitter)
+(Supports : Facebook, Twitter)
 
 https://socialauth-android.googlecode.com/svn/wiki/images/shareupdate.png
 
