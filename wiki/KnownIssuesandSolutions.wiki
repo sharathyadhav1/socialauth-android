@@ -3,11 +3,11 @@
 
 *General*
   * All the providers disallow same message to be post again to avoid spamming.You may get error if you try to post same message.
-  * Google, Foursquare, Yammer , Salesforce requires user callback url defined in account. use addCallback method for this.
+  * Google, Twitter, Foursquare, Yammer , Salesforce requires user callback url defined in account. use addCallback method for this.
 
- *  Don't post same message twice.You will get exception.
+  * Officially we support SDK 2.2. The API will work on SDK 2.1 too except Linkedin.
 
- * If you get this error while importing projects :
+  * If you get this error while importing projects :
  
  _Project has no default.properties file! Edit the project properties to set one._
 
@@ -32,9 +32,10 @@ If you find issue in twitter authentication , you can try following things :
 
  * Check read-write permission in your twitter account
  * The callback url field should be field and it should be valid url.
+ * Check you have used addCallback method.
 
 * Linkedin*
-  * The callback url field should be field and it should be valid url.
+  * The callback url field should be valid url.
   * You should remove your old app before using the new lib
 
 *Yahoo*
