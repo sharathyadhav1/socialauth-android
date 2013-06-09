@@ -74,12 +74,9 @@ CustomUI : The app demonstrates how you can access different functionalists of s
 This app is supported on GoogleTV too.
   
 == Please Note==
-!SocialAuth Android 1.0 supports only Facebook , Twitter , !MySpace , Linkedin
 
-!SocialAuth Android 2.0 supports only Facebook , Twitter , !MySpace , Linkedin , Google , !FourSquare ,!SalesForce , Yahoo, Yammer , Runkeeper
+!SocialAuth Android 2.5 supports Facebook , Twitter , !MySpace , Linkedin , Google, !FourSquare ,!SalesForce , Yahoo, Yammer, Runkeeper, Google Plus(Google OAuth2.0)
 
-!SocialAuth Android 1.0 not supports below SDK 2.3 !GingerBread
-
-*!SocialAuth Android 2.0 not supports below SDK 2.1 Eclairs*
+*!SocialAuth Android 2.5 not supports below SDK 2.2 Froyo*
 
  
