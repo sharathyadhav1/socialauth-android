@@ -1,5 +1,17 @@
 #summary Release History
 
+=Whats new in Version 2.5 ?=
+  * Facebook and Twitter API issue solved.Check examples for use.
+  * Google Plus(Google Oauth 2.0) Provider added.
+  * SDK support issue for 2.2 solved.
+  * Examples updated
+  * URL Encoding added for updatStatus.
+  * A new method update story added to share linkes with image preview 
+    on facebook.
+  * addConfig Method added to enable users to keep keys and secrets in 
+    code.
+
+
 =Whats new in Version 2.0 ?=
  
   * Provider support added for Yahoo, Google , !SalesForce, Yammer, Runkeeper and !FourSquare
@@ -14,7 +26,7 @@
   * !SocialAuth now supports GoogleTV
   * Two demo apps Custom-UI and !LifeView included in sdk.
   * Special Character bug in status update solved.
-  * *SDK supports all android versions from SDK 2.1* 
+  * *SDK supports all android versions from SDK 2.2* 
   * Bug Fixes
 
 =Whats new in Version 1.0 ?=
