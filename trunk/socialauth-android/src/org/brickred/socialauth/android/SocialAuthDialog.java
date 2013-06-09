@@ -97,8 +97,7 @@ public class SocialAuthDialog extends Dialog {
 	private LinearLayout mContent;
 	private Drawable icon;
 	private Handler handler;
-	static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(
-			ViewGroup.LayoutParams.FILL_PARENT,
+	static final FrameLayout.LayoutParams FILL = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT,
 			ViewGroup.LayoutParams.FILL_PARENT);
 
 	// SocialAuth Components
@@ -119,8 +118,8 @@ public class SocialAuthDialog extends Dialog {
 	 * @param socialAuthManager
 	 *            Underlying SocialAuth framework for OAuth
 	 */
-	public SocialAuthDialog(Context context, String url, Provider providerName,
-			DialogListener listener, SocialAuthManager socialAuthManager) {
+	public SocialAuthDialog(Context context, String url, Provider providerName, DialogListener listener,
+			SocialAuthManager socialAuthManager) {
 		super(context);
 		mProviderName = providerName;
 		mUrl = url;
@@ -137,6 +136,7 @@ public class SocialAuthDialog extends Dialog {
 		mSpinner = new ProgressDialog(getContext());
 		mSpinner.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mSpinner.setMessage("Loading...");
+		mSpinner.setCancelable(true);
 
 		mContent = new LinearLayout(getContext());
 		mContent.setOrientation(LinearLayout.VERTICAL);
@@ -149,18 +149,27 @@ public class SocialAuthDialog extends Dialog {
 		float[] dimensions = (orientation == Configuration.ORIENTATION_LANDSCAPE) ? DIMENSIONS_DIFF_LANDSCAPE
 				: DIMENSIONS_DIFF_PORTRAIT;
 
-		addContentView(
-				mContent,
-				new LinearLayout.LayoutParams(display.getWidth()
-						- ((int) (dimensions[0] * scale + 0.5f)), display
-						.getHeight() - ((int) (dimensions[1] * scale + 0.5f))));
+		addContentView(mContent, new LinearLayout.LayoutParams(display.getWidth()
+				- ((int) (dimensions[0] * scale + 0.5f)), display.getHeight() - ((int) (dimensions[1] * scale + 0.5f))));
+
+		mSpinner.setOnCancelListener(new OnCancelListener() {
+			@Override
+			public void onCancel(DialogInterface dialogInterface) {
+				mWebView.stopLoading();
+				mListener.onBack();
+				SocialAuthDialog.this.dismiss();
+			}
+		});
 
 		this.setOnKeyListener(new DialogInterface.OnKeyListener() {
 			@Override
-			public boolean onKey(DialogInterface dialog, int keyCode,
-					KeyEvent event) {
-				if (keyCode == KeyEvent.KEYCODE_BACK)
+			public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+					mWebView.stopLoading();
+					dismiss();
 					mListener.onBack();
+					return true;
+				}
 				return false;
 			}
 		});
@@ -175,14 +184,12 @@ public class SocialAuthDialog extends Dialog {
 	private void setUpTitle() {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		mTitle = new TextView(getContext());
-		int res = getContext().getResources().getIdentifier(
-				mProviderName.toString(), "drawable",
+		int res = getContext().getResources().getIdentifier(mProviderName.toString(), "drawable",
 				getContext().getPackageName());
 		icon = getContext().getResources().getDrawable(res);
 		StringBuilder sb = new StringBuilder();
 		sb.append(mProviderName.toString().substring(0, 1).toUpperCase());
-		sb.append(mProviderName.toString().substring(1,
-				mProviderName.toString().length()));
+		sb.append(mProviderName.toString().substring(1, mProviderName.toString().length()));
 		mTitle.setText(sb.toString());
 		mTitle.setGravity(Gravity.CENTER_VERTICAL);
 		mTitle.setTextColor(Color.WHITE);
@@ -210,8 +217,7 @@ public class SocialAuthDialog extends Dialog {
 		mWebView.loadUrl(mUrl);
 		mWebView.setLayoutParams(FILL);
 
-		if (mProviderName.toString().equalsIgnoreCase("yahoo")
-				|| mProviderName.toString().equalsIgnoreCase("yammer"))
+		if (mProviderName.toString().equalsIgnoreCase("yahoo") || mProviderName.toString().equalsIgnoreCase("yammer"))
 			mWebView.getSettings().setUseWideViewPort(true);
 
 		mContent.addView(mWebView);
@@ -227,8 +233,8 @@ public class SocialAuthDialog extends Dialog {
 			Log.d("SocialAuth-WebView", "Override url: " + url);
 
 			if (url.startsWith(mProviderName.getCallBackUri())
-					&& (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName
-							.toString().equalsIgnoreCase("twitter"))) {
+					&& (mProviderName.toString().equalsIgnoreCase("facebook") || mProviderName.toString()
+							.equalsIgnoreCase("twitter"))) {
 				if (url.startsWith(mProviderName.getCancelUri())) {
 					// Handles Twitter and Facebook Cancel
 					mListener.onCancel();
@@ -240,28 +246,23 @@ public class SocialAuthDialog extends Dialog {
 						public void run() {
 							try {
 
-								AuthProvider auth = mSocialAuthManager
-										.connect(params);
+								AuthProvider auth = mSocialAuthManager.connect(params);
 								writeToken(auth);
 
 								handler.post(new Runnable() {
 									@Override
 									public void run() {
-										if (mSpinner != null
-												&& mSpinner.isShowing())
+										if (mSpinner != null && mSpinner.isShowing())
 											mSpinner.dismiss();
 
 										Bundle bundle = new Bundle();
-										bundle.putString(
-												SocialAuthAdapter.PROVIDER,
-												mProviderName.toString());
+										bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
 										mListener.onComplete(bundle);
 									}
 								});
 							} catch (Exception e) {
 								e.printStackTrace();
-								mListener.onError(new SocialAuthError(
-										"Unknown Error", e));
+								mListener.onError(new SocialAuthError("Unknown Error", e));
 							}
 						}
 					};
@@ -274,13 +275,11 @@ public class SocialAuthDialog extends Dialog {
 			// ***Handling Runkeeper Facebook Start**************
 
 			else if (url.startsWith("https://www.facebook.com/dialog/oauth")) {
-				newUrl = url.replace("https://www.facebook.com/dialog/oauth",
-						"https://m.facebook.com/dialog/oauth");
+				newUrl = url.replace("https://www.facebook.com/dialog/oauth", "https://m.facebook.com/dialog/oauth");
 
 				mWebView.loadUrl(newUrl);
 				return true;
-			} else if (url
-					.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp")) {
+			} else if (url.startsWith("http://runkeeper.com/jsp/widgets/streetTeamWidgetClose.jsp")) {
 				mWebView.loadUrl("http://runkeeper.com/facebookSignIn");
 				return true;
 			} else if (url.startsWith("http://runkeeper.com/home")) {
@@ -305,13 +304,11 @@ public class SocialAuthDialog extends Dialog {
 		}
 
 		@Override
-		public void onReceivedError(WebView view, int errorCode,
-				String description, String failingUrl) {
+		public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
 			Log.d("SocialAuth-WebView", "Inside OnReceived Error");
 			Log.d("SocialAuth-WebView", String.valueOf(errorCode));
 			super.onReceivedError(view, errorCode, description, failingUrl);
-			mListener.onError(new SocialAuthError(description, new Exception(
-					failingUrl)));
+			mListener.onError(new SocialAuthError(description, new Exception(failingUrl)));
 			SocialAuthDialog.this.dismiss();
 		}
 
@@ -320,8 +317,7 @@ public class SocialAuthDialog extends Dialog {
 			super.onPageStarted(view, url, favicon);
 
 			// To set zoom density of runkeeper dialog
-			if (url.startsWith("https://runkeeper.com/apps/authorize")
-					& count < 1) {
+			if (url.startsWith("https://runkeeper.com/apps/authorize") & count < 1) {
 				if (Util.UI_SIZE == 4 && Util.UI_DENSITY == 120) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 					mWebView.setInitialScale(60);
@@ -344,15 +340,13 @@ public class SocialAuthDialog extends Dialog {
 			if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
 				if (url.startsWith("https://login.yahoo.com/config/login")) {
 					if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 4) {
-						mWebView.getSettings()
-								.setDefaultZoom(ZoomDensity.CLOSE);
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.CLOSE);
 						mWebView.setInitialScale(155);
 					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 10) {
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 						mWebView.setInitialScale(120);
 					} else
-						mWebView.getSettings().setDefaultZoom(
-								ZoomDensity.MEDIUM);
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 				}
 			}
 
@@ -373,8 +367,7 @@ public class SocialAuthDialog extends Dialog {
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 						mWebView.setInitialScale(65);
 					} else if (Util.UI_SIZE == 10) {
-						mWebView.getSettings().setDefaultZoom(
-								ZoomDensity.MEDIUM);
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 					}
 				} else if (Util.UI_DENSITY == 240) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
@@ -397,40 +390,30 @@ public class SocialAuthDialog extends Dialog {
 						@Override
 						public void run() {
 							try {
-								AuthProvider auth = mSocialAuthManager
-										.connect(params);
+								AuthProvider auth = mSocialAuthManager.connect(params);
 
 								// Don't save token for yahoo, yammer,
 								// salesforce
-								if (!mProviderName.toString().equalsIgnoreCase(
-										"yahoo")
-										|| !mProviderName.toString()
-												.equalsIgnoreCase("yammer")
-										|| !mProviderName.toString()
-												.equalsIgnoreCase("salesforce"))
+								if (!mProviderName.toString().equalsIgnoreCase("yahoo")
+										|| !mProviderName.toString().equalsIgnoreCase("yammer")
+										|| !mProviderName.toString().equalsIgnoreCase("salesforce"))
 									writeToken(auth);
 
 								handler.post(new Runnable() {
 									@Override
 									public void run() {
 
-										if (mSpinner != null
-												&& mSpinner.isShowing())
+										if (mSpinner != null && mSpinner.isShowing())
 											mSpinner.dismiss();
 
 										Bundle bundle = new Bundle();
-										bundle.putString(
-												SocialAuthAdapter.PROVIDER,
-												mProviderName.toString());
+										bundle.putString(SocialAuthAdapter.PROVIDER, mProviderName.toString());
 										mListener.onComplete(bundle);
 									}
 								});
 							} catch (Exception e) {
 								e.printStackTrace();
-								mListener
-										.onError(new SocialAuthError(
-												"Could not connect using SocialAuth",
-												e));
+								mListener.onError(new SocialAuthError("Could not connect using SocialAuth", e));
 							}
 						}
 					};
@@ -453,14 +436,11 @@ public class SocialAuthDialog extends Dialog {
 					if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
 						if (url.startsWith("https://login.yahoo.com/config/login"))
 							mWebView.scrollTo(Util.UI_YAHOO_SCROLL, 0);
-						else if (url
-								.startsWith("https://api.login.yahoo.com//oauth/v2")) {
+						else if (url.startsWith("https://api.login.yahoo.com//oauth/v2")) {
 							if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 3)
-								mWebView.getSettings().setDefaultZoom(
-										ZoomDensity.FAR);
+								mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 							else
-								mWebView.getSettings().setDefaultZoom(
-										ZoomDensity.MEDIUM);
+								mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 
 							mWebView.scrollTo(Util.UI_YAHOO_ALLOW, 0);
 						}
@@ -477,8 +457,7 @@ public class SocialAuthDialog extends Dialog {
 							&& (url.startsWith("http://m.facebook.com/login.php") || url
 									.startsWith("https://m.facebook.com/dialog/oauth"))) {
 						// Set Zoom Density of FaceBook Dialog
-						mWebView.getSettings().setDefaultZoom(
-								ZoomDensity.MEDIUM);
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 					}
 				}
 			});
@@ -512,8 +491,7 @@ public class SocialAuthDialog extends Dialog {
 
 		Map<String, Object> attributes = accessGrant.getAttributes();
 
-		Editor edit = PreferenceManager.getDefaultSharedPreferences(
-				getContext()).edit();
+		Editor edit = PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
 		edit.putString(mProviderName.toString() + " key", key);
 		edit.putString(mProviderName.toString() + " secret", secret);
@@ -525,8 +503,7 @@ public class SocialAuthDialog extends Dialog {
 			}
 
 			for (String s : attributes.keySet()) {
-				edit.putString(mProviderName.toString() + "attribute " + s,
-						String.valueOf(attributes.get(s)));
+				edit.putString(mProviderName.toString() + "attribute " + s, String.valueOf(attributes.get(s)));
 			}
 
 		}
