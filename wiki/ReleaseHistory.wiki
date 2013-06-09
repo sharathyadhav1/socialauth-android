@@ -6,10 +6,8 @@
   * SDK support issue for 2.2 solved.
   * Examples updated
   * URL Encoding added for updatStatus.
-  * A new method update story added to share linkes with image preview 
-    on facebook.
-  * addConfig Method added to enable users to keep keys and secrets in 
-    code.
+  * A new method update story added to share links with image preview   on facebook.
+  * addConfig Method added to enable users to keep keys and secrets in    code.
 
 
 =Whats new in Version 2.0 ?=
