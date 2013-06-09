@@ -26,8 +26,8 @@ package org.brickred.socialauth.android;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +44,8 @@ import org.brickred.socialauth.plugin.AlbumsPlugin;
 import org.brickred.socialauth.plugin.FeedPlugin;
 import org.brickred.socialauth.util.AccessGrant;
 import org.brickred.socialauth.util.Constants;
+import org.brickred.socialauth.util.MethodType;
+import org.brickred.socialauth.util.OAuthConfig;
 import org.brickred.socialauth.util.Response;
 
 import android.app.AlertDialog;
@@ -108,7 +110,8 @@ public class SocialAuthAdapter {
 	 */
 	public enum Provider {
 		FACEBOOK(Constants.FACEBOOK, "fbconnect://success", "fbconnect://success?error_reason"), TWITTER(
-				Constants.TWITTER, "twitterapp://connect", "twitterapp://connect?denied"), LINKEDIN(Constants.LINKEDIN,
+				Constants.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?denied"), LINKEDIN(Constants.LINKEDIN,
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do?oauth_problem"), MYSPACE(
 				Constants.MYSPACE, "http://socialauth.in", "http://socialauth.in/?oauth_problem"), RUNKEEPER(
@@ -122,7 +125,10 @@ public class SocialAuthAdapter {
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
 				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), SALESFORCE(
 				Constants.SALESFORCE, "https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do",
-				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem");
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), GOOGLEPLUS(
+				Constants.GOOGLE_PLUS, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do",
+				"http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do/?oauth_problem"), EMAIL(SHARE_MAIL, "",
+				""), MMS(SHARE_MMS, "", "");
 
 		private String name;
 		private String cancelUri;
@@ -169,9 +175,14 @@ public class SocialAuthAdapter {
 		}
 	}
 
+	// Share Mail & MMS providers
+	public static final String SHARE_MAIL = "share_mail";
+	public static final String SHARE_MMS = "share_mms";
+
 	// Constants
 	public static final String PROVIDER = "provider";
 	public static final String ACCESS_GRANT = "access_grant";
+	private final String UPDATE_STATUS_URL = "https://graph.facebook.com/me/feed";
 
 	// SocialAuth Components
 	private SocialAuthManager socialAuthManager;
@@ -179,11 +190,12 @@ public class SocialAuthAdapter {
 	private Provider currentProvider;
 	private final Provider authProviders[];
 
-	// Variables and Arrays
+	// Variables, Arrays and Maps
 	private String url;
 	private int providerCount = 0;
 	private final int authProviderLogos[];
 	private Map<String, Object> tokenMap;
+	private final Map<String, OAuthConfig> authMap;
 
 	// Android Components
 	private Context context;
@@ -200,6 +212,7 @@ public class SocialAuthAdapter {
 		authProviders = new Provider[Provider.values().length];
 		authProviderLogos = new int[Provider.values().length];
 		this.dialogListener = listener;
+		authMap = new HashMap<String, OAuthConfig>();
 	}
 
 	/**
@@ -234,12 +247,27 @@ public class SocialAuthAdapter {
 	 *            CallBack URL String
 	 */
 	public void addCallBack(Provider provider, String callBack) {
-		if (provider.name() == Constants.FACEBOOK || provider.name() == Constants.TWITTER
-				|| provider.name() == Constants.LINKEDIN || provider.name() == Constants.MYSPACE
-				|| provider.name() == Constants.YAHOO || provider.name() == Constants.RUNKEEPER) {
+		if (provider.name() == Constants.FACEBOOK || provider.name() == Constants.LINKEDIN
+				|| provider.name() == Constants.MYSPACE || provider.name() == Constants.YAHOO
+				|| provider.name() == Constants.RUNKEEPER) {
 			Log.d("SocialAuthAdapter", "Callback Url not require");
 		} else
 			provider.setCallBackUri(callBack);
+	}
+
+	/**
+	 * Returns the last authenticated provider. Please use the SocialAuth API to
+	 * find out about the methods available in this interface
+	 * 
+	 * @return Provider object
+	 */
+	public AuthProvider getCurrentProvider() {
+		if (currentProvider != null) {
+			return socialAuthManager.getProvider(currentProvider.toString());
+
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -252,7 +280,12 @@ public class SocialAuthAdapter {
 
 		Log.d("SocialAuthAdapter", "Enabling button with SocialAuth");
 		final Context ctx = sharebtn.getContext();
+		if (!Util.isNetworkAvailable(ctx)) {
+			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
+			return;
+		}
 		context = ctx;
+
 		// Click Listener For Share Button
 		sharebtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -276,9 +309,17 @@ public class SocialAuthAdapter {
 						new DialogInterface.OnClickListener() {
 							@Override
 							public void onClick(DialogInterface dialog, int item) {
-								// Getting selected provider and starting
-								// authentication
-								authorize(ctx, authProviders[item]);
+								if (authProviders[item].toString().startsWith("share_mail")
+										|| authProviders[item].toString().startsWith("share_mms")) {
+									// Getting selected provider email or mms
+									Bundle bundle = new Bundle();
+									bundle.putString(SocialAuthAdapter.PROVIDER, authProviders[item].toString());
+									dialogListener.onComplete(bundle);
+								} else {
+									// Getting selected provider and starting
+									// authentication
+									authorize(ctx, authProviders[item]);
+								}
 								dialog.dismiss();
 							}
 						});
@@ -295,16 +336,27 @@ public class SocialAuthAdapter {
 	 *            The LinearLayout which is created as a bar
 	 */
 	public void enable(LinearLayout linearbar) {
-
 		Log.d("SocialAuthAdapter", "Enabling bar with SocialAuth");
 		final Context ctx = linearbar.getContext();
+		if (!Util.isNetworkAvailable(ctx)) {
+			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
+			return;
+		}
 		context = ctx;
 		// Handles Clicking Events for Buttons
 		View.OnClickListener viewlistener = new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// Getting selected provider and starting authentication
-				authorize(ctx, authProviders[v.getId()]);
+				if (authProviders[v.getId()].toString().startsWith("share_mail")
+						|| authProviders[v.getId()].toString().startsWith("share_mms")) {
+					Bundle bundle = new Bundle();
+					bundle.putString(SocialAuthAdapter.PROVIDER, authProviders[v.getId()].toString());
+					dialogListener.onComplete(bundle);
+				} else {
+					// Getting selected provider and starting authentication
+					authorize(ctx, authProviders[v.getId()]);
+				}
 			}
 		};
 
@@ -320,38 +372,14 @@ public class SocialAuthAdapter {
 	}
 
 	/**
-	 * Returns the last authenticated provider. Please use the SocialAuth API to
-	 * find out about the methods available in this interface
-	 * 
-	 * @return Provider object
-	 */
-	public AuthProvider getCurrentProvider() {
-		if (currentProvider != null) {
-			return socialAuthManager.getProvider(currentProvider.toString());
-
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * Sets Size of Dialog. Max value for Portrait and Landscape - 40,60
-	 */
-	public void setDialogSize(float width, float height) {
-		if (width < 0 || width > 40)
-			SocialAuthDialog.width = 40;
-		else
-			SocialAuthDialog.width = width;
-
-		if (height < 0 || height > 60)
-			SocialAuthDialog.height = 60;
-		else
-			SocialAuthDialog.height = height;
-	}
-
-	/**
 	 * Method to handle configuration , Use directly for CustomUI
+	 * 
+	 * @param ctx
+	 *            activity context
+	 * @param provider
+	 *            name of provider
 	 */
+
 	public void authorize(Context ctx, Provider provider) {
 		if (!Util.isNetworkAvailable(ctx)) {
 			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
@@ -383,9 +411,72 @@ public class SocialAuthAdapter {
 			Log.d("SocialAuthAdapter", "Loading keys and secrets from configuration");
 
 			socialAuthManager = new SocialAuthManager();
-			loadConfig(ctx);
-			connectProvider(ctx, provider);
+			try {
+				loadConfig(ctx);
 
+			} catch (Exception e) {
+				Log.d("SocialAuthAdapter", "Could not load configuration");
+			}
+			connectProvider(ctx, provider);
+		}
+	}
+
+	/**
+	 * Method to add user defined configuration. Please delete
+	 * oauth_consumers.properties before using this method.
+	 * 
+	 * @param provider
+	 *            name of provider
+	 * @param key
+	 *            provider key
+	 * @param secret
+	 *            provider secret
+	 * @param permissions
+	 *            permissions for provider
+	 * 
+	 */
+
+	public void addConfig(Provider provider, String key, String secret, String permissions) throws Exception {
+		OAuthConfig authConfig = new OAuthConfig(key, secret);
+		authConfig.setId(provider.toString());
+		authConfig.setCustomPermissions(permissions);
+		authMap.put(provider.toString(), authConfig);
+	}
+
+	/**
+	 * Internal method to load config
+	 * 
+	 * @param context
+	 *            The Android Activity context
+	 * 
+	 */
+
+	private void loadConfig(Context ctx) throws Exception {
+
+		SocialAuthConfig config = new SocialAuthConfig();
+		Resources resources = ctx.getResources();
+		AssetManager assetManager = resources.getAssets();
+		InputStream inputStream;
+		boolean fileExist = false;
+		try {
+			inputStream = assetManager.open("oauth_consumer.properties");
+			fileExist = true;
+		} catch (Exception e) {
+			fileExist = false;
+			throw new SocialAuthException("oauth_consumer.properties not found");
+		}
+
+		if (fileExist) {
+			// Add keys from oauth_consumers file. loadConfig() method
+			// is removed
+			config.load(inputStream);
+			socialAuthManager.setSocialAuthConfig(config);
+		} else {
+			// Add user keys if outh_consumers file not exists
+			for (String key : authMap.keySet()) {
+				config.addProviderConfig(key, authMap.get(key));
+			}
+			socialAuthManager.setSocialAuthConfig(config);
 		}
 	}
 
@@ -406,6 +497,7 @@ public class SocialAuthAdapter {
 			@Override
 			public void run() {
 				try {
+					// Get Callback url
 					url = socialAuthManager.getAuthenticationUrl(provider.toString(), provider.getCallBackUri())
 							+ "&type=user_agent&display=touch";
 
@@ -415,42 +507,18 @@ public class SocialAuthAdapter {
 							Log.d("SocialAuthAdapter", "Loading URL : " + url);
 							String callbackUri = provider.getCallBackUri();
 							Log.d("SocialAuthAdapter", "Callback URI : " + callbackUri);
+							// start webview dialog
 							new SocialAuthDialog(context, url, provider, dialogListener, socialAuthManager).show();
 						}
 					});
 				} catch (Exception e) {
+
 					dialogListener.onError(new SocialAuthError("URL Authentication error", e));
 				}
 			}
 		};
 
 		new Thread(runnable).start();
-	}
-
-	/**
-	 * Internal method to load socialauth configuration.
-	 * 
-	 * @param context
-	 *            The Android Activity that will parent the auth dialog.
-	 */
-
-	private void loadConfig(Context ctx) {
-
-		Resources resources = ctx.getResources();
-		// Read from the assets directory
-		AssetManager assetManager = resources.getAssets();
-
-		InputStream inputStream;
-		try {
-			inputStream = assetManager.open("oauth_consumer.properties");
-			SocialAuthConfig config = new SocialAuthConfig();
-			config.load(inputStream);
-			socialAuthManager.setSocialAuthConfig(config);
-		} catch (IOException ioe) {
-			dialogListener.onError(new SocialAuthError("Could not load configuration", ioe));
-		} catch (Exception e) {
-			dialogListener.onError(new SocialAuthError("Unknown error", e));
-		}
 	}
 
 	/**
@@ -529,7 +597,11 @@ public class SocialAuthAdapter {
 							Log.d("SocialAuthAdapter", "Starting webview for authentication for new Token");
 
 							socialAuthManager = new SocialAuthManager();
-							loadConfig(ctx);
+							try {
+								loadConfig(ctx);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
 							startDialogAuth(ctx, currentProvider);
 
 						}
@@ -549,6 +621,21 @@ public class SocialAuthAdapter {
 			startDialogAuth(ctx, currentProvider);
 		}
 
+	}
+
+	/**
+	 * Sets Size of Dialog. Max value for Portrait and Landscape - 40,60
+	 */
+	public void setDialogSize(float width, float height) {
+		if (width < 0 || width > 40)
+			SocialAuthDialog.width = 40;
+		else
+			SocialAuthDialog.width = width;
+
+		if (height < 0 || height > 60)
+			SocialAuthDialog.height = 60;
+		else
+			SocialAuthDialog.height = height;
 	}
 
 	/**
@@ -605,7 +692,6 @@ public class SocialAuthAdapter {
 				try {
 					getCurrentProvider().updateStatus(message);
 					Log.d("SocialAuthAdapter", "Message Posted");
-
 				} catch (Exception e) {
 					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
 				}
@@ -613,6 +699,90 @@ public class SocialAuthAdapter {
 		};
 
 		new Thread(runnable).start();
+	}
+
+	/**
+	 * Method to share message with link preview on facebook only
+	 * 
+	 * @param message
+	 *            The message to be send.
+	 * @param name
+	 *            title
+	 * @param caption
+	 *            subtitle
+	 * @param description
+	 *            story description
+	 * @param link
+	 *            link to be share
+	 * @param picture
+	 *            picture for link
+	 */
+
+	public void updateStory(final String message, final String name, final String caption, final String description,
+			final String link, final String picture) throws Exception {
+
+		if (getCurrentProvider().equals(Provider.FACEBOOK)) {
+			final Map<String, String> params = new HashMap<String, String>();
+			params.put("name", name);
+			params.put("caption", caption);
+			params.put("description", description);
+			params.put("link", link);
+			params.put("picture", picture);
+
+			final StringBuilder strb = new StringBuilder();
+
+			Runnable runnable = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						// Call using API method of socialauth
+						strb.append("message=").append(URLEncoder.encode(message, Constants.ENCODING));
+						strb.append("&access_token").append("=").append(getCurrentProvider().getAccessGrant().getKey());
+						Response response = getCurrentProvider().api(UPDATE_STATUS_URL, MethodType.POST.toString(),
+								params, null, strb.toString());
+						int status = response.getStatus();
+						if (status == 200) {
+							Log.e("SocialAuthAdapter", "Message Successfully Posted");
+						} else {
+							Log.e("SocialAuthAdapter", "Please Check Message");
+						}
+
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			};
+
+			new Thread(runnable).start();
+		} else {
+			Log.d("SocialAuthAdapter", "Provider Not Supported");
+		}
+	}
+
+	/**
+	 * Makes HTTP request to a given URL.It attaches access token in URL.
+	 * 
+	 * @param url
+	 *            URL to make HTTP request.
+	 * @param methodType
+	 *            Method type can be GET, POST or PUT
+	 * @param params
+	 * @param headerParams
+	 *            Parameters need to pass as Header Parameters
+	 * @param body
+	 *            Request Body
+	 * @return Response object
+	 * @throws Exception
+	 */
+	public Response api(final String url, final String methodType, final Map<String, String> params,
+			final Map<String, String> headerParams, final String body) throws Exception {
+		Response response = null;
+		try {
+			response = getCurrentProvider().api(url, methodType, params, headerParams, body);
+		} catch (Exception e) {
+			throw new SocialAuthException("Error while making request to URL : " + url, e);
+		}
+		return response;
 	}
 
 	/**
@@ -895,7 +1065,7 @@ public class SocialAuthAdapter {
 	 * 
 	 *            Returns result in onReceive()
 	 */
-	public Integer uploadImage(String message, String fileName, Bitmap bitmap, int quality) {
+	public Integer uploadImage(String message, String fileName, Bitmap bitmap, int quality) throws Exception {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
@@ -904,22 +1074,23 @@ public class SocialAuthAdapter {
 				|| fileName.endsWith("jpeg")) {
 			bitmap.compress(CompressFormat.JPEG, quality, bos);
 		} else {
-			Log.d("SocialAuthAdapter", "Image Format not supported");
+			throw new SocialAuthException("Image Format not supported");
 		}
 
 		InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
 
 		Response res = null;
 		try {
-			res = getCurrentProvider().uploadImage(message, fileName, inputStream);
-			Log.d("SocialAuthAdapter", "Image Uploaded");
-			return Integer.valueOf(res.getStatus());
-		} catch (SocialAuthException se) {
-			Log.d("SocialAuthAdapter", "Image Upload not implemented for Provider");
-			return null;
+			if (getCurrentProvider().getProviderId().equalsIgnoreCase("facebook")
+					|| getCurrentProvider().getProviderId().equalsIgnoreCase("twitter")) {
+				res = getCurrentProvider().uploadImage(message, fileName, inputStream);
+				Log.d("SocialAuthAdapter", "Image Uploaded");
+				return Integer.valueOf(res.getStatus());
+			} else {
+				throw new SocialAuthException("Provider not Supported");
+			}
 		} catch (Exception e) {
-			Log.d("SocialAuthAdapter", "Image Upload Error");
-			return null;
+			throw new SocialAuthException("Image Upload Error");
 		}
 	}
 
@@ -938,7 +1109,7 @@ public class SocialAuthAdapter {
 	 */
 
 	public void uploadImageAsync(String message, String fileName, Bitmap bitmap, int quality,
-			SocialAuthListener<Integer> listener) {
+			SocialAuthListener<Integer> listener) throws Exception {
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (fileName.endsWith("PNG") || fileName.endsWith("png")) {
@@ -947,11 +1118,16 @@ public class SocialAuthAdapter {
 				|| fileName.endsWith("jpeg")) {
 			bitmap.compress(CompressFormat.JPEG, quality, bos);
 		} else {
-			Log.d("SocialAuthAdapter", "Image Format not supported");
+			throw new SocialAuthException("Image Format not supported");
 		}
 
 		InputStream inputStream = new ByteArrayInputStream(bos.toByteArray());
-		new UploadImageTask(listener).execute(message, fileName, inputStream);
+		if (getCurrentProvider().getProviderId().equalsIgnoreCase("facebook")
+				|| getCurrentProvider().getProviderId().equalsIgnoreCase("twitter")) {
+			new UploadImageTask(listener).execute(message, fileName, inputStream);
+		} else {
+			throw new SocialAuthException("Provider not Supported");
+		}
 	}
 
 	/**
@@ -973,9 +1149,6 @@ public class SocialAuthAdapter {
 				res = getCurrentProvider().uploadImage((String) params[0], (String) params[1], (InputStream) params[2]);
 				Log.d("SocialAuthAdapter", "Image Uploaded");
 				return Integer.valueOf(res.getStatus());
-			} catch (SocialAuthException se) {
-				listener.onError(new SocialAuthError("Image Upload not implemented for Provider", se));
-				return null;
 			} catch (Exception e) {
 				listener.onError(new SocialAuthError("Image Upload Error", e));
 				return null;
