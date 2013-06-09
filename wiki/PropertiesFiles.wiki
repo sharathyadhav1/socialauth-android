@@ -55,4 +55,8 @@ www.yammer.com.consumer_secret=4hhUOP6tYiHNOUz6dMhWBVHgcsFq3MUZpI8IkA
 login.salesforce.com.consumer_key = 3MVG9Y6d_Btp4xp4yFMR0tPSndvoapjV0sIbnVSNLg_l1vkeDgLelQhr6iYwlTgCL98VSBjU_XvQZYGfSmW_D
 login.salesforce.com.consumer_secret = 4962202263932085201
 
+#Google Plus
+googleapis.com.consumer_key = 1096989329891-bq5pjte4igcbg1ve14dnfkolq7r1p8es.apps.googleusercontent.com
+googleapis.com.consumer_secret = HAtplYb-42s_rVbndQ-lQR-D
+
 }}}
