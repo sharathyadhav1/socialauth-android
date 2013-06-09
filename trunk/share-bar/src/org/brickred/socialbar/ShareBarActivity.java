@@ -24,10 +24,6 @@
 
 package org.brickred.socialbar;
 
-import java.util.List;
-
-import org.brickred.socialauth.Photo;
-import org.brickred.socialauth.Profile;
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
@@ -60,7 +56,10 @@ import android.widget.Toast;
  * 
  * After successful authentication of provider, it receives the response in
  * responseListener and then automatically update status by updatestatus()
- * method.<br>
+ * method.
+ * 
+ * It's Primarly use is to share message but developers can use to access other
+ * functionalites like getting profile , contacts , sharing images etc. <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -71,8 +70,6 @@ public class ShareBarActivity extends Activity {
 	// SocialAuth Component
 	SocialAuthAdapter adapter;
 	boolean status;
-	Profile profileMap;
-	List<Photo> photosList;
 
 	// Android Components
 	Button update;
@@ -93,21 +90,18 @@ public class ShareBarActivity extends Activity {
 		// Add Bar to library
 		adapter = new SocialAuthAdapter(new ResponseListener());
 
+		// Please note : Update status functionality is only supported by
+		// Facebook, Twitter, Linkedin, MySpace, Yahoo and Yammer.
+
 		// Add providers
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+
+		// For twitter use add callback method. Put your own callback url here.
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+		adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+
 		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
 		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
-
-		// adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
-		// adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
-		// adapter.addProvider(Provider.FOURSQUARE, R.drawable.foursquare);
-		// adapter.addProvider(Provider.GOOGLE, R.drawable.google);
-		// adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
-		// adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
-
-		// Use addCallback method from share-button example if using
-		// your own keys for FOURSQUARE , GOOGLE , SALESFORCE , YAMMER
 
 		adapter.enable(bar);
 
@@ -140,6 +134,7 @@ public class ShareBarActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
+					// Call updateStatus to share message
 					adapter.updateStatus(edit.getText().toString());
 					Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_LONG)
 							.show();
