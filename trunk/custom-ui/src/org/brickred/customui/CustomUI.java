@@ -206,7 +206,8 @@ public class CustomUI extends Activity {
 				mDialog.show();
 				adapter.getContactListAsync(new ContactDataListener());
 
-			} else if (provider.equalsIgnoreCase("runkeeper") || provider.equalsIgnoreCase("salesforce")) {
+			} else if (provider.equalsIgnoreCase("runkeeper") || provider.equalsIgnoreCase("salesforce")
+					|| provider.equalsIgnoreCase("googleplus")) {
 				dialog.dismiss();
 
 			} else {
@@ -228,8 +229,7 @@ public class CustomUI extends Activity {
 					@Override
 					public void onClick(View v) {
 						msgDialog.dismiss();
-						adapter.updateStatus(edit.getText().toString());
-						Toast.makeText(CustomUI.this, "Message posted on " + provider, Toast.LENGTH_SHORT).show();
+						adapter.updateStatus(edit.getText().toString(), new MessageListener());
 					}
 				});
 			}
@@ -297,8 +297,12 @@ public class CustomUI extends Activity {
 
 						if (bitmap != null) {
 							mDialog.show();
-							adapter.uploadImageAsync(edit.getText().toString(), "icon.png", bitmap, 0,
-									new UploadImageListener());
+							try {
+								adapter.uploadImageAsync(edit.getText().toString(), "icon.png", bitmap, 0,
+										new UploadImageListener());
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						}
 						imgDialog.dismiss();
 					}
@@ -323,6 +327,23 @@ public class CustomUI extends Activity {
 		}
 
 		case 6: {
+			// For share text with link preview
+			if (provider.equalsIgnoreCase("facebook")) {
+				adapter.updateStory(
+						"Hello SocialAuth Android" + System.currentTimeMillis(),
+						"Google SDK for Android",
+						"Build great social apps and get more installs.",
+						"The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.",
+						"https://www.facebook.com", "http://carbonfreepress.gr/images/facebook.png",
+						new MessageListener());
+
+			} else {
+				dialog.dismiss();
+			}
+			break;
+		}
+
+		case 7: {
 			// Dismiss Dialog
 			dialog.dismiss();
 			break;
@@ -346,6 +367,23 @@ public class CustomUI extends Activity {
 			intent.putExtra("provider", providerName);
 			intent.putExtra("profile", profileMap);
 			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
+	// To get status of message after authentication
+	private final class MessageListener implements SocialAuthListener<Integer> {
+		@Override
+		public void onExecute(Integer t) {
+			Integer status = t;
+			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
+				Toast.makeText(CustomUI.this, "Message posted", Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(CustomUI.this, "Message not posted", Toast.LENGTH_LONG).show();
 		}
 
 		@Override
@@ -402,7 +440,6 @@ public class CustomUI extends Activity {
 
 		@Override
 		public void onExecute(Integer t) {
-			Log.d("Custom-UI", "Uploading Data");
 			mDialog.dismiss();
 			Integer status = t;
 			Log.d("Custom-UI", String.valueOf(status));

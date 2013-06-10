@@ -58,10 +58,10 @@ public class CustomAdapter extends BaseAdapter {
 	SocialAuthAdapter adapter;
 	private final Provider[] providers = new Provider[] { Provider.FACEBOOK, Provider.TWITTER, Provider.LINKEDIN,
 			Provider.MYSPACE, Provider.YAHOO, Provider.GOOGLE, Provider.SALESFORCE, Provider.FOURSQUARE,
-			Provider.YAMMER, Provider.RUNKEEPER };
+			Provider.GOOGLEPLUS, Provider.YAMMER, Provider.RUNKEEPER };
 	private final int[] images = new int[] { R.drawable.facebook, R.drawable.twitter, R.drawable.linkedin,
 			R.drawable.myspace, R.drawable.yahoo, R.drawable.google, R.drawable.salesforce, R.drawable.foursquare,
-			R.drawable.yammer, R.drawable.runkeeper, };
+			R.drawable.googleplus, R.drawable.yammer, R.drawable.runkeeper, };
 
 	public CustomAdapter(Context context, SocialAuthAdapter mAdapter) {
 		// Cache the LayoutInflate to avoid asking for a new one each time.
