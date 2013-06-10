@@ -24,13 +24,19 @@
 
 package org.brickred.socialbar;
 
+import java.io.File;
+
 import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,7 +65,10 @@ import android.widget.Toast;
  * method.
  * 
  * It's Primarly use is to share message but developers can use to access other
- * functionalites like getting profile , contacts , sharing images etc. <br>
+ * functionalites like getting profile , contacts , sharing images etc.
+ * 
+ * Now you can use share -bar to share message via email and mms.See example
+ * below <br>
  * 
  * @author vineet.aggarwal@3pillarglobal.com
  * 
@@ -95,13 +104,16 @@ public class ShareBarActivity extends Activity {
 
 		// Add providers
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
-
-		// For twitter use add callback method. Put your own callback url here.
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-		adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
-
 		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
 		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+
+		// Add email and mms providers
+		adapter.addProvider(Provider.EMAIL, R.drawable.email);
+		adapter.addProvider(Provider.MMS, R.drawable.mms);
+
+		// For twitter use add callback method. Put your own callback url here.
+		adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 		adapter.enable(bar);
 
@@ -134,12 +146,35 @@ public class ShareBarActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					// Call updateStatus to share message
-					adapter.updateStatus(edit.getText().toString());
-					Toast.makeText(ShareBarActivity.this, "Message posted on " + providerName, Toast.LENGTH_LONG)
-							.show();
+					// Call updateStatus to share message via oAuth providers
+					adapter.updateStatus(edit.getText().toString(), new MessageListener());
 				}
 			});
+
+			// Share via Email Intent
+			if (providerName.equalsIgnoreCase("share_mail")) {
+				Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
+						"vineet.aggarwal@3pillarglobal.com", null));
+				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test");
+				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+						"image5964402.png");
+				Uri uri = Uri.fromFile(file);
+				emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				startActivity(Intent.createChooser(emailIntent, "Test"));
+			}
+
+			// Share via mms intent
+			if (providerName.equalsIgnoreCase("share_mms")) {
+				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+						"image5964402.png");
+				Uri uri = Uri.fromFile(file);
+
+				Intent mmsIntent = new Intent(Intent.ACTION_SEND, uri);
+				mmsIntent.putExtra("sms_body", "Test");
+				mmsIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				mmsIntent.setType("image/png");
+				startActivity(mmsIntent);
+			}
 		}
 
 		@Override
@@ -156,6 +191,23 @@ public class ShareBarActivity extends Activity {
 		@Override
 		public void onBack() {
 			Log.d("Share-Bar", "Dialog Closed by pressing Back Key");
+
+		}
+	}
+
+	// To get status of image upload after authentication
+	private final class MessageListener implements SocialAuthListener<Integer> {
+		@Override
+		public void onExecute(Integer t) {
+			Integer status = t;
+			if (status.intValue() == 200)
+				Toast.makeText(ShareBarActivity.this, "Message posted", Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(ShareBarActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
 
 		}
 	}
