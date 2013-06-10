@@ -696,13 +696,7 @@ public class SocialAuthAdapter {
 						@Override
 						public void run() {
 							int status = response.getStatus();
-							if (status == 200) {
-								Log.d("SocialAuthAdapter", "Message Successfully Posted");
-								listener.onExecute(Integer.valueOf(status));
-							} else {
-								Log.d("SocialAuthAdapter", "Please Check Message");
-								listener.onExecute(Integer.valueOf(status));
-							}
+							listener.onExecute(Integer.valueOf(status));
 						}
 					});
 				} catch (Exception e) {
