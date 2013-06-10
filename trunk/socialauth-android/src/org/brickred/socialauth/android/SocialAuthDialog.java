@@ -342,6 +342,8 @@ public class SocialAuthDialog extends Dialog {
 					if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 4) {
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.CLOSE);
 						mWebView.setInitialScale(155);
+					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 7) {
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 10) {
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
 						mWebView.setInitialScale(120);
@@ -448,9 +450,12 @@ public class SocialAuthDialog extends Dialog {
 					}
 
 					if (mProviderName.toString().equalsIgnoreCase("yammer")) {
-						if (Util.UI_DENSITY == 240)
-							if (url.startsWith("https://www.yammer.com/dialog/authenticate"))
+						if (url.startsWith("https://www.yammer.com/dialog/authenticate")) {
+							if (Util.UI_DENSITY == 240)
 								mWebView.scrollTo(115, 0);
+							else if (Util.UI_DENSITY == 320)
+								mWebView.scrollTo(95, 0);
+						}
 					}
 
 					if (mProviderName.toString().equalsIgnoreCase("runkeeper")
