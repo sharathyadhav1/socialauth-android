@@ -24,6 +24,7 @@
 
 package org.brickred.socialshare;
 
+import java.io.File;
 import java.util.List;
 
 import org.brickred.socialauth.Photo;
@@ -32,10 +33,14 @@ import org.brickred.socialauth.android.DialogListener;
 import org.brickred.socialauth.android.SocialAuthAdapter;
 import org.brickred.socialauth.android.SocialAuthAdapter.Provider;
 import org.brickred.socialauth.android.SocialAuthError;
+import org.brickred.socialauth.android.SocialAuthListener;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -97,35 +102,17 @@ public class ShareButtonActivity extends Activity {
 		adapter = new SocialAuthAdapter(new ResponseListener());
 
 		// Add providers
-
-		// supports profile , friends , message status , upload image , get
-		// albums , get feeds
 		adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
 		adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-
-		// supports profile , friends , message status , get feeds
 		adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
-
-		// supports profile , friends , message status
 		adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
 		adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
 		adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
-
-		// Supports only profile and contacts
-		adapter.addProvider(Provider.FOURSQUARE, R.drawable.foursquare);
-		adapter.addProvider(Provider.GOOGLE, R.drawable.google);
-
-		// Supports only profile
-		adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
-		adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
+		adapter.addProvider(Provider.EMAIL, R.drawable.email);
+		adapter.addProvider(Provider.MMS, R.drawable.mms);
 
 		// Providers require setting user call Back url
-		adapter.addCallBack(Provider.FOURSQUARE, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
-
-		adapter.addCallBack(Provider.GOOGLE, "http://socialauth.in/socialauthdemo");
-
-		adapter.addCallBack(Provider.SALESFORCE, "https://socialauth.in:8443/socialauthdemo/socialAuthSuccessAction.do");
-
+		adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 		adapter.addCallBack(Provider.YAMMER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
 		// Enable Provider
@@ -159,11 +146,37 @@ public class ShareButtonActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					adapter.updateStatus(edit.getText().toString());
-					Toast.makeText(ShareButtonActivity.this, "Message posted on " + providerName, Toast.LENGTH_LONG)
-							.show();
+					adapter.updateStatus(edit.getText().toString(), new MessageListener());
 				}
 			});
+
+			// Share via Email Intent
+			if (providerName.equalsIgnoreCase("share_mail")) {
+				// Use your own code here
+				Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
+						"vineet.aggarwal@3pillarglobal.com", null));
+				emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Test");
+				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+						"image5964402.png");
+				Uri uri = Uri.fromFile(file);
+				emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				startActivity(Intent.createChooser(emailIntent, "Test"));
+			}
+
+			// Share via mms intent
+			if (providerName.equalsIgnoreCase("share_mms")) {
+
+				// Use your own code here
+				File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),
+						"image5964402.png");
+				Uri uri = Uri.fromFile(file);
+
+				Intent mmsIntent = new Intent(Intent.ACTION_SEND, uri);
+				mmsIntent.putExtra("sms_body", "Test");
+				mmsIntent.putExtra(Intent.EXTRA_STREAM, uri);
+				mmsIntent.setType("image/png");
+				startActivity(mmsIntent);
+			}
 
 		}
 
@@ -182,6 +195,23 @@ public class ShareButtonActivity extends Activity {
 			Log.d("Share-Button", "Dialog Closed by pressing Back Key");
 		}
 
+	}
+
+	// To get status of image upload after authentication
+	private final class MessageListener implements SocialAuthListener<Integer> {
+		@Override
+		public void onExecute(Integer t) {
+			Integer status = t;
+			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
+				Toast.makeText(ShareButtonActivity.this, "Message posted", Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(ShareButtonActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
 	}
 
 }
