@@ -200,7 +200,7 @@ public class ShareBarActivity extends Activity {
 		@Override
 		public void onExecute(Integer t) {
 			Integer status = t;
-			if (status.intValue() == 200)
+			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
 				Toast.makeText(ShareBarActivity.this, "Message posted", Toast.LENGTH_LONG).show();
 			else
 				Toast.makeText(ShareBarActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
