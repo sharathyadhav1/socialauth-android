@@ -197,7 +197,7 @@ public class ShareButtonActivity extends Activity {
 
 	}
 
-	// To get status of image upload after authentication
+	// To get status of message after authentication
 	private final class MessageListener implements SocialAuthListener<Integer> {
 		@Override
 		public void onExecute(Integer t) {
