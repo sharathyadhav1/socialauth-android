@@ -726,9 +726,9 @@ public class SocialAuthAdapter {
 	 */
 
 	public void updateStory(final String message, final String name, final String caption, final String description,
-			final String link, final String picture, final SocialAuthListener<Integer> listener) throws Exception {
+			final String link, final String picture, final SocialAuthListener<Integer> listener) {
 
-		if (getCurrentProvider().equals(Provider.FACEBOOK)) {
+		if (getCurrentProvider().getProviderId().equalsIgnoreCase("facebook")) {
 			final Map<String, String> params = new HashMap<String, String>();
 			params.put("name", name);
 			params.put("caption", caption);
@@ -752,13 +752,7 @@ public class SocialAuthAdapter {
 							@Override
 							public void run() {
 								int status = response.getStatus();
-								if (status == 200) {
-									Log.d("SocialAuthAdapter", "Message Successfully Posted");
-									listener.onExecute(Integer.valueOf(status));
-								} else {
-									Log.d("SocialAuthAdapter", "Please Check Message");
-									listener.onExecute(Integer.valueOf(status));
-								}
+								listener.onExecute(Integer.valueOf(status));
 							}
 						});
 					} catch (Exception e) {

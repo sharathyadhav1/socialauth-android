@@ -250,6 +250,12 @@ public final class Util {
 				}
 
 				break;
+
+			case 213:
+				UI_DENSITY = 213;
+				UI_YAHOO_SCROLL = 300;
+				UI_YAHOO_ALLOW = 155;
+
 			default:
 				break;
 			}

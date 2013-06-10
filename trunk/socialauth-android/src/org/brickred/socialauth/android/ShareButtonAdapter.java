@@ -98,7 +98,11 @@ public class ShareButtonAdapter extends BaseAdapter {
 		text.setText(data[position]);
 		final Drawable image;
 		image = ctx.getResources().getDrawable(imagesdata[position]);
-		image.setBounds(0, 0, 50, 50);
+		if (Util.UI_DENSITY == 320 || Util.UI_DENSITY == 240)
+			image.setBounds(0, 0, 50, 50);
+		else
+			image.setBounds(0, 0, 30, 30);
+
 		text.setCompoundDrawables(image, null, null, null);
 		text.setPadding(14, 7, 7, 7);
 		text.setTextColor(Color.BLACK);

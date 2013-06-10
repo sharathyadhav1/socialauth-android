@@ -452,7 +452,7 @@ public class SocialAuthDialog extends Dialog {
 					if (mProviderName.toString().equalsIgnoreCase("yammer")) {
 						if (url.startsWith("https://www.yammer.com/dialog/authenticate")) {
 							if (Util.UI_DENSITY == 240)
-								mWebView.scrollTo(115, 0);
+								mWebView.scrollTo(105, 0);
 							else if (Util.UI_DENSITY == 320)
 								mWebView.scrollTo(95, 0);
 						}
