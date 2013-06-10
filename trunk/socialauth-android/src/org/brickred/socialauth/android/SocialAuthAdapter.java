@@ -685,13 +685,26 @@ public class SocialAuthAdapter {
 	 *            The message to be send.
 	 */
 
-	public void updateStatus(final String message) {
+	public void updateStatus(final String message, final SocialAuthListener<Integer> listener) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				try {
-					getCurrentProvider().updateStatus(message);
-					Log.d("SocialAuthAdapter", "Message Posted");
+					final Response response = getCurrentProvider().updateStatus(message);
+
+					handler.post(new Runnable() {
+						@Override
+						public void run() {
+							int status = response.getStatus();
+							if (status == 200) {
+								Log.d("SocialAuthAdapter", "Message Successfully Posted");
+								listener.onExecute(Integer.valueOf(status));
+							} else {
+								Log.d("SocialAuthAdapter", "Please Check Message");
+								listener.onExecute(Integer.valueOf(status));
+							}
+						}
+					});
 				} catch (Exception e) {
 					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
 				}
