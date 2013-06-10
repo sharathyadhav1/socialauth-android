@@ -732,7 +732,7 @@ public class SocialAuthAdapter {
 	 */
 
 	public void updateStory(final String message, final String name, final String caption, final String description,
-			final String link, final String picture) throws Exception {
+			final String link, final String picture, final SocialAuthListener<Integer> listener) throws Exception {
 
 		if (getCurrentProvider().equals(Provider.FACEBOOK)) {
 			final Map<String, String> params = new HashMap<String, String>();
@@ -751,17 +751,24 @@ public class SocialAuthAdapter {
 						// Call using API method of socialauth
 						strb.append("message=").append(URLEncoder.encode(message, Constants.ENCODING));
 						strb.append("&access_token").append("=").append(getCurrentProvider().getAccessGrant().getKey());
-						Response response = getCurrentProvider().api(UPDATE_STATUS_URL, MethodType.POST.toString(),
-								params, null, strb.toString());
-						int status = response.getStatus();
-						if (status == 200) {
-							Log.e("SocialAuthAdapter", "Message Successfully Posted");
-						} else {
-							Log.e("SocialAuthAdapter", "Please Check Message");
-						}
+						final Response response = getCurrentProvider().api(UPDATE_STATUS_URL,
+								MethodType.POST.toString(), params, null, strb.toString());
 
+						handler.post(new Runnable() {
+							@Override
+							public void run() {
+								int status = response.getStatus();
+								if (status == 200) {
+									Log.d("SocialAuthAdapter", "Message Successfully Posted");
+									listener.onExecute(Integer.valueOf(status));
+								} else {
+									Log.d("SocialAuthAdapter", "Please Check Message");
+									listener.onExecute(Integer.valueOf(status));
+								}
+							}
+						});
 					} catch (Exception e) {
-						e.printStackTrace();
+						dialogListener.onError(new SocialAuthError("Message Not Posted", e));
 					}
 				}
 			};

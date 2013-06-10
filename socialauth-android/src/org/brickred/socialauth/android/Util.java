@@ -236,11 +236,11 @@ public final class Util {
 				break;
 			case DisplayMetrics.DENSITY_XHIGH:
 				UI_DENSITY = 320;
-				if (width == 720) {
+				if (width >= 720 && width < 1280) {
 					UI_SIZE = 7;
-					UI_YAHOO_SCROLL = 715;
-					UI_YAHOO_ALLOW = 350;
-				} else if (width == 1280) {
+					UI_YAHOO_SCROLL = 900;
+					UI_YAHOO_ALLOW = 475;
+				} else if (width >= 1280) {
 					UI_SIZE = 10;
 					UI_YAHOO_SCROLL = 1;
 					UI_YAHOO_ALLOW = 1;
