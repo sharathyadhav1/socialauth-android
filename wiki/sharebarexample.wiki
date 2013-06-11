@@ -95,7 +95,9 @@ private final class MessageListener implements SocialAuthListener<Integer> {
 
   }
 }
+}}}
 
+{{{
 ==Share Message by EMAIL & MMS ==
 
 private final class ResponseListener implements DialogListener 
