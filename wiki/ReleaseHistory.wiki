@@ -10,7 +10,7 @@
  * updateStatus now returns Response.
  * A new method update story added to share links with image preview on facebook.
  * addConfig Method added to enable users to keep keys and secrets in code.
- * SocialAuth api method exposed. Now you create custom api methods easily.
+ * !SocialAuth api method exposed. Now you create custom api methods easily.
 
 
 =Whats new in Version 2.0 ?=
