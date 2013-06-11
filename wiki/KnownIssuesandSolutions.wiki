@@ -25,13 +25,14 @@
 *Facebook*
   * Facebook shows different language sometimes. This is a bug filed to !FaceBook.Here is the link :
  [https://developers.facebook.com/bugs/407246299295529?browse=search_4fa410ea79db26337556383]
+  * You may get already authorized screen which is due to recent api changes from Facebook. Press Ok to continue.
 
 * Twitter*
 If you find issue in twitter authentication , you can try following things :
 
  * Check read-write permission in your twitter account
  * The callback url field should be field and it should be valid url.
- * Check you have used addCallback method.
+ * Check you have used addCallback method. This is due to recent changes in twitter api.
 
 * Linkedin*
   * The callback url field should be valid url.
@@ -41,6 +42,7 @@ If you find issue in twitter authentication , you can try following things :
 
  *  Yahoo oAuth screen is not mobile optimized. Although we have tried to do some tweaks in webview but you may face issue in some phones.
  *  Yahoo takes time to open in emulater due to low rendering speed of emulater.
+ *  If you get URL authentication error for Yahoo. Try to clear you app settings and then login again.
 
 *Yammer*
 
