@@ -90,11 +90,27 @@ private final class MessageListener implements SocialAuthListener<Integer> {
 
   }
 }
+}}}
 
+==Share Message by EMAIL & MMS ==
 
+{{{
+private final class ResponseListener implements DialogListener 
+{
+   public void onComplete(Bundle values) {
+   final String providerName =values.getString(SocialAuthAdapter.PROVIDER);
 
+// Share via Email Intent
+if (providerName.equalsIgnoreCase("share_mail")) {
+	// enter your email intent code here			
+}
 
+// Share via Email Intent
+if (providerName.equalsIgnoreCase("share_mms")) {
+	// enter your mms intent code here			
+}
 
+}
 
 }}}
 
