@@ -78,7 +78,7 @@ private final class ResponseListener implements DialogListener
 // To get status of message after authentication
 private final class MessageListener implements SocialAuthListener<Integer> {
 
-public void onExecute(Integer t) {
+   public void onExecute(Integer t) {
    Integer status = t;
    if (status.intValue() == 200 || status.intValue() == 201 ||status.intValue() == 204)
    Toast.makeText(ShareButtonActivity.this, "Message posted",Toast.LENGTH_LONG).show();
