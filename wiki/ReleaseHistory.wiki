@@ -1,16 +1,16 @@
 #summary Release History
 
 =Whats new in Version 2.5 ?=
-* Facebook and Twitter API issues solved.Check examples for use.
-* Google Plus(Google Oauth 2.0) Provider added. You will able to get your Google Profile.
-* SDK 2.2 support issues for Facebook, Twitter, Linkedin solved.
-* Examples updated
-* Email and MMS Provider added. Check examples for use.
-* URL Encoding added for updatStatus.No you can send message in different languages.
-* updateStatus now returns Response.
-* A new method update story added to share links with image preview on facebook.
-* addConfig Method added to enable users to keep keys and secrets in code.
-* SocialAuth api method exposed. Now you create custom api methods easily.
+ * Facebook and Twitter API issues solved.Check examples for use.
+ * Google Plus(Google Oauth 2.0) Provider added. You will able to get your Google Profile.
+ * SDK 2.2 support issues for Facebook, Twitter, Linkedin solved.
+ * Examples updated
+ * Email and MMS Provider added. Check examples for use.
+ * URL Encoding added for updatStatus.No you can send message in different languages. 
+ * updateStatus now returns Response.
+ * A new method update story added to share links with image preview on facebook.
+ * addConfig Method added to enable users to keep keys and secrets in code.
+ * SocialAuth api method exposed. Now you create custom api methods easily.
 
 
 =Whats new in Version 2.0 ?=
