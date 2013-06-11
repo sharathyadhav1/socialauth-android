@@ -38,10 +38,18 @@ https://socialauth-android.googlecode.com/svn/wiki/images/sharebar.png
         adapter = new SocialAuthAdapter(new ResponseListener());
         
         // Add providers
-        adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
-        adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-        adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
-        adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+	adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+	adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+	adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+	adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+
+	// Add email and mms providers
+	adapter.addProvider(Provider.EMAIL, R.drawable.email);
+	adapter.addProvider(Provider.MMS, R.drawable.mms);
+
+	// For twitter use add callback method. Put your own callback url here.
+	adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+        
         adapter.enable(bar);
     }
 }}}
@@ -56,7 +64,7 @@ private final class ResponseListener implements DialogListener
    public void onComplete(Bundle values) {
      	    
    edit = (EditText) findViewById(R.id.editTxt);
-   adapter.updateStatus(edit.getText().toString());
+   adapter.updateStatus(edit.getText().toString(), new MessageListener());
    }
 
    public void onError(DialogError error) {
@@ -68,6 +76,24 @@ private final class ResponseListener implements DialogListener
    }
 
 }
+
+// To get status of message after authentication
+	private final class MessageListener implements SocialAuthListener<Integer> {
+		@Override
+		public void onExecute(Integer t) {
+			Integer status = t;
+			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
+				Toast.makeText(ShareBarActivity.this, "Message posted", Toast.LENGTH_LONG).show();
+			else
+				Toast.makeText(ShareBarActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+
+		}
+	}
+
 
 }}}
 
