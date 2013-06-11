@@ -15,7 +15,6 @@
  To check :
  Help -> About Eclipse -> Installation Details -> Installed Software Tab -> Android Development Tools
 
- * Currently the SDK not supports below Android SDK 2.3.3 versions.
  * You may get *!UnknownHostException* while testing on emulator or device.Here are possible solutions:
    * Check you have inserted android.permission.Internet under manifest tag of your androidmanifest.xml.
    * For device , check your internet connection. Is it on?
