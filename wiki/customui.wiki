@@ -46,7 +46,7 @@ adapter.signout();
 }}}
 
 ==Share Message and Links==
-(Supports : Facebook, Twitter, Linkedin, MySpace, Yahoo, Yammer)
+(Supports : Facebook, Twitter, Linkedin, !MySpace, Yahoo, Yammer)
 
 https://socialauth-android.googlecode.com/svn/wiki/images/sharedata.png
 
@@ -87,6 +87,21 @@ private final class MessageListener implements SocialAuthListener<Integer> {
 }
 
 }}}
+
+==Update Message with Link Preview==
+(Supports : Facebook)
+{{{
+
+adapter.updateStory(
+		"Hello SocialAuth Android" + System.currentTimeMillis(),
+		"Google SDK for Android",
+		"Build great social apps and get more installs.",
+	        "The Facebook SDK for Android makes it easier and faster to develop Facebook integrated Android apps.",
+		"https://www.facebook.com",  
+                "http://carbonfreepress.gr/images/facebook.png",
+		new MessageListener());
+}}}
+
 
 ==Get Profile==
 (Supports : All)
