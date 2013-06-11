@@ -34,39 +34,22 @@ In your handling code you should :
         // Add it to Library
         adapter = new SocialAuthAdapter(new ResponseListener());
              	 
-       // supports profile , friends , message status , upload image , get albums , get feeds
-       adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
-       adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
-		
-      // supports profile , friends , message status , get feeds
-       adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
-		
-      // supports profile , friends , message status
-       adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
-       adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
-       adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
+       	// Add providers
+	adapter.addProvider(Provider.FACEBOOK, R.drawable.facebook);
+	adapter.addProvider(Provider.TWITTER, R.drawable.twitter);
+	adapter.addProvider(Provider.LINKEDIN, R.drawable.linkedin);
+	adapter.addProvider(Provider.MYSPACE, R.drawable.myspace);
+	adapter.addProvider(Provider.YAHOO, R.drawable.yahoo);
+	adapter.addProvider(Provider.YAMMER, R.drawable.yammer);
+	adapter.addProvider(Provider.EMAIL, R.drawable.email);
+	adapter.addProvider(Provider.MMS, R.drawable.mms);
 
-      // Supports only profile and contacts
-	adapter.addProvider(Provider.FOURSQUARE, R.drawable.foursquare);
-	adapter.addProvider(Provider.GOOGLE, R.drawable.google);
+	// Providers require setting user call Back url
+	adapter.addCallBack(Provider.TWITTER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
+	adapter.addCallBack(Provider.YAMMER, "http://socialauth.in/socialauthdemo/socialAuthSuccessAction.do");
 
-      // Supports only profile
-	adapter.addProvider(Provider.SALESFORCE, R.drawable.salesforce);
-	adapter.addProvider(Provider.RUNKEEPER, R.drawable.runkeeper);
-
-      // Providers require setting user call Back url
-	 adapter.addCallBack(Provider.FOURSQUARE, "http://recfit.sayantam.in/");
-
-	adapter.addCallBack(Provider.GOOGLE,
-				"http://socialauth.in/socialauthdemo");
-
-	adapter.addCallBack(Provider.SALESFORCE,
-				"https://recfit.sayantam.in:8443/");
-
-	adapter.addCallBack(Provider.YAMMER,
-				"http://socialauth.in/socialauthdemo");
-
-        adapter.enable(share);
+	// Enable Provider
+	adapter.enable(share);
     }
 }}}
 
@@ -79,7 +62,7 @@ private final class ResponseListener implements DialogListener
    public void onComplete(Bundle values) {
      
    edit = (EditText) findViewById(R.id.editTxt);    
-   adapter.updateStatus(edit.getText().toString());
+   adapter.updateStatus(edit.getText().toString(), new MessageListener());
 			
    }
 
@@ -90,8 +73,28 @@ private final class ResponseListener implements DialogListener
    public void onCancel() {
      Log.d("ShareButton" , "Cancelled");
    }
-
 }
+
+// To get status of message after authentication
+private final class MessageListener implements SocialAuthListener<Integer> {
+
+public void onExecute(Integer t) {
+   Integer status = t;
+   if (status.intValue() == 200 || status.intValue() == 201 ||status.intValue() == 204)
+   Toast.makeText(ShareButtonActivity.this, "Message posted",Toast.LENGTH_LONG).show();
+   else
+   Toast.makeText(ShareButtonActivity.this, "Message not posted",Toast.LENGTH_LONG).show();
+  }
+
+  public void onError(SocialAuthError e) {
+
+  }
+}
+
+
+
+
+
 
 }}}
 
