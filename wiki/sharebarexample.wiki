@@ -78,21 +78,24 @@ private final class ResponseListener implements DialogListener
 }
 
 // To get status of message after authentication
-	private final class MessageListener implements SocialAuthListener<Integer> {
-		@Override
-		public void onExecute(Integer t) {
-			Integer status = t;
-			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
-				Toast.makeText(ShareBarActivity.this, "Message posted", Toast.LENGTH_LONG).show();
-			else
-				Toast.makeText(ShareBarActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
-		}
+private final class MessageListener implements SocialAuthListener<Integer> {
+   @Override
+   public void onExecute(Integer t) {
+   Integer status = t;
+   if (status.intValue() == 200 || status.intValue() == 201 ||    
+   status.intValue() == 204)
+   Toast.makeText(ShareBarActivity.this, "Message posted",   
+   Toast.LENGTH_LONG).show();
+   else
+   Toast.makeText(ShareBarActivity.this, "Message not posted",   
+   Toast.LENGTH_LONG).show();
+  }
 
-		@Override
-		public void onError(SocialAuthError e) {
+  @Override
+  public void onError(SocialAuthError e) {
 
-		}
-	}
+  }
+}
 
 
 }}}
