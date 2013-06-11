@@ -1,4 +1,4 @@
-#summary Step by Step Guide to Get Yammer consumer key and secrets.Available in Version 2.0
+#summary Step by Step Guide to Get Yammer consumer key and secrets.
 
 *1. Go to URL - [https://www.yammer.com/client_applications/new] and fill username and password. Create account if you don't have one.*
 
