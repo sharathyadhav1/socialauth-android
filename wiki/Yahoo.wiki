@@ -1,4 +1,4 @@
-#summary Step by Step Guide to Get Yahoo consumer key and secrets.Available in Version 2.0
+#summary Step by Step Guide to Get Yahoo consumer key and secrets.
 
 =Yahoo=
 
