@@ -43,13 +43,13 @@ The SDK contains following directories :
 
   * Add socialauth-android-2.5.jar and socialauth4.1.jar from dist and libs folder of SDK zip file  to libs folder of you app. 
 
-  *If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
+  * If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
 
-  *Add images of providers to drawables. You can also take images from apps in examples folder of SDK zip file.
+  * Add images of providers to drawables. You can also take images from apps in examples folder of SDK zip file.
 
-  *Add oauth_consumer.properties file from assets folder of SDK zip file in assets folder of your application.
+  * Add oauth_consumer.properties file from assets folder of SDK zip file in assets folder of your application.
 
-  *Move to your project properties -> Java Build Path -> Order and Export. Move the socialauth libs on top and export. Check examples in case you find issues.
+  * Move to your project properties -> Java Build Path -> Order and Export. Move the socialauth libs on top and export. Check examples in case you find issues.
 
 ==Step 3 : Adding Permissions in Manifest File==
 {{{
