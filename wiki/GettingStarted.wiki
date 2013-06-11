@@ -49,7 +49,7 @@ The SDK contains following directories :
 
   * Add oauth_consumer.properties file from assets folder of SDK zip file in assets folder of your application.
 
-  * Move to your project properties -> Java Build Path -> Order and Export. Move the socialauth libs on top and export. Check examples in case you find issues.
+  * Move to your project properties -> Java Build Path -> Order and Export. Move the socialauth libs on top and export. Check examples in case you find issues else you may get noClassDefFound Error.
 
 ==Step 3 : Adding Permissions in Manifest File==
 {{{
