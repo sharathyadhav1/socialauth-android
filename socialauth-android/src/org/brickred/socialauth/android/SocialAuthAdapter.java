@@ -105,7 +105,8 @@ import android.widget.LinearLayout;
 public class SocialAuthAdapter {
 
 	/**
-	 * Enum of all supported providers
+	 * Enum of all supported providers containing provider name , callback url
+	 * and cancel url
 	 * 
 	 */
 	public enum Provider {
@@ -182,12 +183,20 @@ public class SocialAuthAdapter {
 	// Constants
 	public static final String PROVIDER = "provider";
 	public static final String ACCESS_GRANT = "access_grant";
+
+	// Facebook feed url for updating story
 	private final String UPDATE_STATUS_URL = "https://graph.facebook.com/me/feed";
 
-	// SocialAuth Components
+	// socialAuthManager object
 	private SocialAuthManager socialAuthManager;
+
+	// dialogListener object
 	private DialogListener dialogListener;
+
+	// provides currentprovider information
 	private Provider currentProvider;
+
+	// contains array of providers
 	private final Provider authProviders[];
 
 	// Variables, Arrays and Maps
