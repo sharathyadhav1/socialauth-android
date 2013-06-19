@@ -97,7 +97,7 @@
 	<target name="copyReadMe">
 	    <echo message="Copying ReadMe file"/>
 	    <copy todir="${distDir}">
-	        <fileset dir=".">
+	        <fileset dir="${projects.path}">
 				<filename name="/ReadMe.txt"/>
 			</fileset>
 	    </copy>
@@ -113,7 +113,8 @@
 		<javadoc destdir="${javadoc}/${project.socialauth.android}" 
 			sourcepath="${socialauth.android.path}/src"
 			packagenames="*"
-			windowtitle="SocialAuth Android"/>
+			windowtitle="SocialAuth Android"
+			classpathref="libraries"/>
 	</target>
 	
 </project>
