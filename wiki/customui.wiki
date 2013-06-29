@@ -56,7 +56,7 @@ private final class ResponseListener implements DialogListener
 {
    public void onComplete(Bundle values) {
    
-      adapter.updateStatus(edit.getText().toString(), new MessageListener());			
+      adapter.updateStatus(edit.getText().toString(), new MessageListener(),false);			
    }
 
    public void onError(DialogError error) {
