@@ -116,4 +116,4 @@ if (providerName.equalsIgnoreCase("share_mms")) {
 
 * You can also use share-button to load profile , contacts , images and feeds.
 
-  To see the full functionality, view *share-button example* from socialauth-android-sdk-2.0.zip on Downloads page.
+  To see the full functionality, view *share-button example* from socialauth-android-sdk-2.6.zip on Downloads page.
