@@ -120,4 +120,4 @@ if (providerName.equalsIgnoreCase("share_mms")) {
 
 * You can also use share-bar to load profile , contacts , images and feeds.
 
-To see the functionality, view *share-bar example* from socialauth-android-sdk-2.0 zip on Download Page. 
+To see the functionality, view *share-bar example* from socialauth-android-sdk-2.6 zip on Download Page. 
