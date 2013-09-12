@@ -316,7 +316,7 @@ public class SocialAuthDialog extends Dialog {
 		public void onPageStarted(WebView view, String url, Bitmap favicon) {
 			super.onPageStarted(view, url, favicon);
 
-			// To set zoom density of runkeeper dialog
+			// To set zoom density of runkeeper dialog for various densities
 			if (url.startsWith("https://runkeeper.com/apps/authorize") & count < 1) {
 				if (Util.UI_SIZE == 4 && Util.UI_DENSITY == 120) {
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
@@ -336,27 +336,35 @@ public class SocialAuthDialog extends Dialog {
 				}
 			}
 
-			// To set zoom density of yahoo dialog
+			// To set zoom density of yahoo dialog for mdpi and xhdpi
 			if (mProviderName.toString().equalsIgnoreCase("yahoo")) {
 				if (url.startsWith("https://login.yahoo.com/config/login")) {
 					if (Util.UI_DENSITY == 160 && Util.UI_SIZE == 4) {
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.CLOSE);
 						mWebView.setInitialScale(155);
-					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 7) {
-						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
-					} else if (Util.UI_DENSITY == 320 && Util.UI_SIZE == 10) {
-						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-						mWebView.setInitialScale(120);
+					} else if (Util.UI_DENSITY == 320) {
+						if (Util.UI_SIZE == 7)
+							mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+						else if (Util.UI_SIZE == 10) {
+							mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+							mWebView.setInitialScale(120);
+						}
 					} else
 						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
 				}
 			}
 
-			// To set zoom density of linkedin dialog for ldpi
+			// To set zoom density of linkedin dialog for ldpi and mdpi
 			if (mProviderName.toString().equalsIgnoreCase("linkedin")) {
 				if (Util.UI_DENSITY == 120)
 					mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
-				mWebView.setInitialScale(60);
+				else if (Util.UI_DENSITY == 160) {
+					if (Util.UI_SIZE == 3)
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.FAR);
+					else
+						mWebView.getSettings().setDefaultZoom(ZoomDensity.MEDIUM);
+				} else
+					mWebView.setInitialScale(60);
 			}
 
 			// To set zoom density of yammer dialog
