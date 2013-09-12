@@ -34,6 +34,7 @@ import java.util.Map;
 
 import org.brickred.socialauth.Album;
 import org.brickred.socialauth.AuthProvider;
+import org.brickred.socialauth.Career;
 import org.brickred.socialauth.Contact;
 import org.brickred.socialauth.Feed;
 import org.brickred.socialauth.Profile;
@@ -41,6 +42,7 @@ import org.brickred.socialauth.SocialAuthConfig;
 import org.brickred.socialauth.SocialAuthManager;
 import org.brickred.socialauth.exception.SocialAuthException;
 import org.brickred.socialauth.plugin.AlbumsPlugin;
+import org.brickred.socialauth.plugin.CareerPlugin;
 import org.brickred.socialauth.plugin.FeedPlugin;
 import org.brickred.socialauth.util.AccessGrant;
 import org.brickred.socialauth.util.Constants;
@@ -289,10 +291,6 @@ public class SocialAuthAdapter {
 
 		Log.d("SocialAuthAdapter", "Enabling button with SocialAuth");
 		final Context ctx = sharebtn.getContext();
-		if (!Util.isNetworkAvailable(ctx)) {
-			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
-			return;
-		}
 		context = ctx;
 
 		// Click Listener For Share Button
@@ -336,6 +334,11 @@ public class SocialAuthAdapter {
 				dialog.show();
 			}
 		});
+
+		if (!Util.isNetworkAvailable(ctx)) {
+			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
+			return;
+		}
 	}
 
 	/**
@@ -347,10 +350,7 @@ public class SocialAuthAdapter {
 	public void enable(LinearLayout linearbar) {
 		Log.d("SocialAuthAdapter", "Enabling bar with SocialAuth");
 		final Context ctx = linearbar.getContext();
-		if (!Util.isNetworkAvailable(ctx)) {
-			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
-			return;
-		}
+
 		context = ctx;
 		// Handles Clicking Events for Buttons
 		View.OnClickListener viewlistener = new View.OnClickListener() {
@@ -377,6 +377,11 @@ public class SocialAuthAdapter {
 			provider.setPadding(5, 5, 5, 5);
 			provider.setOnClickListener(viewlistener);
 			linearbar.addView(provider);
+		}
+
+		if (!Util.isNetworkAvailable(ctx)) {
+			dialogListener.onError(new SocialAuthError("Please check your Internet connection", new Exception("")));
+			return;
 		}
 	}
 
@@ -692,22 +697,44 @@ public class SocialAuthAdapter {
 	 * 
 	 * @param message
 	 *            The message to be send.
+	 * @param listener
+	 *            socialAuth listener to get status
+	 * @param shareOption
+	 *            true - share on all providers false - share on current
+	 *            provider
 	 */
 
-	public void updateStatus(final String message, final SocialAuthListener<Integer> listener) {
+	public void updateStatus(final String message, final SocialAuthListener<Integer> listener, final boolean shareOption) {
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
 				try {
-					final Response response = getCurrentProvider().updateStatus(message);
+					if (shareOption == true) {
+						final List<String> activeProviders = socialAuthManager.getConnectedProvidersIds();
+						for (int i = 0; i < activeProviders.size(); i++) {
+							final String provider = activeProviders.get(i);
+							final Response response = socialAuthManager.getProvider(provider).updateStatus(message);
 
-					handler.post(new Runnable() {
-						@Override
-						public void run() {
-							int status = response.getStatus();
-							listener.onExecute(Integer.valueOf(status));
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									int status = response.getStatus();
+									listener.onExecute(provider, Integer.valueOf(status));
+								}
+							});
 						}
-					});
+					} else {
+						final Response response = getCurrentProvider().updateStatus(message);
+
+						handler.post(new Runnable() {
+							@Override
+							public void run() {
+								int status = response.getStatus();
+								listener.onExecute(getCurrentProvider().getProviderId(), Integer.valueOf(status));
+							}
+						});
+					}
+
 				} catch (Exception e) {
 					dialogListener.onError(new SocialAuthError("Message Not Posted", e));
 				}
@@ -761,7 +788,7 @@ public class SocialAuthAdapter {
 							@Override
 							public void run() {
 								int status = response.getStatus();
-								listener.onExecute(Integer.valueOf(status));
+								listener.onExecute(getCurrentProvider().getProviderId(), Integer.valueOf(status));
 							}
 						});
 					} catch (Exception e) {
@@ -859,7 +886,7 @@ public class SocialAuthAdapter {
 
 		@Override
 		protected void onPostExecute(Profile profile) {
-			listener.onExecute(profile);
+			listener.onExecute(getCurrentProvider().getProviderId(), profile);
 		}
 	}
 
@@ -918,7 +945,7 @@ public class SocialAuthAdapter {
 
 		@Override
 		protected void onPostExecute(List<Contact> contactsMap) {
-			listener.onExecute(contactsMap);
+			listener.onExecute(getCurrentProvider().getProviderId(), contactsMap);
 		}
 	}
 
@@ -989,7 +1016,7 @@ public class SocialAuthAdapter {
 
 		@Override
 		protected void onPostExecute(List<Feed> feedMap) {
-			listener.onExecute(feedMap);
+			listener.onExecute(getCurrentProvider().getProviderId(), feedMap);
 		}
 	}
 
@@ -1064,7 +1091,7 @@ public class SocialAuthAdapter {
 		@Override
 		protected void onPostExecute(List<Album> albumMap) {
 
-			listener.onExecute(albumMap);
+			listener.onExecute(getCurrentProvider().getProviderId(), albumMap);
 		}
 	}
 
@@ -1175,7 +1202,51 @@ public class SocialAuthAdapter {
 		@Override
 		protected void onPostExecute(Integer status) {
 
-			listener.onExecute(status);
+			listener.onExecute(getCurrentProvider().getProviderId(), status);
+		}
+	}
+
+	public void getCareerAsync(SocialAuthListener<Career> listener) {
+		new CareerTask(listener).execute();
+	}
+
+	/**
+	 * AsyncTask to uploadImage
+	 */
+
+	private class CareerTask extends AsyncTask<Void, Void, Career> {
+
+		SocialAuthListener<Career> listener;
+
+		private CareerTask(SocialAuthListener<Career> listener) {
+			this.listener = listener;
+		}
+
+		@Override
+		protected Career doInBackground(Void... params) {
+			try {
+				Career careerList = null;
+
+				if (getCurrentProvider().isSupportedPlugin(org.brickred.socialauth.plugin.CareerPlugin.class)) {
+					CareerPlugin p = getCurrentProvider().getPlugin(org.brickred.socialauth.plugin.CareerPlugin.class);
+					careerList = p.getCareerDetails();
+					Log.d("SocialAuthAdapter", "Received Career Details");
+
+				} else
+					Log.d("SocialAuthAdapter", "Career Details only Supported from Linkedin");
+
+				return careerList;
+			} catch (Exception e) {
+				e.printStackTrace();
+				listener.onError(new SocialAuthError("Career Details not Available from Provider", e));
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(Career careerList) {
+
+			listener.onExecute(getCurrentProvider().getProviderId(), careerList);
 		}
 	}
 }

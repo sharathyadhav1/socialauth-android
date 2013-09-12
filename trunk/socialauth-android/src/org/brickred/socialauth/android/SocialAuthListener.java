@@ -39,7 +39,7 @@ public interface SocialAuthListener<T> {
 	 * @param Bundle
 	 *            containing response.
 	 */
-	public void onExecute(T t);
+	public void onExecute(String provider, T t);
 
 	/**
 	 * Called when a dialog has an error. Executed by the thread that initiated

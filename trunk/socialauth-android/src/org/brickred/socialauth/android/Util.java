@@ -217,7 +217,7 @@ public final class Util {
 					} else {
 						UI_YAHOO_SCROLL = 1;
 						UI_YAHOO_ALLOW = 1;
-						UI_SIZE = 6;
+						UI_SIZE = 7;
 					}
 				} else {
 					UI_SIZE = 10;
