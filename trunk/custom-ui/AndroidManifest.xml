@@ -26,8 +26,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="org.brickred.customui"
-      android:versionCode="3"
-      android:versionName="2.5">
+      android:versionCode="4"
+      android:versionName="2.6">
 	  
     <uses-sdk android:minSdkVersion="8" />
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -58,6 +58,10 @@
                   >
         </activity>
         <activity android:name=".AlbumActivity"
+           		  android:configChanges="keyboardHidden|orientation"
+                  >
+        </activity>
+        <activity android:name=".CareerActivity"
            		  android:configChanges="keyboardHidden|orientation"
                   >
         </activity>
