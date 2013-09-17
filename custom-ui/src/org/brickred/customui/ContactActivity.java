@@ -27,6 +27,7 @@ package org.brickred.customui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.brickred.customadapter.ImageLoader;
 import org.brickred.socialauth.Contact;
 
 import android.app.Activity;
@@ -37,6 +38,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -77,11 +79,13 @@ public class ContactActivity extends Activity {
 	public class ContactAdapter extends ArrayAdapter<Contact> {
 		private final LayoutInflater mInflater;
 		List<Contact> contacts;
+		ImageLoader imageLoader;
 
 		public ContactAdapter(Context context, int textViewResourceId, List<Contact> contacts) {
 			super(context, textViewResourceId);
 			mInflater = LayoutInflater.from(context);
 			this.contacts = contacts;
+			imageLoader = new ImageLoader(context);
 		}
 
 		@Override
@@ -97,13 +101,17 @@ public class ContactActivity extends Activity {
 
 			TextView label = (TextView) row.findViewById(R.id.cName);
 			TextView email = (TextView) row.findViewById(R.id.cEmail);
+			ImageView cImage = (ImageView) row.findViewById(R.id.cImage);
 
 			Log.d("Custom-UI", "Display Name = " + bean.getDisplayName());
 			Log.d("Custom-UI", "First Name = " + bean.getFirstName());
 			Log.d("Custom-UI", "Last Name = " + bean.getLastName());
 			Log.d("Custom-UI", "Contact ID = " + bean.getId());
 			Log.d("Custom-UI", "Profile URL = " + bean.getProfileUrl());
+			Log.d("Custom-UI", "Profile URL = " + bean.getProfileImageURL());
 			Log.d("Custom-UI", "Email = " + bean.getEmail());
+
+			imageLoader.DisplayImage(bean.getProfileImageURL(), cImage);
 
 			if (provider_name.equalsIgnoreCase("twitter"))
 				label.setText(bean.getFirstName() + "@" + bean.getDisplayName()); // twitter

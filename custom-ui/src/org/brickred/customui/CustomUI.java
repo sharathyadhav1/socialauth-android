@@ -31,6 +31,7 @@ import java.util.List;
 
 import org.brickred.customadapter.CustomAdapter;
 import org.brickred.socialauth.Album;
+import org.brickred.socialauth.Career;
 import org.brickred.socialauth.Contact;
 import org.brickred.socialauth.Feed;
 import org.brickred.socialauth.Photo;
@@ -229,7 +230,7 @@ public class CustomUI extends Activity {
 					@Override
 					public void onClick(View v) {
 						msgDialog.dismiss();
-						adapter.updateStatus(edit.getText().toString(), new MessageListener());
+						adapter.updateStatus(edit.getText().toString(), new MessageListener(), false);
 					}
 				});
 			}
@@ -256,7 +257,8 @@ public class CustomUI extends Activity {
 			// Get Feeds : For Facebook , Twitter Only
 			// Dismiss Dialog for rest of providers
 
-			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")) {
+			if (provider.equalsIgnoreCase("facebook") || provider.equalsIgnoreCase("twitter")
+					|| provider.equalsIgnoreCase("linkedin")) {
 				mDialog.show();
 				adapter.getFeedsAsync(new FeedDataListener());
 			} else {
@@ -308,6 +310,12 @@ public class CustomUI extends Activity {
 					}
 				});
 
+			} else if (provider.equalsIgnoreCase("linkedin")) {
+
+				// get Job and Education information
+				mDialog.show();
+				adapter.getCareerAsync(new CareerListener());
+
 			} else {
 				dialog.dismiss();
 			}
@@ -357,14 +365,14 @@ public class CustomUI extends Activity {
 	private final class ProfileDataListener implements SocialAuthListener<Profile> {
 
 		@Override
-		public void onExecute(Profile t) {
+		public void onExecute(String provider, Profile t) {
 
 			Log.d("Custom-UI", "Receiving Data");
 			mDialog.dismiss();
 			Profile profileMap = t;
 
 			Intent intent = new Intent(CustomUI.this, ProfileActivity.class);
-			intent.putExtra("provider", providerName);
+			intent.putExtra("provider", provider);
 			intent.putExtra("profile", profileMap);
 			startActivity(intent);
 		}
@@ -378,12 +386,12 @@ public class CustomUI extends Activity {
 	// To get status of message after authentication
 	private final class MessageListener implements SocialAuthListener<Integer> {
 		@Override
-		public void onExecute(Integer t) {
+		public void onExecute(String provider, Integer t) {
 			Integer status = t;
 			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
-				Toast.makeText(CustomUI.this, "Message posted", Toast.LENGTH_LONG).show();
+				Toast.makeText(CustomUI.this, "Message posted on" + provider, Toast.LENGTH_LONG).show();
 			else
-				Toast.makeText(CustomUI.this, "Message not posted", Toast.LENGTH_LONG).show();
+				Toast.makeText(CustomUI.this, "Message not posted" + provider, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
@@ -396,7 +404,7 @@ public class CustomUI extends Activity {
 	private final class AlbumDataListener implements SocialAuthListener<List<Album>> {
 
 		@Override
-		public void onExecute(List<Album> t) {
+		public void onExecute(String provider, List<Album> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
 			mDialog.dismiss();
@@ -417,14 +425,14 @@ public class CustomUI extends Activity {
 	private final class ContactDataListener implements SocialAuthListener<List<Contact>> {
 
 		@Override
-		public void onExecute(List<Contact> t) {
+		public void onExecute(String provider, List<Contact> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
 			mDialog.dismiss();
 			List<Contact> contactsList = t;
 
 			Intent intent = new Intent(CustomUI.this, ContactActivity.class);
-			intent.putExtra("provider", providerName);
+			intent.putExtra("provider", provider);
 			intent.putExtra("contact", (Serializable) contactsList);
 			startActivity(intent);
 		}
@@ -439,7 +447,7 @@ public class CustomUI extends Activity {
 	private final class UploadImageListener implements SocialAuthListener<Integer> {
 
 		@Override
-		public void onExecute(Integer t) {
+		public void onExecute(String provider, Integer t) {
 			mDialog.dismiss();
 			Integer status = t;
 			Log.d("Custom-UI", String.valueOf(status));
@@ -456,13 +464,33 @@ public class CustomUI extends Activity {
 	private final class FeedDataListener implements SocialAuthListener<List<Feed>> {
 
 		@Override
-		public void onExecute(List<Feed> t) {
+		public void onExecute(String provider, List<Feed> t) {
 
 			Log.d("Custom-UI", "Receiving Data");
 			mDialog.dismiss();
 			List<Feed> feedList = t;
 			Intent intent = new Intent(CustomUI.this, FeedActivity.class);
 			intent.putExtra("feed", (Serializable) feedList);
+			startActivity(intent);
+		}
+
+		@Override
+		public void onError(SocialAuthError e) {
+		}
+	}
+
+	// To receive the feed response after authentication
+	private final class CareerListener implements SocialAuthListener<Career> {
+
+		@Override
+		public void onExecute(String provider, Career t) {
+
+			Log.d("Custom-UI", "Receiving Data");
+			mDialog.dismiss();
+			Career careerMap = t;
+			Intent intent = new Intent(CustomUI.this, CareerActivity.class);
+			intent.putExtra("provider", provider);
+			intent.putExtra("career", careerMap);
 			startActivity(intent);
 		}
 
@@ -581,7 +609,10 @@ public class CustomUI extends Activity {
 
 			// Bind the data efficiently with the holder
 			holder.text.setText(options[position]);
-			holder.icon.setImageDrawable(mIcon);
+			if (options[position].equalsIgnoreCase("career"))
+				holder.icon.setImageResource(R.drawable.career);
+			else
+				holder.icon.setImageDrawable(mIcon);
 
 			return convertView;
 		}
