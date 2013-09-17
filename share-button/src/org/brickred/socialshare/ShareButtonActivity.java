@@ -146,7 +146,10 @@ public class ShareButtonActivity extends Activity {
 
 				@Override
 				public void onClick(View v) {
-					adapter.updateStatus(edit.getText().toString(), new MessageListener());
+					adapter.updateStatus(edit.getText().toString(), new MessageListener(), false);
+
+					// to share on multiple providers
+					adapter.updateStatus(edit.getText().toString(), new MessageListener(), false);
 				}
 			});
 
@@ -200,12 +203,12 @@ public class ShareButtonActivity extends Activity {
 	// To get status of message after authentication
 	private final class MessageListener implements SocialAuthListener<Integer> {
 		@Override
-		public void onExecute(Integer t) {
+		public void onExecute(String provider, Integer t) {
 			Integer status = t;
 			if (status.intValue() == 200 || status.intValue() == 201 || status.intValue() == 204)
-				Toast.makeText(ShareButtonActivity.this, "Message posted", Toast.LENGTH_LONG).show();
+				Toast.makeText(ShareButtonActivity.this, "Message posted on " + provider, Toast.LENGTH_LONG).show();
 			else
-				Toast.makeText(ShareButtonActivity.this, "Message not posted", Toast.LENGTH_LONG).show();
+				Toast.makeText(ShareButtonActivity.this, "Message not posted on " + provider, Toast.LENGTH_LONG).show();
 		}
 
 		@Override
