@@ -15,7 +15,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/twittersign.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterappform.png
 
-*3. Fill your application name, app description and callback url. Write any dummmy url as callback url.In website section fill any anonymous url and press Submit. You will then see this page. *
+*3. Fill your application name, app description and callback url. Write any dummmy url as callback url. This url is important , use addcallback method to provide the url in the code.You will then see this page. *
 
 https://socialauth-android.googlecode.com/svn/wiki/images/twitterdetails.png
 
