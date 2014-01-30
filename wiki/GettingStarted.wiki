@@ -81,7 +81,7 @@ This app is supported on GoogleTV too.
   
 == Please Note==
 
-!SocialAuth Android 3.1 supports Facebook , Twitter , !MySpace , Linkedin , Google, !FourSquare ,!SalesForce , Yahoo, Yammer, Runkeeper, Google Plus(Google OAuth2.0), !Instagram , Flicker
+!SocialAuth Android 3.1 supports Facebook , Twitter , !MySpace , Linkedin , Google, !FourSquare ,!SalesForce , Yahoo, Yammer, Runkeeper, Google Plus(Google OAuth2.0), Instagram , Flicker
 
 *!SocialAuth Android 3.1 not supports below SDK 2.2 Froyo*
 
