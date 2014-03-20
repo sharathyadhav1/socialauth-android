@@ -43,9 +43,6 @@ If you find issue in twitter authentication , you can try following things :
   * You should remove your old app before using the new lib
 
 *Yahoo*
-
- *  Yahoo oAuth screen is not mobile optimized. Although we have tried to do some tweaks in webview but you may face issue in some phones.
- *  Yahoo takes time to open in emulater due to low rendering speed of emulater.
  *  If you get URL authentication error for Yahoo. Try to clear you app settings and then login again.
 
 *Yammer*
