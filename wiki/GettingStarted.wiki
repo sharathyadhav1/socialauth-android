@@ -25,7 +25,7 @@
 
 The SDK contains following directories :
 
- *  dist -  This contains socialauth-android-3.1.jar containing Android components.You need to include it in your app.
+ *  dist -  This contains socialauth-android-3.2.jar containing Android components.You need to include it in your app.
 
  *  libs -  This contains socialauth-4.4.jar.  The socialauth-4.4.jar is the underlying OAuth infrastructure.You need to include it in your app.
  
