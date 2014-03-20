@@ -1,9 +1,9 @@
 #summary Release History
 
 ==Whats new in Version 3.2 ?== 
- * Bugs Solved : Facebook issue solved. Now we are using native web view login. please check the wiki to create Facebook app using native flow.
- * Bugs Solved : Foursquare issue fixed
- * Bugs Solved : Signout bug fixed. 
+ * *Bugs Solved :* Facebook issue solved. Now we are using native web view login. please check the wiki to create Facebook app using native flow.
+ * *Bugs Solved :* Foursquare issue fixed
+ * *Bugs Solved :* Signout bug fixed. 
 
 ==Whats new in Version 3.1 ?== 
 This is an incremental release with twitter api fix
