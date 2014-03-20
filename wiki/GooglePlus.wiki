@@ -1,13 +1,15 @@
-#summary One-sentence summary of this page.
+==Steps==
 
-= Introduction =
+*1. Login with your Gmail user id and password and click [https://code.google.com/apis/console#access]. You will view below screen.
 
-Add your content here.
+2. Press Create new app. You will view the screen below.Fill App name and category (Social , Utility etc.) and press Create App.
 
+*3. You will get App Dashboard. Press settings in left menu and you will the screen below with AppID and secret.Click Add Platform and choose Android. 
 
-= Details =
+*4. You will see the screen below. Just enter the Key Hash by generating with below code.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+*5. Go to Status and Review. And click the below tab to make it live.
+
+6. Note App ID and secret.
+
+7. Add AppID and secret in oauth_consumer.properties file. You need to supply App ID in code. Check examples bundled with sdk for use.
