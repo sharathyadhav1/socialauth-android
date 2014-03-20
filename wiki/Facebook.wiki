@@ -4,14 +4,19 @@
 
 ==Steps==
 
-*1. c.	Open - [https://developers.facebook.com/apps] and enter user name and password. Create account if you don't have facebook account*
+*1. c.	Open - [https://developers.facebook.com/apps] and enter user name and password. Create account if you don't have facebook account.*
 
 
 https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen1.png
 
+2. Press Create new app. You will view the screen below.Fill App name and category (Social , Utility etc.) and press Create App.
 
-*3. Create new App and Fill all details as shown below. Fill dummy url in site url field. 
+*3. You will get App Dashboard. Press settings in left menu and you will the screen below with AppID and secret.Click Add Platform and choose Android. 
 
-https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen2.png
+*4. You will see the screen below. Just enter the Key Hash by generating with below code.
 
-*4. Note down keys and secrets and copy them in oauth_consumers.properties file.
+*5. Go to Status and Review. And click the below tab to make it live.
+
+6. Note App ID and secret.
+
+7. Add AppID and secret in oauth_consumer.properties file. You need to supply App ID in code. Check examples bundled with sdk for use.
