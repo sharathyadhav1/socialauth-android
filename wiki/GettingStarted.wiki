@@ -41,7 +41,7 @@ The SDK contains following directories :
 
   * Create your Android project. 
 
-  * Add socialauth-android-3.1.jar and socialauth4.4.jar from dist and libs folder of SDK zip file  to libs folder of you app. 
+  * Add socialauth-android-3.2.jar and socialauth4.4.jar from dist and libs folder of SDK zip file  to libs folder of you app. 
 
   * If you are using ADT17 or more then you need to rename the lib folder in your app to libs. Your app will add the jar to build path automatically if you are using ADT 17.
 
@@ -76,13 +76,10 @@ You can use library in following three ways  :
 == Demo Apps==
 CustomUI : The app demonstrates how you can access different functionalists of specific provider. 
 
-!LifeView : This app get albums from facebook and twitter and display in !GridView. You can download app directly from
-This app is supported on GoogleTV too.
-  
 == Please Note==
 
-!SocialAuth Android 3.1 supports Facebook , Twitter , !MySpace , Linkedin , Google, !FourSquare ,!SalesForce , Yahoo, Yammer, Runkeeper, Google Plus(Google OAuth2.0), Instagram , Flicker
+!SocialAuth Android 3.2 supports Facebook , Twitter , !MySpace , Linkedin , Google, !FourSquare ,!SalesForce , Yahoo, Yammer, Runkeeper, Google Plus(Google OAuth2.0), Instagram , Flicker
 
-*!SocialAuth Android 3.1 not supports below SDK 2.2 Froyo*
+*!SocialAuth Android 3.2 not supports below SDK 2.2 Froyo*
 
  
