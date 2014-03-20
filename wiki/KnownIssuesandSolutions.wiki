@@ -24,12 +24,11 @@
 
 
 *Facebook*
-  * Facebook shows different language sometimes. This is a bug filed to !FaceBook.Here is the link :
- [https://developers.facebook.com/bugs/407246299295529?browse=search_4fa410ea79db26337556383]
-  * You may get already authorized screen which is due to recent api changes from Facebook. Press Ok to continue.
-  * You may get error AppId is null, use adapter.appID method.
-  * You may get error app is not set up properly.  Click status tab in your facebook account and make it public for all users.
-  * Don't forget to add key hash.  
+  * Facebook shows different language sometimes. This is a bug filed to !FaceBook.Here is the link [https://developers.facebook.com/bugs/407246299295529?browse=search_4fa410ea79db26337556383]
+ * You may get already authorized screen which is due to recent api changes from Facebook. Press Ok to continue.
+ * You may get error AppId is null, use adapter.appID method.
+ * You may get error app is not set up properly.  Click status tab in your facebook account and make it public for all users.
+ * Don't forget to add key hash.  
 
 * Twitter*
 If you find issue in twitter authentication , you can try following things :
