@@ -1,3 +1,5 @@
+#summary This guide tell you steps to get Facebook secrets.
+
 ==Steps==
 
 *1. Login with your Gmail user id and password and click [https://code.google.com/apis/console#access]. You will view below screen.
