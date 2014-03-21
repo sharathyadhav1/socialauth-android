@@ -1,4 +1,4 @@
-#summary This guide tell you steps to get Flickr secrets.
+#summary This guide tell you steps to get Flickr key and secrets.
 
 ==Steps==
 
@@ -24,4 +24,4 @@ https://socialauth-android.googlecode.com/svn/wiki/images/flickr4.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/flickr5.png
 
-*6.Write the key and secret in ouath_coonsumer.properties files. Check examples for use. 
+*6.Write the key and secret in ouath_consumer.properties files. Check examples for use. 
