@@ -1,4 +1,4 @@
-#summary This guide tell you steps to get Facebook secrets.
+#summary This guide tell you steps to get Google plus secrets.
 
 ==Steps==
 
