@@ -1,13 +1,21 @@
-#summary One-sentence summary of this page.
+#summary This guide tell you steps to get Flickr secrets.
 
-= Introduction =
+==Steps==
 
-Add your content here.
+*1. Login with your yahoo email id and password and click [https://www.flickr.com/services/apps/create/]. Click create an app.You will view below screen.
 
 
-= Details =
+https://socialauth-android.googlecode.com/svn/wiki/images/googleplus.png
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+
+*2. Click Request an Api Key. you will see below screen.Choose Apply for non-commercial key.
+
+https://socialauth-android.googlecode.com/svn/wiki/images/googleplus2.png
+
+*3. Note ClientID and Clientsecret.*
+
+*4. Add ClientID and Clientsecret in oauth_consumer.properties file.*
+
+*5. You need to provide callback url in code. Check custom-ui example for use.*
+
+ 
