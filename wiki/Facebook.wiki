@@ -16,7 +16,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/facebook2.png
 https://socialauth-android.googlecode.com/svn/wiki/images/facebook3.png 
 
 
-*4. You will see the screen below. Just enter the Key Hash by generating with below code.*
+*4. You will see the screen below. Just enter the Key Hash by generating with below code.(Check Generating Facebook Key Hash in wiki) *
 
 https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen1.png
 
@@ -26,6 +26,6 @@ https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen1.png
 https://socialauth-android.googlecode.com/svn/wiki/images/facebookscreen2.png
 
 
-6. Note App ID and secret.
+*6. Note App ID and secret.*
 
-7. Add AppID and secret in oauth_consumer.properties file. 
+*7. Add AppID and secret in oauth_consumer.properties file.*
