@@ -16,7 +16,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/flickr2.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/flickr3.png
 
-*4. Add ClientID and Clientsecret in oauth_consumer.properties file.*
+*4. You will get api and secret. Note them. Click edit auth-flow*
 
 https://socialauth-android.googlecode.com/svn/wiki/images/flickr4.png
 
