@@ -10,9 +10,9 @@ https://socialauth-android.googlecode.com/svn/wiki/images/googleplus.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/googleplus2.png
 
-*3. Note ClientID and ClientSecret.*
+*3. Note ClientID and Clientsecret.*
 
-*4. Add ClientID and ClientSecret in oauth_consumer.properties file.*
+*4. Add ClientID and Clientsecret in oauth_consumer.properties file.*
 
 *5. You need to provide callback url in code. Check custom-ui example for use.*
 
