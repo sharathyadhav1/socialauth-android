@@ -12,7 +12,7 @@ https://socialauth-android.googlecode.com/svn/wiki/images/flickr1.png
 
 https://socialauth-android.googlecode.com/svn/wiki/images/flickr2.png
 
-*3. Add your app name and description*
+*3. Add your app name, description and press submit*
 
 https://socialauth-android.googlecode.com/svn/wiki/images/flickr3.png
 
