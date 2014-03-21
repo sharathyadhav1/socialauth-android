@@ -1,15 +1,19 @@
 ==Steps==
 
 *1. Login with your Gmail user id and password and click [https://code.google.com/apis/console#access]. You will view below screen.
+after clicking API&auth - Credentials*
 
-2. Press Create new app. You will view the screen below.Fill App name and category (Social , Utility etc.) and press Create App.
+https://socialauth-android.googlecode.com/svn/wiki/images/googleplus.png
 
-*3. You will get App Dashboard. Press settings in left menu and you will the screen below with AppID and secret.Click Add Platform and choose Android. 
 
-*4. You will see the screen below. Just enter the Key Hash by generating with below code.
+*2. Click Create New Client ID and choose Web Application and enter you callbackurl and domain name. For example : domain - http:\\socialauth.in and callback url http:\\socialauth.in\success* 
 
-*5. Go to Status and Review. And click the below tab to make it live.
+https://socialauth-android.googlecode.com/svn/wiki/images/googleplus2.png
 
-6. Note App ID and secret.
+*3. Note ClientID and ClientSecret.*
 
-7. Add AppID and secret in oauth_consumer.properties file. You need to supply App ID in code. Check examples bundled with sdk for use.
+*4. Add ClientID and ClientSecret in oauth_consumer.properties file.*
+
+*5. You need to provide callback url in code. Check custom-ui example for use.*
+
+ 
