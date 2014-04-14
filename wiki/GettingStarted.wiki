@@ -15,9 +15,8 @@
    *  Foursquare - [Foursquare (Show Screenshot)]
    *  Yammer     - [Yammer (Show Screenshot)]
    *  Runkeeper  - [Runkeeper (Show Screenshot)]
-   *  Google Plus( Google OAuth 2.0) -  
-
-
+   *  Google Plus( Google OAuth 2.0) - [GooglePlus (Show Screenshot)]
+   *  Flickr - [Flickr (Show Screenshot)]
 
   * Replace the keys and secrets in oauth_consumer.properties file with your keys and secrets.
 
